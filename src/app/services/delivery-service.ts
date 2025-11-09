@@ -1,8 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { GenericService } from './generic-service';
+
+export interface Delivery {
+  idDelivery: number;
+  orderId: number;
+  address: string;
+  status: string;
+  deliveryDate: string;
+}
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class DeliveryService {
-  
+export class DeliveryService extends GenericService<Delivery> {
+  constructor(http: HttpClient, @Inject('API_URL') apiUrl: string) {
+    super(http, `${apiUrl}/deliveries`);
+  }
 }
