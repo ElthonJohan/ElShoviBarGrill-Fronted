@@ -9,47 +9,28 @@ import { ReservationComponent } from './pages/reservation-component/reservation-
 import { RoleComponent } from './pages/role-component/role-component';
 import { TableComponent } from './pages/table-component/table-component';
 import { UserComponent } from './pages/user-component/user-component';
+import { LoginComponent } from './pages/login-component/login-component';
+import { RegisterComponent } from './pages/register-component/register-component';
 
 export const routes: Routes = [
-  {
-    path: 'pages/category',
-    component: CategoryComponent,
-  },
-  {
-    path: 'pages/menuitem',
-    component: MenuItemComponent,
-  },
-  {
-    path: 'pages/order',
-    component: OrderComponent,
-  },
-  {
-    path: 'pages/delivery',
-    component: DeliveryComponent,
-  },
-  {
-    path: 'pages/orderitem',
-    component: OrderItemComponent,
-  },
-  {
-    path: 'pages/payment',
-    component: PaymentComponent,
-  },
-  {
-    path: 'pages/reservation',
-    component: ReservationComponent,
-  },
-  {
-    path: 'pages/role',
-    component: RoleComponent,
-  },
-  {
-    path: 'pages/table',
-    component: TableComponent,
-  },
-  {
-    path: 'pages/user',
-    component: UserComponent,
-  },
-  { path: '', redirectTo: 'pages/category', pathMatch: 'full' },
+  //  Auth
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  // Pages
+  { path: 'pages/category', component: CategoryComponent },
+  { path: 'pages/menuitem', component: MenuItemComponent },
+  { path: 'pages/order', component: OrderComponent },
+  { path: 'pages/delivery', component: DeliveryComponent },
+  { path: 'pages/orderitem', component: OrderItemComponent },
+  { path: 'pages/payment', component: PaymentComponent },
+  { path: 'pages/reservation', component: ReservationComponent },
+  { path: 'pages/role', component: RoleComponent },
+  { path: 'pages/table', component: TableComponent },
+  { path: 'pages/user', component: UserComponent },
+
+  // Ruta por defecto
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
+  { path: '**', redirectTo: '/login' },
 ];

@@ -1,35 +1,40 @@
 <div class="layout-container">
-  <!-- 🔹 Barra superior -->
+  <!-- Barra superior -->
   <mat-toolbar color="primary" class="main-toolbar">
     <button mat-icon-button (click)="sidenav.toggle()">
-      @if (!sidenav.opened) {
-        <mat-icon>menu</mat-icon>
-      } @else {
-        <mat-icon>close</mat-icon>
-      }
+      <mat-icon>{{ sidenav.opened ? 'close' : 'menu' }}</mat-icon>
     </button>
 
     <span class="app-title">🍻 SHOVI BAR-GRILL</span>
-
     <span class="spacer"></span>
 
-    <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button">
-      <mat-icon>account_circle</mat-icon>
-    </button>
+    <!-- Si está logueado -->
+    <ng-container *ngIf="isLoggedIn()">
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </ng-container>
 
+    <!-- Menú siempre existe -->
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>
+      <button mat-menu-item routerLink="/pages/profile">
         <mat-icon>person</mat-icon>
         <span>Mi perfil</span>
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Cerrar sesión</span>
       </button>
     </mat-menu>
+
+    <!-- Si NO está logueado -->
+    <button mat-button routerLink="/login" *ngIf="!isLoggedIn()">
+      <mat-icon>login</mat-icon>
+      Iniciar sesión
+    </button>
   </mat-toolbar>
 
-  <!-- 🔹 Contenedor principal -->
+  <!-- Contenedor principal -->
   <mat-sidenav-container class="main-container">
     <mat-sidenav #sidenav mode="side" opened>
       <div class="sidenav-header">
@@ -74,7 +79,7 @@
       </div>
     </mat-sidenav>
 
-    <!-- 🔹 Contenido dinámico -->
+    <!-- Contenido dinámico -->
     <mat-sidenav-content class="content">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
