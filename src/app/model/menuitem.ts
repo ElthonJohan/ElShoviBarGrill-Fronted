@@ -1,7 +1,7 @@
 import { Category } from './category';
 
 export class MenuItem {
-  id!: number;
+  idMenuItem!: number;
   name!: string;
   description!: string;
   price!: number;

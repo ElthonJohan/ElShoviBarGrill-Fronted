@@ -6,7 +6,7 @@ import { OrderType } from './enums/ordertype';
 import { OrderStatus } from './enums/orderstatus';
 
 export class Order {
-  id!: number;
+  idOrder!: number;
   user!: User;
   table!: Table;
   orderType!: OrderType;

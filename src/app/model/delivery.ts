@@ -2,7 +2,7 @@ import { Order } from './order';
 import { DeliveryStatus } from './enums/deliverystatus';
 
 export class Delivery {
-  id!: number;
+  idDelivery!: number;
   order!: Order;
   address!: string;
   phone!: string;

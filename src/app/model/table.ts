@@ -1,5 +1,5 @@
 export class Table {
-  id!: number;
+  idTable!: number;
   tableNumber!: number;
   capacity!: number;
   status!: string;

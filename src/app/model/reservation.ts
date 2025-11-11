@@ -2,7 +2,7 @@ import { Table } from './table';
 import { User } from './user';
 
 export class Reservation {
-  id!: number;
+  idReservation!: number;
   table!: Table;
   user!: User;
   reservationDate!: string; 
