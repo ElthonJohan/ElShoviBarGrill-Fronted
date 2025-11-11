@@ -1,0 +1,22 @@
+# .gitattributes - Normalize line endings and declare text/binary files
+# Keep Git's default behaviour for text files and let it detect types automatically
+* text=auto
+
+# Explicitly mark common text file types (helps some tools)
+*.ts text
+*.js text
+*.json text
+*.html text
+*.css text
+*.scss text
+*.md text
+*.yml text
+*.yaml text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
