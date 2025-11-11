@@ -11,7 +11,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
 export interface Role {
-  id: number;
+  idRole: number;
   name: string;
   description?: string;
 }
@@ -40,50 +40,106 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
     this.form = this.fb.group({
       fullName: ['', Validators.required],
-      username: ['', Validators.required],
+        username: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+        // El backend valida tamaño entre 8 y 50 en algunos campos; reflejamos mínimo 8 aquí
+        password: ['', [Validators.required, Validators.minLength(8)]],
       role: this.fb.group({
-        id: [1, Validators.required] // Cliente por defecto
+        idRole: [1, Validators.required] // Cliente por defecto
       })
     });
   }
 
   ngOnInit(): void {
     // Traer todos los roles desde el backend
-    this.http.get<Role[]>(`${environment.HOST}/roles`).subscribe({
-      next: (data) => this.roles = data,
-      error: (err) => console.error('Error al cargar roles', err)
-    });
+    // Intentamos enviar Authorization si el usuario ya está logueado
+    try {
+      const stored = localStorage.getItem('user');
+      const parsed = stored ? JSON.parse(stored) : null;
+      const token = parsed?.token || parsed?.accessToken || parsed?.data?.token || parsed?.jwt;
+
+      const options = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+      this.http.get<Role[]>(`${environment.HOST}/roles`, options).subscribe({
+        next: (data) => this.roles = data,
+        error: (err) => {
+          console.error('Error al cargar roles', err);
+          // Si recibimos 401, avisar en consola que la petición requiere autenticación
+          if (err?.status === 401) {
+            console.warn('GET /roles devuelve 401 — el endpoint requiere autorización.');
+          }
+        }
+      });
+    } catch (e) {
+      console.error('Error procesando token localStorage', e);
+    }
   }
 
   register(): void {
   if (this.form.invalid) return;
 
-  // Transformamos roleId en role para enviar al backend
-  const user = {
-    fullName: this.form.value.fullName,
-    username: this.form.value.username,
-    email: this.form.value.email,
-    password: this.form.value.password,
-    active: true,
-    createdAt: new Date(),
-    role: {
-      id: this.form.value.roleId
-    }
-  };
+    console.log('FORM VALUE', this.form.value);
 
-  this.http.post<any>(`${environment.HOST}/users/register`, user)
-    .subscribe({
-      next: () => {
-        alert('Registro exitoso. Ahora puedes iniciar sesión.');
-        this.router.navigate(['/login']);
+  // Transformamos roleId en role para enviar al backend
+    const selectedRoleId = Number(this.form.value.role?.idRole);
+
+    const user = {
+      fullName: this.form.value.fullName,
+      username: this.form.value.username,
+      // some backends expect 'userName' instead of 'username' (send both)
+      userName: this.form.value.username,
+      email: this.form.value.email,
+      password: this.form.value.password,
+      active: true,
+      createdAt: new Date(),
+      // Top-level idRole (algunos DTOs/entidades esperan esta propiedad y mapea a la columna id_role)
+      idRole: selectedRoleId,
+      // Añadimos también id_role con snake_case por si el backend hace binding textual
+      id_role: selectedRoleId,
+      // nested role object as well (in case backend expects role.idRole or role.id)
+      role: {
+        idRole: selectedRoleId,
+        id: selectedRoleId
       },
-      error: (err) => {
-        console.error('Error en el registro:', err);
-        alert('Error en el registro. Verifica los datos.');
+      // many backends expect a list of roles: send roles array too (backwards/forwards compatibility)
+      roles: [
+        {
+          id: selectedRoleId,
+          idRole: selectedRoleId
+        }
+      ]
+    };
+
+    console.log('user payload', user);
+
+    // Intentar adjuntar Authorization si existe token en localStorage (necesario si el endpoint exige admin)
+    let postOptions: any = {};
+    try {
+      const stored = localStorage.getItem('user');
+      const parsed = stored ? JSON.parse(stored) : null;
+      const token = parsed?.token || parsed?.accessToken || parsed?.data?.token || parsed?.jwt;
+      if (token) {
+        postOptions = { headers: { Authorization: `Bearer ${token}` } };
+        console.log('Enviando Authorization header en POST /users');
       }
-    });
+    } catch (e) {
+      console.warn('No se pudo leer token de localStorage para la petición POST /users', e);
+    }
+
+    this.http.post<any>(`${environment.HOST}/users`, user, postOptions)
+      .subscribe({
+        next: () => {
+          alert('Registro exitoso. Ahora puedes iniciar sesión.');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error('Error en el registro:', err);
+          // Mostrar mensaje claro devuelto por el servidor si existe
+          const serverMsg = err?.error?.message || err?.error?.error || err?.message || 'Error desconocido';
+          const details = err?.error?.details ? JSON.stringify(err.error.details) : '';
+          alert(`Error en el registro: ${serverMsg}${details ? '\nDetalles: ' + details : ''}`);
+        }
+      });
 }
 
 }
