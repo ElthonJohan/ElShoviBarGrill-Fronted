@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -20,7 +20,9 @@ import { environment } from '../../../environments/environment';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
+    MatButton
   ],
   templateUrl: './login-component.html',
   styleUrls: ['./login-component.css']
@@ -41,12 +43,15 @@ export class LoginComponent {
     const credentials = this.form.value;
 
     // 🔹 Conectar con backend
-    this.http.post<any>(`${environment.HOST}/auth/login`, credentials)
+    this.http.post<any>(`${environment.HOST}/login`, credentials)
       .subscribe({
         next: (res) => {
-          // Guardamos usuario en localStorage
-          localStorage.setItem('user', JSON.stringify(res));
-          this.router.navigate(['/pages/dashboard']); // Redirigir al dashboard
+          // Normalizar y guardar token en localStorage
+          // Extraemos token desde varias posibles propiedades del backend
+          const token = res?.token ?? res?.accessToken ?? res?.data?.token ?? res?.jwt ?? res?.data?.accessToken;
+          const userToStore = { ...res, token };
+          localStorage.setItem('user', JSON.stringify(userToStore));
+          this.router.navigate(['/pages/order']); // Redirigir al dashboard
         },
         error: (err) => {
           alert('Usuario o contraseña incorrectos');
