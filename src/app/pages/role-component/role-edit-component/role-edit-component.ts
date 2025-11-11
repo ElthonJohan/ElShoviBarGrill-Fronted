@@ -61,7 +61,7 @@ export class RoleEditComponent implements OnInit {
     const role: Role = this.form.value;
 
     if (this.isEdit) {
-      this.roleService.update(role.id, role).pipe(
+      this.roleService.update(role.idRole, role).pipe(
         switchMap(() => this.roleService.findAll())
       ).subscribe((data: Role[]) => {
         this.roleService.setRoleChange(data);

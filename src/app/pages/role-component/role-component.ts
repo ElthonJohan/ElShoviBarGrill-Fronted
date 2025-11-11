@@ -3,6 +3,7 @@ import { RoleService } from '../../services/role-service';
 import { Role } from '../../model/role';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,12 +42,12 @@ export class RoleComponent implements OnInit {
   }
 
   editRole(role: Role): void {
-    this.router.navigate(['/pages/role/edit', role.id]);
+    this.router.navigate(['/pages/role/edit', role.idRole]);
   }
 
   deleteRole(role: Role): void {
     if (confirm(`¿Desea eliminar el rol "${role.name}"?`)) {
-      this.roleService.delete(role.id).subscribe(() => {
+      this.roleService.delete(role.idRole).subscribe(() => {
         this._snackBar.open('ROL ELIMINADO!', 'Cerrar', { duration: 2000 });
         this.loadRoles();
       });
