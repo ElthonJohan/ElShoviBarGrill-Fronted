@@ -10,27 +10,9 @@ import { environment } from '../../environments/environment';
 })
 export class RoleService extends GenericService<Role> {
 
-  private roleChange = new BehaviorSubject<Role[]>([]);
-  private messageChange = new BehaviorSubject<string>('');
-
   constructor(http: HttpClient) {
     super(http, `${environment.HOST}/roles`);
   }
 
-  getRoleChange() {
-    return this.roleChange.asObservable();
-  }
-
-  setRoleChange(data: Role[]) {
-    this.roleChange.next(data);
-  }
-
-  getMessageChange() {
-    return this.messageChange.asObservable();
-  }
-
-  setMessageChange(msg: string) {
-    this.messageChange.next(msg);
-  }
 }
 

@@ -16,26 +16,11 @@ export interface Category {
 })
 export class CategoryService extends GenericService<Category> {
 
-  private categoryChange = new BehaviorSubject<Category[]>([]);
-  private messageChange = new BehaviorSubject<string>('');
+
 
   constructor(http: HttpClient, @Inject('API_URL') apiUrl: string) {
     super(http, `${environment.HOST}/categories`);
   }
 
-  getCategoryChange() {
-    return this.categoryChange.asObservable();
-  }
 
-  setCategoryChange(data: Category[]) {
-    this.categoryChange.next(data);
-  }
-
-  getMessageChange() {
-    return this.messageChange.asObservable();
-  }
-
-  setMessageChange(msg: string) {
-    this.messageChange.next(msg);
-  }
 }
