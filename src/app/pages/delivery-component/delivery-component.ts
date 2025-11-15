@@ -1,11 +1,82 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Delivery } from '../../model/delivery';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeliveryService } from '../../services/delivery-service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-delivery-component',
-  imports: [],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './delivery-component.html',
-  styleUrl: './delivery-component.css',
+  styleUrls: ['./delivery-component.css'],
 })
 export class DeliveryComponent {
+  dataSource: MatTableDataSource<Delivery> = new MatTableDataSource<Delivery>();
 
+  columnsDefinitions = [
+    { def: 'idDelivery', label: 'idDelivery', hide: true },
+    { def: 'order', label: 'order', hide: false },
+    { def: 'address', label: 'address', hide: false },
+    { def: 'phone', label: 'phone', hide: false },
+    { def: 'driverName', label: 'driverName', hide: false },
+    { def: 'vehiclePlate', label: 'vehiclePlate', hide: false },
+    { def: 'status', label: 'status', hide: false },
+    { def: 'deliveryTime', label: 'deliveryTime', hide: false },
+    { def: 'actions', label: 'actions', hide: false }
+  ];
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  constructor(
+    private deliveryService: DeliveryService,
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) { }
+
+  ngOnInit(): void {
+    this.deliveryService.findAll().subscribe((data) => this.createTable(data));
+    this.deliveryService.getModelChange().subscribe(data => this.createTable(data));
+    this.deliveryService.getMessageChange().subscribe(data => this._snackBar.open(data, 'INFO', { duration: 2000 }));
+  }
+
+  createTable(data: Delivery[]) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getDisplayedColumns() {
+    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+  }
+
+  openDialog(medic?: Delivery) {
+    // this._dialog.open(MedicDialogComponent, {
+    //   width: '750px',
+    //   data: medic
+    // });
+  }
+
+  applyFilter(e: any) {
+    if (!this.dataSource) return;
+    this.dataSource.filter = e.target.value.trim();
+  }
+    
 }
+
+

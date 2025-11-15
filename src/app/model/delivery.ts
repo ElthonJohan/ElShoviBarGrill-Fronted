@@ -1,4 +1,4 @@
-import { Order } from './order';
+import type { Order } from './order';
 import { DeliveryStatus } from './enums/deliverystatus';
 
 export class Delivery {

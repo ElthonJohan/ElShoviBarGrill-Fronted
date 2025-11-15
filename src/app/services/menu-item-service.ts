@@ -2,13 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GenericService } from './generic-service';
 import { Subject } from 'rxjs';
-
-export interface MenuItem {
-  idMenuItem: number;
-  name: string;
-  price: number;
-  categoryId: number;
-}
+import { MenuItem } from '../model/menuitem';
 
 @Injectable({
   providedIn: 'root'

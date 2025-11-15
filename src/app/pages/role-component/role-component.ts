@@ -34,7 +34,7 @@ export class RoleComponent implements OnInit {
   ngOnInit(): void {
     this.loadRoles();
     // Suscribirse a cambios de roles
-    this.roleService.getRoleChange().subscribe(data => this.roles = data);
+    this.roleService.getModelChange().subscribe(data => this.roles = data);
   }
 
   loadRoles(): void {

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -28,25 +33,28 @@ export interface Role {
     MatCardModule,
     MatIconModule,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   templateUrl: './register-component.html',
-  styleUrls: ['./register-component.css']
+  styleUrls: ['./register-component.css'],
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
   roles: Role[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private http: HttpClient
+  ) {
     this.form = this.fb.group({
       fullName: ['', Validators.required],
-        username: ['', [Validators.required, Validators.minLength(5)]],
+      username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-        // El backend valida tamaño entre 8 y 50 en algunos campos; reflejamos mínimo 8 aquí
-        password: ['', [Validators.required, Validators.minLength(8)]],
-      role: this.fb.group({
-        idRole: [1, Validators.required] // Cliente por defecto
-      })
+      // El backend valida tamaño entre 8 y 50 en algunos campos; reflejamos mínimo 8 aquí
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      // permitimos seleccionar múltiples roles
+      roles: [[], Validators.required],
     });
   }
 
@@ -56,19 +64,27 @@ export class RegisterComponent implements OnInit {
     try {
       const stored = localStorage.getItem('user');
       const parsed = stored ? JSON.parse(stored) : null;
-      const token = parsed?.token || parsed?.accessToken || parsed?.data?.token || parsed?.jwt;
+      const token =
+        parsed?.token ||
+        parsed?.accessToken ||
+        parsed?.data?.token ||
+        parsed?.jwt;
 
-      const options = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+      const options = token
+        ? { headers: { Authorization: `Bearer ${token}` } }
+        : {};
 
       this.http.get<Role[]>(`${environment.HOST}/roles`, options).subscribe({
-        next: (data) => this.roles = data,
+        next: (data) => (this.roles = data),
         error: (err) => {
           console.error('Error al cargar roles', err);
           // Si recibimos 401, avisar en consola que la petición requiere autenticación
           if (err?.status === 401) {
-            console.warn('GET /roles devuelve 401 — el endpoint requiere autorización.');
+            console.warn(
+              'GET /roles devuelve 401 — el endpoint requiere autorización.'
+            );
           }
-        }
+        },
       });
     } catch (e) {
       console.error('Error procesando token localStorage', e);
@@ -76,12 +92,14 @@ export class RegisterComponent implements OnInit {
   }
 
   register(): void {
-  if (this.form.invalid) return;
+    if (this.form.invalid) return;
 
     console.log('FORM VALUE', this.form.value);
 
-  // Transformamos roleId en role para enviar al backend
-    const selectedRoleId = Number(this.form.value.role?.idRole);
+    // Transformamos los ids seleccionados en la lista de roles que espera el backend
+    const selectedRoleIds: number[] = (this.form.value.roles || []).map(
+      (v: any) => Number(v)
+    );
 
     const user = {
       fullName: this.form.value.fullName,
@@ -92,22 +110,8 @@ export class RegisterComponent implements OnInit {
       password: this.form.value.password,
       active: true,
       createdAt: new Date(),
-      // Top-level idRole (algunos DTOs/entidades esperan esta propiedad y mapea a la columna id_role)
-      idRole: selectedRoleId,
-      // Añadimos también id_role con snake_case por si el backend hace binding textual
-      id_role: selectedRoleId,
-      // nested role object as well (in case backend expects role.idRole or role.id)
-      role: {
-        idRole: selectedRoleId,
-        id: selectedRoleId
-      },
-      // many backends expect a list of roles: send roles array too (backwards/forwards compatibility)
-      roles: [
-        {
-          id: selectedRoleId,
-          idRole: selectedRoleId
-        }
-      ]
+      // many backends expect a list of roles: map selected ids to the Role DTO shape
+      roles: selectedRoleIds.map((id) => ({ idRole: id })),
     };
 
     console.log('user payload', user);
@@ -117,16 +121,24 @@ export class RegisterComponent implements OnInit {
     try {
       const stored = localStorage.getItem('user');
       const parsed = stored ? JSON.parse(stored) : null;
-      const token = parsed?.token || parsed?.accessToken || parsed?.data?.token || parsed?.jwt;
+      const token =
+        parsed?.token ||
+        parsed?.accessToken ||
+        parsed?.data?.token ||
+        parsed?.jwt;
       if (token) {
         postOptions = { headers: { Authorization: `Bearer ${token}` } };
         console.log('Enviando Authorization header en POST /users');
       }
     } catch (e) {
-      console.warn('No se pudo leer token de localStorage para la petición POST /users', e);
+      console.warn(
+        'No se pudo leer token de localStorage para la petición POST /users',
+        e
+      );
     }
 
-    this.http.post<any>(`${environment.HOST}/users`, user, postOptions)
+    this.http
+      .post<any>(`${environment.HOST}/users`, user, postOptions)
       .subscribe({
         next: () => {
           alert('Registro exitoso. Ahora puedes iniciar sesión.');
@@ -135,11 +147,20 @@ export class RegisterComponent implements OnInit {
         error: (err) => {
           console.error('Error en el registro:', err);
           // Mostrar mensaje claro devuelto por el servidor si existe
-          const serverMsg = err?.error?.message || err?.error?.error || err?.message || 'Error desconocido';
-          const details = err?.error?.details ? JSON.stringify(err.error.details) : '';
-          alert(`Error en el registro: ${serverMsg}${details ? '\nDetalles: ' + details : ''}`);
-        }
+          const serverMsg =
+            err?.error?.message ||
+            err?.error?.error ||
+            err?.message ||
+            'Error desconocido';
+          const details = err?.error?.details
+            ? JSON.stringify(err.error.details)
+            : '';
+          alert(
+            `Error en el registro: ${serverMsg}${
+              details ? '\nDetalles: ' + details : ''
+            }`
+          );
+        },
       });
-}
-
+  }
 }

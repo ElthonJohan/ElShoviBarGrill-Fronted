@@ -3,13 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { GenericService } from './generic-service';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Category } from '../model/category';
 
 
-export interface Category {
-  idCategory: number;
-  name: string;
-  description?: string;
-}
+
 
 @Injectable({
   providedIn: 'root'

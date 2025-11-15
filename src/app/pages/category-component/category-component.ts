@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { CategoryService, Category } from '../../services/category-service';
+import { CategoryService } from '../../services/category-service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +11,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { switchMap } from 'rxjs';
+import { Category } from '../../model/category';
 
 @Component({
   selector: 'app-category',
@@ -48,7 +49,7 @@ export class CategoryComponent {
 
   ngOnInit(): void {
     this.categoryService.findAll().subscribe((data) => this.createTable(data));
-    this.categoryService.getCategoryChange().subscribe((data) => this.createTable(data));
+    this.categoryService.getModelChange().subscribe((data) => this.createTable(data));
     this.categoryService.getMessageChange().subscribe((msg) =>
       this._snackBar.open(msg, 'INFO', {
         duration: 2000,
@@ -77,7 +78,7 @@ export class CategoryComponent {
       .delete(id)
       .pipe(switchMap(() => this.categoryService.findAll()))
       .subscribe((data) => {
-        this.categoryService.setCategoryChange(data);
+        this.categoryService.setModelChange(data);
         this.categoryService.setMessageChange('CATEGORÍA ELIMINADA!');
       });
   }

@@ -1,1 +1,74 @@
-<p>delivery-component works!</p>
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+</mat-form-field>
+
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+        
+      <ng-container matColumnDef="idDelivery">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.idDelivery}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="order">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Orden </th>
+        <td mat-cell *matCellDef="let row"> {{row.order}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
+        <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+        <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="driverName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Conductor </th>
+        <td mat-cell *matCellDef="let row"> {{row.driverName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vehiclePlate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Placa de Vehículo </th>
+        <td mat-cell *matCellDef="let row"> {{row.vehiclePlate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+        <td mat-cell *matCellDef="let row"> {{row.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deliveryTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiempo asignado </th>
+        <td mat-cell *matCellDef="let row"> {{row.deliveryTime}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef > Actions </th>
+        <td mat-cell *matCellDef="let row" >
+            <button mat-button (click)="openDialog(row)" >
+                <mat-icon>mode_edit</mat-icon> Edit
+            </button>    
+
+            <button mat-button color="warn">
+                <mat-icon>delete</mat-icon> Delete
+            </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+        
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of medics"></mat-paginator>
+
+    <button mat-fab style="float: right;" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
+
+  </div>

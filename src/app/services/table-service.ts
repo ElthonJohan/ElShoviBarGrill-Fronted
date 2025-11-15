@@ -2,14 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GenericService } from './generic-service';
 import { Subject } from 'rxjs';
-
-export interface Table {
-  idTable: number;
-  number: string;
-  capacity: number;
-  location: string;
-  status: string;
-}
+import { Table } from '../model/table';
 
 @Injectable({
   providedIn: 'root'

@@ -64,7 +64,7 @@ export class RoleEditComponent implements OnInit {
       this.roleService.update(role.idRole, role).pipe(
         switchMap(() => this.roleService.findAll())
       ).subscribe((data: Role[]) => {
-        this.roleService.setRoleChange(data);
+        this.roleService.setModelChange(data);
         this.roleService.setMessageChange('ROL ACTUALIZADO!');
         this._snackBar.open('ROL ACTUALIZADO!', 'Cerrar', { duration: 2000 });
         this.router.navigate(['/pages/role']);
@@ -73,7 +73,7 @@ export class RoleEditComponent implements OnInit {
       this.roleService.save(role).pipe(
         switchMap(() => this.roleService.findAll())
       ).subscribe((data: Role[]) => {
-        this.roleService.setRoleChange(data);
+        this.roleService.setModelChange(data);
         this.roleService.setMessageChange('ROL REGISTRADO!');
         this._snackBar.open('ROL REGISTRADO!', 'Cerrar', { duration: 2000 });
         this.router.navigate(['/pages/role']);

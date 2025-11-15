@@ -2,15 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GenericService } from './generic-service';
 import { Subject } from 'rxjs';
-
-export interface Payment {
-  idPayment: number;
-  orderId: number;
-  amount: number;
-  paymentDate: string;
-  method: string;
-  status: string;
-}
+import { Payment } from '../model/payment';
 
 @Injectable({
   providedIn: 'root'

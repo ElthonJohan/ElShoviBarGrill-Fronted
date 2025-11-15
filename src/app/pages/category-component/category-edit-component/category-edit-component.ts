@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CategoryService, Category } from '../../../services/category-service';
+import { CategoryService } from '../../../services/category-service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Category } from '../../../model/category';
 
 @Component({
   selector: 'app-category-edit',
@@ -64,7 +65,7 @@ export class CategoryEditComponent implements OnInit {
   this.categoryService.update(category.idCategory, category).pipe(
     switchMap(() => this.categoryService.findAll())
   ).subscribe((data) => {
-    this.categoryService.setCategoryChange(data);
+    this.categoryService.setModelChange(data);
     this.categoryService.setMessageChange('CATEGORÍA ACTUALIZADA!');
   });
 } else {
@@ -72,7 +73,7 @@ export class CategoryEditComponent implements OnInit {
   this.categoryService.save(category).pipe(
     switchMap(() => this.categoryService.findAll())
   ).subscribe((data) => {
-    this.categoryService.setCategoryChange(data);
+    this.categoryService.setModelChange(data);
     this.categoryService.setMessageChange('CATEGORÍA REGISTRADA!');
   });
 }

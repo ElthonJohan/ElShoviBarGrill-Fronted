@@ -1,5 +1,5 @@
 import { MenuItem } from './menuitem';
-import { Order } from './order';
+import type { Order } from './order';
 
 export class OrderItem {
   idOrderItem!: number;
