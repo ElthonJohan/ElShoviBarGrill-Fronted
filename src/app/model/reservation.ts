@@ -3,8 +3,8 @@ import { User } from './user';
 
 export class Reservation {
   idReservation!: number;
-  table!: Table;
-  user!: User;
+  idTable!: number;
+  idUser!: number;
   reservationDate!: string; 
   reservationTime!: string; 
   status!: string;

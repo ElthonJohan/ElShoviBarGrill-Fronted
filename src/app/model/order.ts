@@ -6,14 +6,14 @@ import { OrderType } from './enums/ordertype';
 import { OrderStatus } from './enums/orderstatus';
 
 export class Order {
-  idOrder!: number;
-  user!: User;
-  table!: Table;
-  orderType!: OrderType;
-  status!: OrderStatus;
-  totalAmount!: number;
-  notes!: string;
-  createdAt!: string;
-  items!: OrderItem[];
-  payment!: Payment;
+  idOrder: number;
+  idUser: number;
+  idTable: number;
+  orderType: OrderType;
+  status: OrderStatus;
+  totalAmount: number;
+  notes: string;
+  createdAt: string;
+  items: OrderItem[];
+  idPayment: number;
 }

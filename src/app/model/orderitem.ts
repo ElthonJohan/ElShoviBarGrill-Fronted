@@ -3,8 +3,8 @@ import type { Order } from './order';
 
 export class OrderItem {
   idOrderItem!: number;
-  menuItem!: MenuItem;
+  idMenuItem!: number;
   quantity!: number;
   unitPrice!: number;
-  order!: Order;
+  idOrder!: number;
 }
