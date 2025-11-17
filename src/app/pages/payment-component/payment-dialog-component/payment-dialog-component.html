@@ -1,0 +1,40 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Menú Info</span></mat-toolbar>
+
+  <form [formGroup]="form" class="example-container">
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Monto Total</mat-label>
+      <input matInput formControlName="amount" placeholder="Monto Total" />
+      <mat-error *ngIf="form.get('amount')?.hasError('required') && form.get('amount')?.touched">Monto es requerido</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput formControlName="paymentDate" placeholder="Fecha de Pago" />
+      <mat-error *ngIf="form.get('paymentDate')?.hasError('required') && form.get('paymentDate')?.touched">Fecha de Pago es requerida</mat-error>
+    </mat-form-field>
+
+       <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput formControlName="paymentMethod" placeholder="Metodo de Pago" />
+      <mat-error *ngIf="form.get('paymentMethod')?.hasError('required') && form.get('paymentMethod')?.touched">Metodo de Pago es requerida</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput formControlName="status" placeholder="Estado de Pago" />
+      <mat-error *ngIf="form.get('status')?.hasError('required') && form.get('status')?.touched">Estado de Pago es requerida</mat-error>
+    </mat-form-field>
+
+
+    <div class="actions">
+      <button mat-button type="button" (click)="operate()" [disabled]="form.invalid">Guardar</button>
+      <button mat-button type="button" (click)="close()">Cancelar</button>
+    </div>
+
+  </form>
+
+</mat-dialog-content>

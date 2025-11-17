@@ -1,0 +1,146 @@
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: auto;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 15px;
+}
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.mat-form-field {
+  width: 100%;
+}
+.mat-elevation-z8 {
+  margin-top: 20px;
+}
+.mat-header-cell, .mat-cell {
+  text-align: center;
+}
+.mat-header-cell {
+  font-weight: bold;
+}
+.mat-cell img {
+  border-radius: 8px;
+}
+.mat-paginator {
+  margin-top: 10px;
+}
+.button-spacing {
+  margin-left: 10px;
+}
+.table-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.success-snackbar {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+.error-snackbar {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+.no-data {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+  color: #777;
+}
+.action-button {
+  margin: 0 5px;
+}
+.disabled-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.filter-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.filter-input {
+  flex: 1;
+}
+.filter-button {
+  height: 36px;
+}
+.reset-button {
+  height: 36px;
+}
+.sort-header {
+  cursor: pointer;
+}
+.sort-header:hover {
+  text-decoration: underline;
+}
+.active-sort {
+  color: #1976d2; /* Primary color */
+}
+.inactive-sort {
+  color: rgba(0, 0, 0, 0.54); /* Default text color */
+}
+.mat-sort-header-arrow {
+  margin-left: 5px;
+}
+.mat-sort-header-arrow .mat-sort-header-indicator {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+.mat-sort-header-arrow .mat-sort-header-indicator.asc {
+  border-bottom: 8px solid currentColor;
+}
+.mat-sort-header-arrow .mat-sort-header-indicator.desc {
+  border-top: 8px solid currentColor;
+}
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.filter-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.filter-input {
+  width: 200px;
+}
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.filter-button {
+  height: 36px;
+}
+.reset-button {
+  height: 36px;
+}
+
+
+
+

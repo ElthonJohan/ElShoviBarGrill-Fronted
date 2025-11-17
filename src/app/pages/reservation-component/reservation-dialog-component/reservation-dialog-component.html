@@ -1,0 +1,51 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Reservation Info</span></mat-toolbar>
+
+  <form [formGroup]="form" class="example-container">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha de Reservación</mat-label>
+      <input matInput formControlName="reservationDate" placeholder="Fecha de Reservación" />
+      <mat-error *ngIf="form.get('reservationDate')?.hasError('required') && form.get('reservationDate')?.touched">Fecha de Reservaciónes requerido</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Tiempo de Reserva</mat-label>
+      <input matInput formControlName="reservationTime" placeholder="Tiempo de Reserva" />
+      <mat-error *ngIf="form.get('reservationTime')?.hasError('required') && form.get('reservationTime')?.touched">Tiempo de Reserva es requerida</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="status" >
+        <mat-option *ngFor="let s of statuss" [value]="s.value">{{ s.label }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('status')?.hasError('required') && form.get('status')?.touched">Estado es requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Mesa</mat-label>
+      <input matInput formControlName="idTable" placeholder="Mesa" type="number" />
+      <mat-error *ngIf="form.get('idTable')?.hasError('required') && form.get('idTable')?.touched">Mesa es requerido</mat-error>
+    </mat-form-field>
+
+    <!-- Selección de Usuarios -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Usuarios</mat-label>
+        <mat-select formControlName="idUser">
+          <mat-option *ngFor="let u of users" [value]="u.idUser">{{
+            u.username
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+    <div class="actions">
+      <button mat-button type="button" (click)="operate()" [disabled]="form.invalid">Guardar</button>
+      <button mat-button type="button" (click)="close()">Cancelar</button>
+    </div>
+
+  </form>
+
+</mat-dialog-content>

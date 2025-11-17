@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { DeliveryDialogComponent } from './delivery-dialog-component/delivery-dialog-component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-delivery-component',
@@ -20,7 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './delivery-component.html',
   styleUrls: ['./delivery-component.css'],
@@ -37,7 +39,7 @@ export class DeliveryComponent {
     { def: 'vehiclePlate', label: 'vehiclePlate', hide: false },
     { def: 'status', label: 'status', hide: false },
     { def: 'deliveryTime', label: 'deliveryTime', hide: false },
-    { def: 'actions', label: 'actions', hide: false }
+    { def: 'actions', label: 'actions', hide: false },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -47,12 +49,18 @@ export class DeliveryComponent {
     private deliveryService: DeliveryService,
     private _dialog: MatDialog,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.deliveryService.findAll().subscribe((data) => this.createTable(data));
-    this.deliveryService.getModelChange().subscribe(data => this.createTable(data));
-    this.deliveryService.getMessageChange().subscribe(data => this._snackBar.open(data, 'INFO', { duration: 2000 }));
+    this.deliveryService
+      .getModelChange()
+      .subscribe((data) => this.createTable(data));
+    this.deliveryService
+      .getMessageChange()
+      .subscribe((data) =>
+        this._snackBar.open(data, 'INFO', { duration: 2000 })
+      );
   }
 
   createTable(data: Delivery[]) {
@@ -62,21 +70,27 @@ export class DeliveryComponent {
   }
 
   getDisplayedColumns() {
-    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+    return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
   }
 
-  openDialog(medic?: Delivery) {
-    // this._dialog.open(MedicDialogComponent, {
-    //   width: '750px',
-    //   data: medic
-    // });
+  openDialog(delivery?: Delivery) {
+    this._dialog.open(DeliveryDialogComponent, {
+      width: '750px',
+      data: delivery,
+    });
   }
 
   applyFilter(e: any) {
     if (!this.dataSource) return;
     this.dataSource.filter = e.target.value.trim();
   }
-    
+  delete(id: number) {
+    this.deliveryService
+      .delete(id)
+      .pipe(switchMap(() => this.deliveryService.findAll()))
+      .subscribe((data) => {
+        this.deliveryService.setModelChange(data);
+        this.deliveryService.setMessageChange('CATEGORÍA ELIMINADA!');
+      });
+  }
 }
-
-

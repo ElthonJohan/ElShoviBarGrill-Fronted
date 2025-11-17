@@ -1,0 +1,34 @@
+<mat-dialog-content>
+    <mat-toolbar><span>Category info</span></mat-toolbar>
+
+<div class="example-container">
+
+    <!-- <mat-form-field>
+        <mat-label>Specialty</mat-label>
+        <mat-select [(ngModel)]="category.order.idOrder">
+          @for (sp of orders; track sp) {
+            <mat-option [value]="sp.idOrder">{{sp.user}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field> -->
+
+    <mat-form-field>
+        <input matInput placeholder="Nombre" [(ngModel)]="category.name">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Descripción" [(ngModel)]="category.description">
+    </mat-form-field>
+
+
+    <!-- @if (category.photo) {
+        <img mat-card-image [src]="category.photo">
+    } -->
+
+    <button mat-button (click)="operate()">Done</button>
+    <button mat-button (click)="close()">Cancel</button>
+
+</div>
+
+</mat-dialog-content>
+

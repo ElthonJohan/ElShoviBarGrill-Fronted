@@ -1,20 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RoleService } from '../../services/role-service';
 import { Role } from '../../model/role';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { RoleDialogComponent } from './role-dialog-component/role-dialog-component';
+import { switchMap } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-role',
   standalone: true,
   imports: [
-    CommonModule,
     MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule
   ],
@@ -22,39 +31,59 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./role-component.css']
 })
 export class RoleComponent implements OnInit {
-  roles: Role[] = [];
-  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
+  dataSource: MatTableDataSource<Role> = new MatTableDataSource<Role>();
+
+  columnsDefinitions = [
+    { def: 'idRole', label: 'idRole', hide: true },
+    { def: 'name', label: 'name', hide: false },
+    { def: 'description', label: 'description', hide: false },
+    { def: 'actions', label: 'actions', hide: false }
+  ];
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private roleService: RoleService,
-    private router: Router,
+    private _dialog: MatDialog,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.loadRoles();
-    // Suscribirse a cambios de roles
-    this.roleService.getModelChange().subscribe(data => this.roles = data);
+    this.roleService.findAll().subscribe((data) => this.createTable(data));
+    this.roleService.getModelChange().subscribe(data => this.createTable(data));
+    this.roleService.getMessageChange().subscribe(data => this._snackBar.open(data, 'INFO', { duration: 2000 }));
   }
 
-  loadRoles(): void {
-    this.roleService.findAll().subscribe(data => this.roles = data);
+  createTable(data: Role[]) {
+    this.dataSource = new MatTableDataSource(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  editRole(role: Role): void {
-    this.router.navigate(['/pages/role/edit', role.idRole]);
+  getDisplayedColumns() {
+    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
   }
 
-  deleteRole(role: Role): void {
-    if (confirm(`¿Desea eliminar el rol "${role.name}"?`)) {
-      this.roleService.delete(role.idRole).subscribe(() => {
-        this._snackBar.open('ROL ELIMINADO!', 'Cerrar', { duration: 2000 });
-        this.loadRoles();
+  openDialog(table?: Role) {
+    this._dialog.open(RoleDialogComponent, {
+      width: '750px',
+      data: table
+    });
+  }
+
+  applyFilter(e: any) {
+    if (!this.dataSource) return;
+    this.dataSource.filter = e.target.value.trim();
+  }
+
+  delete(id: number) {
+    this.roleService
+      .delete(id)
+      .pipe(switchMap(() => this.roleService.findAll()))
+      .subscribe((data) => {
+        this.roleService.setModelChange(data);
+        this.roleService.setMessageChange('CATEGORÍA ELIMINADA!');
       });
-    }
-  }
-
-  newRole(): void {
-    this.router.navigate(['/pages/role/edit']);
   }
 }

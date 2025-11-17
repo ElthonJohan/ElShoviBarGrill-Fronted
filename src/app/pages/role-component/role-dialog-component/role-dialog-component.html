@@ -1,0 +1,28 @@
+<mat-dialog-content>
+  <mat-toolbar><span>Role Info</span></mat-toolbar>
+
+  <form [formGroup]="form" class="example-container">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre del rol</mat-label>
+      <input matInput formControlName="name" placeholder="Nombre del rol" />
+      <mat-error *ngIf="form.get('name')?.hasError('required') && form.get('name')?.touched">Nombre es requerido</mat-error>
+      <mat-error *ngIf="form.get('name')?.hasError('roleNameExists')">El nombre ya existe</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill">
+      <mat-label>Descripción</mat-label>
+      <input matInput formControlName="description" placeholder="Descripción" />
+      <mat-error *ngIf="form.get('description')?.hasError('required') && form.get('description')?.touched">Descripción es requerida</mat-error>
+    </mat-form-field>
+
+
+    <div class="actions">
+      <button mat-button type="button" (click)="operate()" [disabled]="form.invalid">Guardar</button>
+      <button mat-button type="button" (click)="close()">Cancelar</button>
+    </div>
+
+  </form>
+
+</mat-dialog-content>

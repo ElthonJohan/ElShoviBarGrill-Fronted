@@ -12,6 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { switchMap } from 'rxjs';
 import { Category } from '../../model/category';
+import { CategoryDialogComponent } from './category-dialog-component/category-dialog-component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-category',
@@ -44,7 +46,9 @@ export class CategoryComponent {
 
   constructor(
     private categoryService: CategoryService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+        private _dialog: MatDialog,
+
   ) {}
 
   ngOnInit(): void {
@@ -72,6 +76,13 @@ export class CategoryComponent {
   applyFilter(e: any) {
     this.dataSource.filter = e.target.value.trim().toLowerCase();
   }
+
+   openDialog(category?: Category) {
+      this._dialog.open(CategoryDialogComponent, {
+        width: '750px',
+        data: category
+      });
+    }
 
   delete(id: number) {
     this.categoryService

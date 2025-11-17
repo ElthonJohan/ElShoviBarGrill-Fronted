@@ -44,17 +44,25 @@
       <mat-divider></mat-divider>
 
       <div class="sidenav-content">
-        <button mat-menu-item routerLink="/pages/category">
+        <button mat-menu-item routerLink="/pages/dashboard">
           <mat-icon>dashboard</mat-icon>
           <span>Dashboard</span>
         </button>
-        <button mat-menu-item routerLink="/register">
+        <button mat-menu-item routerLink="/pages/category">
+          <mat-icon>category</mat-icon>
+          <span>Categorias</span>
+        </button>
+        <button mat-menu-item routerLink="/pages/menuitem">
           <mat-icon>restaurant_menu</mat-icon>
           <span>Menú</span>
         </button>
         <button mat-menu-item routerLink="/pages/order">
           <mat-icon>receipt_long</mat-icon>
           <span>Pedidos</span>
+        </button>
+        <button mat-menu-item routerLink="/pages/orderitem">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Detalle Pedido</span>
         </button>
         <button mat-menu-item routerLink="/pages/table">
           <mat-icon>table_bar</mat-icon>
@@ -72,13 +80,14 @@
           <mat-icon>payments</mat-icon>
           <span>Pagos</span>
         </button>
-        <button mat-menu-item routerLink="/pages/order-item">
-          <mat-icon>bar_chart</mat-icon>
-          <span>Reportes</span>
-        </button>
+        
         <button mat-menu-item routerLink="/pages/user">
           <mat-icon>supervisor_account</mat-icon>
           <span>Usuarios</span>
+        </button>
+        <button mat-menu-item routerLink="/pages/role">
+          <mat-icon>user</mat-icon>
+          <span>Roles</span>
         </button>
       </div>
     </mat-sidenav>
