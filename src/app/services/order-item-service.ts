@@ -12,6 +12,6 @@ import { OrderItem } from '../model/orderitem';
 export class OrderItemService extends GenericService<OrderItem> {
 
   constructor(http: HttpClient, @Inject('API_URL') apiUrl: string) {
-    super(http, `${apiUrl}/orderitems`);
+    super(http, `${apiUrl}/order-items`);
   }
 }

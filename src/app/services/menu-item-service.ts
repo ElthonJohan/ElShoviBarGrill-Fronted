@@ -11,7 +11,7 @@ export class MenuItemService extends GenericService<MenuItem> {
 
   
   constructor(http: HttpClient, @Inject('API_URL') apiUrl: string) {
-    super(http, `${apiUrl}/menuitems`);
+    super(http, `${apiUrl}/menu-items`);
   }
 }
 
