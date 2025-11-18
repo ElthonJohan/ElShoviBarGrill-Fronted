@@ -1,83 +1,120 @@
 <div class="layout-container">
-  <!-- Barra superior -->
-  <mat-toolbar color="primary" class="main-toolbar">
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>{{ sidenav.opened ? "close" : "menu" }}</mat-icon>
+
+  <!-- NAVBAR SUPERIOR -->
+  <header class="navbar">
+    <button class="menu-btn" (click)="toggleSidebar()">
+      <mat-icon>menu</mat-icon>
     </button>
 
-    <span class="app-title">🍻 SHOVI BAR-GRILL</span>
-    <span class="spacer"></span>
+    <h1 class="title">SHOVI BAR - GRILL</h1>
 
-    <!-- Si está logueado -->
-    <ng-container *ngIf="isLoggedIn()">
-      <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button">
-        <mat-icon>account_circle</mat-icon>
+    <div class="actions">
+      <!-- Cambiar tema -->
+      <button mat-icon-button (click)="toggleTheme()">
+        <mat-icon>{{ isDarkMode ? "dark_mode" : "light_mode" }}</mat-icon>
       </button>
-    </ng-container>
 
-    <!-- Menú siempre existe -->
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item routerLink="/pages/profile">
-        <mat-icon>person</mat-icon>
-        <span>Mi perfil</span>
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Cerrar sesión</span>
-      </button>
-    </mat-menu>
+      <!-- No logeado -->
+      <ng-container *ngIf="!isLoggedIn(); else loggedBlock">
+        <button mat-raised-button color="primary" routerLink="/login">
+          <mat-icon>login</mat-icon> Iniciar sesión
+        </button>
+      </ng-container>
 
-    <!-- Si NO está logueado -->
-    <button mat-button routerLink="/login" *ngIf="!isLoggedIn()">
-      <mat-icon>login</mat-icon>
-      Iniciar sesión
-    </button>
-  </mat-toolbar>
+      <!-- Logeado -->
+      <ng-template #loggedBlock>
 
-  <!-- Contenedor principal -->
-  <mat-sidenav-container class="main-container">
-    <mat-sidenav #sidenav mode="side" opened>
-      <div class="sidebar-header">
-        <img src="logo_shovi.png" class="logo" alt="logo"/>
-        <h3>SHOVI BAR</h3>
+        <button mat-icon-button>
+          <mat-icon>notifications</mat-icon>
+        </button>
+
+        <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
+          <img src="assets/avatar.png" alt="Usuario" />
+          <span>{{ userName }}</span>
+        </button>
+
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item routerLink="/perfil">
+            <mat-icon>person</mat-icon> Perfil
+          </button>
+          <button mat-menu-item routerLink="/config">
+            <mat-icon>settings</mat-icon> Configuración
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon> Cerrar sesión
+          </button>
+        </mat-menu>
+
+      </ng-template>
+    </div>
+  </header>
+
+  <!-- LAYOUT PRINCIPAL -->
+  <div class="main-wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" [class.collapsed]="isCollapsed">
+      <div class="logo-section">
+        <img src="logo_shovi.png" class="logo" alt="logo" />
+        <h2 *ngIf="!isCollapsed">SHOVI BAR-GRILL</h2>
       </div>
 
-      <mat-nav-list>
-        <a mat-list-item routerLink="/dashboard" matTooltip="Dashboard">
+      <nav class="menu">
+        <a routerLink="/pages/dashboard" routerLinkActive="active">
           <mat-icon>dashboard</mat-icon>
-          <span>Dashboard</span>
+          <span *ngIf="!isCollapsed">Dashboard</span>
         </a>
-
-        <a mat-list-item routerLink="/categories">
+        <a routerLink="/pages/category" routerLinkActive="active">
           <mat-icon>category</mat-icon>
-          <span>Categorías</span>
+          <span *ngIf="!isCollapsed">Categorías</span>
         </a>
-
-        <a mat-list-item routerLink="/menuitem">
+        <a routerLink="/pages/delivery" routerLinkActive="active">
+          <mat-icon>moped_package</mat-icon>
+          <span *ngIf="!isCollapsed">Delivery</span>
+        </a>
+        <a routerLink="/pages/menuitem" routerLinkActive="active">
           <mat-icon>restaurant_menu</mat-icon>
-          <span>Menú</span>
+          <span *ngIf="!isCollapsed">Menú</span>
         </a>
-
-        <a mat-list-item routerLink="/orders">
+        <a routerLink="/pages/order" routerLinkActive="active">
           <mat-icon>shopping_cart</mat-icon>
-          <span>Pedidos</span>
+          <span *ngIf="!isCollapsed">Pedidos</span>
         </a>
-
-        <a mat-list-item routerLink="/tables">
-          <mat-icon>table_bar</mat-icon>
-          <span>Mesas</span>
+        <a routerLink="/pages/orderitem" routerLinkActive="active">
+          <mat-icon>shopping_cart</mat-icon>
+          <span *ngIf="!isCollapsed">Detalle Pedidos</span>
         </a>
-
-        <a mat-list-item routerLink="/reservations">
-          <mat-icon>event_seat</mat-icon>
-          <span>Reservas</span>
+        <a routerLink="/pages/payment" routerLinkActive="active">
+          <mat-icon>payment</mat-icon>
+          <span *ngIf="!isCollapsed">Pagos</span>
         </a>
-      </mat-nav-list>
-    </mat-sidenav>
+        <a routerLink="/pages/table" routerLinkActive="active">
+          <mat-icon>table_restaurant</mat-icon>
+          <span *ngIf="!isCollapsed">Mesas</span>
+        </a>
+        <a routerLink="/pages/reservation" routerLinkActive="active">
+          <mat-icon>book_online</mat-icon>
+          <span *ngIf="!isCollapsed">Reservas</span>
+        </a>
+        <a routerLink="/pages/user" routerLinkActive="active">
+          <mat-icon>group_add</mat-icon>
+          <span *ngIf="!isCollapsed">Usuarios</span>
+        </a>
+        <a routerLink="/pages/role" routerLinkActive="active">
+          <mat-icon>person_lock</mat-icon>
+          <span *ngIf="!isCollapsed">Roles</span>
+        </a>
+      </nav>
 
-    <!-- Contenido dinámico -->
-    <mat-sidenav-content class="content">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
+      </button>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="content">
       <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    </main>
+
+  </div>
 </div>

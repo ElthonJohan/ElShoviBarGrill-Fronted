@@ -9,7 +9,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatActionList, MatNavList } from '@angular/material/list';
 
 @Component({
   selector: 'app-layout',
@@ -18,7 +17,6 @@ import { MatActionList, MatNavList } from '@angular/material/list';
     CommonModule, 
     MatToolbarModule,
     MatSidenavModule,
-    MatNavList,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
@@ -30,17 +28,44 @@ import { MatActionList, MatNavList } from '@angular/material/list';
 })
 export class LayoutComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
+  isCollapsed = false;
+   isDarkMode = false;
+  userName = '';
 
   constructor(private router: Router) {}
 
-  // Retorna true si hay usuario logueado
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('user'); // O usar un AuthService
+
+  toggleSidebar() {
+  this.isCollapsed = !this.isCollapsed;
+}  
+
+  ngOnInit() {
+    this.loadUserName();
   }
 
-  // Cierra sesión
+  // Detecta si hay sesión
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('user');
+  }
+
+  // Carga nombre del user si está guardado
+  loadUserName() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      this.userName = user.fullName || user.username || 'Usuario';
+    }
+  }
+
+  // Cerrar sesión
   logout(): void {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    document.body.classList.toggle('dark-theme', this.isDarkMode);
+  }
+
 }

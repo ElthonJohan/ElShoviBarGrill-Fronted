@@ -1,138 +1,129 @@
-mat-sidenav {
-  width: 250px;
-  background: #b40000;
-  color: white;
-  padding-top: 15px;
+:root {
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 65px;
+
+  /* Colores */
+  --sidebar-bg: #b30000;
+  --sidebar-bg-dark: #220000;
+
+  --navbar-bg: linear-gradient(90deg, #d62828, #f77f00, #fcbf49);
+  --navbar-bg-dark: linear-gradient(90deg, #3a0ca3, #4361ee, #4cc9f0);
+
+  --text-light: white;
+  --text-dark: #333;
+
+  --content-bg: #f4f4f4;
+  --content-bg-dark: #121212;
 }
 
-.sidebar-header {
-  text-align: center;
-}
+/* Estilos del layout */
 
-.sidebar-header .logo {
-  width: 110px;
-  border-radius: 8px;
-}
-
-mat-nav-list a {
-  color: #fff;
-  font-size: 16px;
-  border-radius: 8px;
-  margin: 5px 10px;
-}
-
-mat-nav-list a:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-
-
-/* 🔸 Estructura principal */
 .layout-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #fafafa;
 }
 
-/* 🔸 Toolbar */
-.main-toolbar {
-  background: linear-gradient(90deg, #d30000, #ecc810);
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  z-index: 2;
-}
-
-.app-title {
-  font-family: 'Comic Sans';
-  font-size: 1.5rem;
-  font-weight: bold;
-
-  margin-left: 10px;
-  letter-spacing: 1px;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-/* 🔸 Sidenav container */
-mat-sidenav-container {
-  flex: 1;
-  height: 100%;
+/* NAVBAR */
+.navbar {
+  height: 65px;
+  background: var(--navbar-bg);
   display: flex;
-  background: #f3f3f3;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: white;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  position: fixed;
+  width: 100%;
+  z-index: 100;
 }
 
-/* 🔸 Sidenav */
-mat-sidenav {
-  width: 250px;
-  background-color: #d30000;
+/* CONTENIDO PRINCIPAL */
+.main-wrapper {
+  display: flex;
+  height: 100%;
+  margin-top: 65px;
+}
+
+/* Sidebar estilizado */
+
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
   color: white;
-  padding-top: 10px;
+  height: 100%;
+  padding-top: 20px;
+  transition: width 0.25s ease;
   display: flex;
   flex-direction: column;
+  position: relative;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.25);
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed);
+}
+
+.sidebar .logo-section {
+  display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
-.sidenav-header {
-  text-align: center;
-  padding: 15px 0;
-}
-
-.sidenav-content button{
-  text-align: center;
-  justify-content: center;
-}
-
-.logo {
-  width: 100px;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+.sidebar .logo {
+  width: 55px;
   margin-bottom: 5px;
 }
 
-.sidenav-header h3 {
-  font-size: 1.1rem;
-  margin: 0;
-  color: #fff;
-  letter-spacing: 1px;
+.sidebar.collapsed .logo-section h2 {
+  display: none;
 }
 
-mat-divider {
-  background-color: rgba(0, 0, 0, 0.1);
+/* 
+Menú */
+
+.menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: 0.2s ease;
+  font-size: 15px;
 }
 
-/* 🔸 Botones laterales */
-mat-sidenav button {
-  color: #ffffff;
-  font-weight: 500;
-  border-radius: 6px;
-  transition: all 0.3s;
-  width: 100%;
-  text-align: center;
-}
-mat-sidenav button mat-icon {
-  color: #ffffff;
+.menu a:hover,
+.menu a.active {
+  background: rgba(255,255,255,0.18);
+  border-left: 4px solid white;
 }
 
-mat-sidenav button:hover {
-  background-color: #aeacac;
-  transform: scale(1.02);
+.sidebar.collapsed a span {
+  display: none;
 }
 
-/* 🔸 Contenido */
-mat-sidenav-content {
+
+/* Botón */
+
+.toggle-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 10px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: white;
+}
+
+
+.content {
   flex: 1;
-  height: 100%;
+  padding: 25px;
+  background: var(--content-bg);
   overflow-y: auto;
-  background: linear-gradient(180deg, #f1f1f1, #ffffff);
-  padding: 20px;
 }
-mat-icon{
-  color: #ffffff;
-}
-
-
