@@ -5,7 +5,11 @@
   "projects": {
     "ElShovi-frontend": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,8 +29,8 @@
               }
             ],
             "styles": [
-              "src/custom-theme.scss",
-              "src/styles.css"
+              "src/styles.css",
+              "src/custom-theme.scss"
             ]
           },
           "configurations": {

@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatActionList, MatNavList } from '@angular/material/list';
 
 @Component({
   selector: 'app-layout',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     CommonModule, 
     MatToolbarModule,
     MatSidenavModule,
+    MatNavList,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,

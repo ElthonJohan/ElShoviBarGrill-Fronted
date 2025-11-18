@@ -2,7 +2,7 @@
   <!-- Barra superior -->
   <mat-toolbar color="primary" class="main-toolbar">
     <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>{{ sidenav.opened ? 'close' : 'menu' }}</mat-icon>
+      <mat-icon>{{ sidenav.opened ? "close" : "menu" }}</mat-icon>
     </button>
 
     <span class="app-title">🍻 SHOVI BAR-GRILL</span>
@@ -37,59 +37,42 @@
   <!-- Contenedor principal -->
   <mat-sidenav-container class="main-container">
     <mat-sidenav #sidenav mode="side" opened>
-      <div class="sidenav-header">
-        <img src="logo_shovi.png" alt="Logo" class="logo" />
+      <div class="sidebar-header">
+        <img src="logo_shovi.png" class="logo" alt="logo"/>
         <h3>SHOVI BAR</h3>
       </div>
-      <mat-divider></mat-divider>
 
-      <div class="sidenav-content">
-        <button mat-menu-item routerLink="/pages/dashboard">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" matTooltip="Dashboard">
           <mat-icon>dashboard</mat-icon>
           <span>Dashboard</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/category">
+        </a>
+
+        <a mat-list-item routerLink="/categories">
           <mat-icon>category</mat-icon>
-          <span>Categorias</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/menuitem">
+          <span>Categorías</span>
+        </a>
+
+        <a mat-list-item routerLink="/menuitem">
           <mat-icon>restaurant_menu</mat-icon>
           <span>Menú</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/order">
-          <mat-icon>receipt_long</mat-icon>
+        </a>
+
+        <a mat-list-item routerLink="/orders">
+          <mat-icon>shopping_cart</mat-icon>
           <span>Pedidos</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/orderitem">
-          <mat-icon>bar_chart</mat-icon>
-          <span>Detalle Pedido</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/table">
+        </a>
+
+        <a mat-list-item routerLink="/tables">
           <mat-icon>table_bar</mat-icon>
           <span>Mesas</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/reservation">
-          <mat-icon>event</mat-icon>
+        </a>
+
+        <a mat-list-item routerLink="/reservations">
+          <mat-icon>event_seat</mat-icon>
           <span>Reservas</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/delivery">
-          <mat-icon>event</mat-icon>
-          <span>Delivery</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/payment">
-          <mat-icon>payments</mat-icon>
-          <span>Pagos</span>
-        </button>
-        
-        <button mat-menu-item routerLink="/pages/user">
-          <mat-icon>supervisor_account</mat-icon>
-          <span>Usuarios</span>
-        </button>
-        <button mat-menu-item routerLink="/pages/role">
-          <mat-icon>user</mat-icon>
-          <span>Roles</span>
-        </button>
-      </div>
+        </a>
+      </mat-nav-list>
     </mat-sidenav>
 
     <!-- Contenido dinámico -->
