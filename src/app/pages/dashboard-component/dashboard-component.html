@@ -1,0 +1,80 @@
+<div class="dashboard-container" *ngIf="!loading; else loadingTpl">
+
+  <!-- TARJETAS -->
+  <div class="cards-grid">
+
+    <div class="card">
+      <div class="card-icon success">
+        <mat-icon>attach_money</mat-icon>
+      </div>
+      <div class="card-content">
+        <h3>Ventas Hoy</h3>
+        <p>S/ {{ stats.ventasHoy | number:'1.2-2' }}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon warning">
+        <mat-icon>shopping_cart</mat-icon>
+      </div>
+      <div class="card-content">
+        <h3>Pedidos Activos</h3>
+        <p>{{ stats.pedidosActivos }}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon info">
+        <mat-icon>group</mat-icon>
+      </div>
+      <div class="card-content">
+        <h3>Clientes Hoy</h3>
+        <p>{{ stats.clientesHoy }}</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon danger">
+        <mat-icon>event</mat-icon>
+      </div>
+      <div class="card-content">
+        <h3>Reservas Hoy</h3>
+        <p>{{ stats.reservasHoy }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRÁFICAS FILA 1 -->
+  <div class="charts-grid">
+    <div class="chart-box">
+      <h3>Ventas diarias</h3>
+      <canvas id="ventasChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h3>Categorías más vendidas</h3>
+      <canvas id="categoriasChart"></canvas>
+    </div>
+  </div>
+
+  <!-- GRÁFICAS FILA 2 -->
+  <div class="charts-grid">
+    <div class="chart-box">
+      <h3>Métodos de pago</h3>
+      <canvas id="metodosPagoChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h3>Ventas por usuario</h3>
+      <canvas id="ventasUsuarioChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+    <p>Cargando dashboard...</p>
+  </div>
+</ng-template>

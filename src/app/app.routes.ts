@@ -11,6 +11,7 @@ import { TableComponent } from './pages/table-component/table-component';
 import { UserComponent } from './pages/user-component/user-component';
 import { LoginComponent } from './pages/login-component/login-component';
 import { RegisterComponent } from './pages/register-component/register-component';
+import { DashboardComponent } from './pages/dashboard-component/dashboard-component';
 
 export const routes: Routes = [
   //  Auth
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
 
   // Pages
+  { path: 'pages/dashboard', component: DashboardComponent },
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/order', component: OrderComponent },

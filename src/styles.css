@@ -13,3 +13,13 @@ body {
   background: #121212 !important;
   color: #fff !important;
 }
+
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background: linear-gradient(180deg, #3b0000, #b36b00);
+  }
+  .menu a.active {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
