@@ -1,24 +1,27 @@
 <div class="login-container">
-  <mat-card>
-    <h2>Iniciar sesión</h2>
+  <mat-card class="login-card" appearance="outlined">
+    <h2 class="title">Iniciar sesión</h2>
 
-    <form [formGroup]="form" (ngSubmit)="login()">
+    <form [formGroup]="form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
+        <input matInput type="email" formControlName="email">
+        <mat-icon matSuffix>mail</mat-icon>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Contraseña</mat-label>
-        <input matInput type="password" formControlName="password" required />
+        <input matInput type="password" formControlName="password">
+        <mat-icon matSuffix>lock</mat-icon>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" type="submit" class="full-width">Acceder</button>
-
+      <button mat-raised-button color="primary" class="login-btn" (click)="login()">
+        <mat-icon>login</mat-icon> Acceder
+      </button>
     </form>
 
-    <div class="register-link">
-      ¿No tienes cuenta? 
+    <div class="register-text">
+      ¿No tienes cuenta?
       <a (click)="goToRegister()">Registrarse</a>
     </div>
   </mat-card>
