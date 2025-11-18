@@ -11,13 +11,19 @@ import { TableComponent } from './pages/table-component/table-component';
 import { UserComponent } from './pages/user-component/user-component';
 import { LoginComponent } from './pages/login-component/login-component';
 import { RegisterComponent } from './pages/register-component/register-component';
+import { HomeComponent } from './pages/home/home';
 
 export const routes: Routes = [
-  //  Auth
+
+  // Home público
+  { path: 'home', component: HomeComponent },
+
+  // Auth
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
   // Pages
+  
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/order', component: OrderComponent },
@@ -30,7 +36,8 @@ export const routes: Routes = [
   { path: 'pages/user', component: UserComponent },
 
   // Ruta por defecto
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
-  { path: '**', redirectTo: '/login' },
+  // Not found
+  { path: '**', redirectTo: '/home' },
 ];

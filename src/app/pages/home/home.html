@@ -1,1 +1,51 @@
-<p>home works!</p>
+<div class="home-container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-overlay">
+      <h1 class="hero-title">Bienvenido a El Shovi Bar-Grill</h1>
+      <p class="hero-subtitle">Descubre nuestro menú y vive la experiencia</p>
+      <button class="btn-menu" (click)="goToMenu()">Ver Menú Completo</button>
+    </div>
+  </section>
+
+  <!-- Horario de Atención -->
+<section class="schedule">
+  <h2 class="section-title">Horario de Atención</h2>
+
+  <div class="schedule-container">
+    <!-- Flecha izquierda -->
+    <button class="arrow left" (click)="prevCard()">&#10094;</button>
+
+    <!-- Tarjetas -->
+    <div class="schedule-card-wrapper">
+      <div class="schedule-card" *ngFor="let card of scheduleCards; let i = index"
+           [class.active]="i === activeCardIndex">
+        <p>{{ card.days }}: <strong>{{ card.hours }}</strong></p>
+      </div>
+    </div>
+
+    <!-- Flecha derecha -->
+    <button class="arrow right" (click)="nextCard()">&#10095;</button>
+  </div>
+</section>
+
+  <!-- Categorías -->
+  <section class="categories">
+    <h2 class="section-title">Categorías</h2>
+    <div *ngIf="loading" class="loading">Cargando categorías...</div>
+    <div *ngIf="error" class="error">Error al cargar categorías.</div>
+    <div class="category-list" *ngIf="!loading && !error">
+      <div class="category-card fade" *ngFor="let cat of categories" (click)="goToCategory(cat.idCategory)">
+        <h3>{{ cat.name }}</h3>
+        <p>{{ cat.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Botón fijo de WhatsApp -->
+  <a class="whatsapp-btn" href="https://wa.me/51954387663" target="_blank">
+    <img src="https://i.postimg.cc/15hwYnCz/whats-Aap.jpg" alt="WhatsApp">
+  </a>
+
+</div>
