@@ -50,7 +50,13 @@ export class TableComponent {
   ngOnInit(): void {
     this.tableService.findAll().subscribe((data) => this.createTable(data));
     this.tableService.getModelChange().subscribe(data => this.createTable(data));
-    this.tableService.getMessageChange().subscribe(data => this._snackBar.open(data, 'INFO', { duration: 2000 }));
+    this.tableService.getMessageChange().subscribe((msg) =>
+      this._snackBar.open(msg, 'INFO', {
+        duration: 2000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+      })
+    );
   }
 
   createTable(data: Table[]) {
@@ -72,7 +78,7 @@ export class TableComponent {
 
   applyFilter(e: any) {
     if (!this.dataSource) return;
-    this.dataSource.filter = e.target.value.trim();
+    this.dataSource.filter = e.target.value.trim().toLowerCase();
   }
 
   delete(id: number) {

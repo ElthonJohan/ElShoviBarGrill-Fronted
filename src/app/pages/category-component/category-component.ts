@@ -26,7 +26,6 @@ import { MatDialog } from '@angular/material/dialog';
     MatIconModule,
     MatSortModule,
     RouterOutlet,
-    RouterLink,
   ],
   templateUrl: './category-component.html',
   styleUrl: './category-component.css',
@@ -41,6 +40,8 @@ export class CategoryComponent {
     { def: 'idCategory', label: 'ID', hide: true },
     { def: 'name', label: 'Nombre', hide: false },
     { def: 'description', label: 'Descripción', hide: false },
+    { def: 'active', label: 'active', hide: false },
+
     { def: 'actions', label: 'Acciones', hide: false },
   ];
 

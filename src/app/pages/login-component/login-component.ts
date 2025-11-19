@@ -46,17 +46,28 @@ export class LoginComponent {
     this.http.post<any>(`${environment.HOST}/login`, credentials)
       .subscribe({
         next: (res) => {
-          // Normalizar y guardar token en localStorage
-          // Extraemos token desde varias posibles propiedades del backend
-          const token = res?.token ?? res?.accessToken ?? res?.data?.token ?? res?.jwt ?? res?.data?.accessToken;
+
+          // Obtener token sin complicar nada
+          const token =
+            res?.token ??
+            res?.accessToken ??
+            res?.data?.token ??
+            res?.jwt ??
+            res?.data?.accessToken;
+
+          // Guardar respuesta + token normalizado
           const userToStore = { ...res, token };
           localStorage.setItem('user', JSON.stringify(userToStore));
-          this.router.navigate(['/pages/order']); // Redirigir al dashboard
+
+          // Redirigir
+          this.router.navigate(['/pages/home']);
         },
-        error: (err) => {
+
+        error: () => {
           alert('Usuario o contraseña incorrectos');
         }
       });
+
   }
 
   goToRegister(): void {

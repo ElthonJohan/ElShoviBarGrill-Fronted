@@ -63,7 +63,7 @@ export class MenuItemDialogComponent {
         updateOn: 'blur'
       }),
       description: this.fb.control(this.menuItem.description ?? '', [Validators.required]),
-      available: this.fb.control(this.menuItem.available ?? false, [Validators.required]),
+      available: this.fb.control(this.menuItem.active ?? false, [Validators.required]),
       price: this.fb.control(this.menuItem.price ?? '', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]{1,2})?$/)]),
       imageUrl: this.fb.control(this.menuItem.imageUrl ?? ''),
       idCategory: this.fb.control(this.menuItem.idCategory ?? '', [Validators.required])
@@ -109,7 +109,7 @@ export class MenuItemDialogComponent {
       description: formVal.description,
       price: parseFloat(formVal.price),
       imageUrl: formVal.imageUrl ? formVal.imageUrl : '',
-      available: formVal.available,
+      active: formVal.available,
       idCategory: parseInt(formVal.idCategory, 10)
     };
 

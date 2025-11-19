@@ -1,0 +1,189 @@
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f7f7f7;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* ----- Hero ----- */
+.hero {
+  background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092');
+  background-size: cover;
+  background-position: center;
+  height: 330px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.fade {
+  animation: fadeIn 0.7s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-overlay {
+  background: rgba(0,0,0,0.55);
+  color: white;
+  padding: 40px;
+  text-align: center;
+  width: 100%;
+}
+
+.hero-title {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.hero-subtitle {
+  margin-top: 10px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.btn-menu {
+  margin-top: 20px;
+  background: #ffbb33;
+  color: black;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-menu:hover {
+  background: #ffcc55;
+}
+
+/* ----- Horario ----- */
+.schedule .section-title {
+  text-align: center;
+}
+.schedule-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.schedule-card-wrapper {
+  width: 250px;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.schedule-card {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease;
+}
+
+.schedule-card.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.arrow {
+  background: #ffbb33;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: 0.2s;
+}
+
+.arrow:hover {
+  background: #ffcc55;
+}
+
+
+/* ----- Categorías ----- */
+.categories {
+  padding: 25px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.category-card {
+  background: white;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+
+.category-card h3 {
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.category-card p {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.loading, .error {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Botón flotante fijo de WhatsApp */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 300px; /* distancia desde la parte inferior */
+  right: 20px;  /* distancia desde la derecha */
+  z-index: 1000;
+}
+
+.whatsapp-btn img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.whatsapp-btn img:hover {
+  transform: scale(1.1);
+}

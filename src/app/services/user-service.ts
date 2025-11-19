@@ -10,8 +10,13 @@ import { User } from '../model/user';
 })
 export class UserService extends GenericService<User> {
 
+  private uri: string;
   constructor(http: HttpClient, @Inject('API_URL') apiUrl: string) {
     super(http, `${apiUrl}/users`);
+    this.uri = `${apiUrl}`;
+  }
+  getRoles(){
+    return this.http.get<any>(`${this.uri}/roles`);
   }
 
 }

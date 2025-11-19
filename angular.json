@@ -29,8 +29,7 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "src/custom-theme.scss"
+              "src/styles.css"
             ]
           },
           "configurations": {

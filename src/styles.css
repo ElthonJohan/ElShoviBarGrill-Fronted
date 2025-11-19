@@ -1,25 +1,35 @@
+/* === TAILWIND === */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === GLOBAL TYPO === */
 html, body {
   margin: 0;
   height: 100%;
-  font-family: 'Poppins', Roboto, sans-serif;
-}
+  font-family: 'Poppins', Roboto, sans-serif;}
 
-/* Tema por defecto */
+  /* Tailwind */
+/* === GLOBAL DARK THEME === */
 body {
-  background: #f4f4f4;
+  @apply bg-[#0d0d0d] text-gray-200 font-sans;
 }
 
-.dark-theme {
+/* Scrollbar premium */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb {
+  background: #f97316;
+  border-radius: 10px;
+}
+
+/* ========================================
+   OVERRIDE DEL DIALOGO GLOBAL
+   ======================================== */
+.mat-mdc-dialog-container .mdc-dialog__surface {
   background: #121212 !important;
-  color: #fff !important;
+  border-radius: 18px !important;
+  color: white !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 120, 40, 0.35);
+  box-shadow: 0 0 35px rgba(255, 120, 40, 0.55) !important;
 }
-
-@media (prefers-color-scheme: dark) {
-  .sidebar {
-    background: linear-gradient(180deg, #3b0000, #b36b00);
-  }
-  .menu a.active {
-    background: rgba(255, 255, 255, 0.2);
-  }
-}
-

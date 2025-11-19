@@ -1,65 +1,89 @@
-<mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Nombre" #input>
-</mat-form-field>
+<div class="crud-wrapper">
 
+  <!-- FILTRO -->
+  <mat-form-field appearance="fill" class="filter-box">
+    <mat-label>Filtrar mesas</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Buscar por capacidad, número..." />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
 
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
-        
+  <!-- TABLA GLASS -->
+  <div class="table-card mat-elevation-z8">
+
+    <table mat-table [dataSource]="dataSource" matSort class="glass-table">
+
+      <!-- ID (oculto si no quieres mostrarlo) -->
       <ng-container matColumnDef="idReservation">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-        <td mat-cell *matCellDef="let row"> {{row.idReservation}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Reservación</th>
+        <td mat-cell *matCellDef="let row">{{ row.idTable }}</td>
       </ng-container>
 
-        
-      <ng-container matColumnDef="reservationDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Reservación </th>
-        <td mat-cell *matCellDef="let row"> {{row.reservationDate}} </td>
-      </ng-container>
-        
+        <mat-form-field>
+    <mat-label>Fecha de Reservación</mat-label>
+    <input matInput [matDatepicker]="picker" placeholder="Selecciona una fecha" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+
+      <!-- CAPACIDAD -->
       <ng-container matColumnDef="reservationTime">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiempo de reservación </th>
-        <td mat-cell *matCellDef="let row"> {{row.reservationTime}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tiempo de Reservación</th>
+        <td mat-cell *matCellDef="let row">{{ row.reservationTime }}</td>
       </ng-container>
 
+
+
+      <!-- NÚMERO DE MESA -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
-        <td mat-cell *matCellDef="let row"> {{ row.status ? 'Disponible' : 'No Disponible' }} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Mesa</th>
+        <td mat-cell *matCellDef="let row">{{ row.status }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="idTable">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mesa </th>
-        <td mat-cell *matCellDef="let row"> {{row.idTable}} </td>
+      <!-- NÚMERO DE MESA -->
+      <ng-container matColumnDef="isTable">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>N° Mesa</th>
+        <td mat-cell *matCellDef="let row">{{ row.idTable }}</td>
       </ng-container>
 
+      <!-- NÚMERO DE MESA -->
       <ng-container matColumnDef="idUser">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </th>
-        <td mat-cell *matCellDef="let row"> {{row.idUser}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+        <td mat-cell *matCellDef="let row">{{ row.idUser }}</td>
       </ng-container>
-        
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef > Actions </th>
-        <td mat-cell *matCellDef="let row" >
-            <button mat-button (click)="openDialog(row)" >
-                <mat-icon>mode_edit</mat-icon> Edit
-            </button>    
 
-            <button mat-button color="warn" (click)="delete(row.idTable)" >
-                <mat-icon>delete</mat-icon> Delete
-            </button>
+
+
+      <!-- ACCIONES -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button class="btn-edit" (click)="openDialog(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button class="btn-delete" (click)="delete(row.idTable)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
-  
+
       <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
       <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
-        
+
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of medics"></mat-paginator>
+    <!-- PAGINACIÓN -->
+    <mat-paginator class="glass-paginator"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page of items">
+    </mat-paginator>
 
-    <button mat-fab style="float: right;" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
+    <!-- BOTÓN FLOTANTE ADD -->
+    <button mat-fab class="fab-add" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
     </button>
 
+  </div>
 </div>

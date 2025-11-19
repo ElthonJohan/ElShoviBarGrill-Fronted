@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-layout',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
@@ -27,28 +27,26 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./layout-component.css']
 })
 export class LayoutComponent {
+  
   @ViewChild('sidenav') sidenav!: MatSidenav;
   isCollapsed = false;
-   isDarkMode = false;
+  isDarkMode = false;
   userName = '';
 
   constructor(private router: Router) {}
-
-
-  toggleSidebar() {
-  this.isCollapsed = !this.isCollapsed;
-}  
 
   ngOnInit() {
     this.loadUserName();
   }
 
-  // Detecta si hay sesión
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('user');
   }
 
-  // Carga nombre del user si está guardado
   loadUserName() {
     const userData = localStorage.getItem('user');
     if (userData) {
@@ -57,7 +55,6 @@ export class LayoutComponent {
     }
   }
 
-  // Cerrar sesión
   logout(): void {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
@@ -65,7 +62,11 @@ export class LayoutComponent {
 
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
-    document.body.classList.toggle('dark-theme', this.isDarkMode);
-  }
 
+  const host = document.querySelector('app-layout');
+  const html = document.documentElement;
+
+  html.classList.toggle('dark', this.isDarkMode);
+  host?.classList.toggle('dark', this.isDarkMode);
+  }
 }

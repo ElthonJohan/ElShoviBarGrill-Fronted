@@ -1,0 +1,97 @@
+/* ========================================
+   CONTENEDOR INTERNO DEL DIALOG
+   ======================================== */
+.dialog-container {
+  padding: 0 !important;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   HEADER DEL DIALOG
+   ======================================== */
+.dialog-title {
+  background: linear-gradient(90deg, #ff7a1a, #ff5500);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 14px;
+  text-align: center;
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 4px 12px rgba(255, 120, 40, 0.3);
+}
+
+/* ========================================
+   FORM
+   ======================================== */
+.dialog-form {
+  background: #1a1a1a;
+  padding: 25px 35px;
+  border-radius: 0 0 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+/* ========================================
+   REPARA INPUTS (elimina líneas raras)
+   ======================================== */
+
+
+
+/* Texto del input */
+.dialog-input .mdc-text-field__input {
+  color: #fff !important;
+}
+
+
+
+
+mat-label{
+    color:#fff !important;
+}
+
+/* Errores */
+mat-error {
+  color: #ff4444 !important;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+/* Select */
+mat-select-value {
+  color: white !important;
+}
+
+/* ========================================
+   BOTONES
+   ======================================== */
+.dialog-actions {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+.btn-save {
+  background: linear-gradient(90deg, #ff7a1a, #ff5500) !important;
+  color: white !important;
+  font-weight: 600;
+  padding: 8px 26px;
+  border-radius: 10px;
+}
+
+.btn-save:hover {
+  box-shadow: 0 0 12px rgba(255, 120, 40, 0.9);
+}
+
+.btn-cancel {
+  background: #333 !important;
+  color: white !important;
+  padding: 8px 26px;
+  border-radius: 10px;
+}
+
+.btn-cancel:hover {
+transform: scale(1.15);
+  box-shadow: 0 0 18px rgba(255, 120, 40, 0.9),
+              0 0 40px rgba(255, 120, 40, 0.4);}

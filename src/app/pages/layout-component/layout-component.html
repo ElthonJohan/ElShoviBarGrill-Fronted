@@ -1,117 +1,122 @@
 <div class="layout-container">
 
-  <!-- NAVBAR SUPERIOR -->
+  <!-- NAVBAR -->
   <header class="navbar">
     <button class="menu-btn" (click)="toggleSidebar()">
       <mat-icon>menu</mat-icon>
     </button>
+    <div class="fuego-title" >
+      <img src="fuego.png" alt="" width="50px" height="auto" style="margin-right: 0px;" />
+      <h1 class="title">SHOVI BAR - GRILL</h1>
 
-    <h1 class="title">SHOVI BAR - GRILL</h1>
+    </div>
+
 
     <div class="actions">
-      <!-- Cambiar tema -->
+
+      <!-- Tema -->
       <button mat-icon-button (click)="toggleTheme()">
-        <mat-icon>{{ isDarkMode ? "dark_mode" : "light_mode" }}</mat-icon>
+        <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
       </button>
 
-      <!-- No logeado -->
-      <ng-container *ngIf="!isLoggedIn(); else loggedBlock">
-        <button mat-raised-button color="primary" routerLink="/login">
-          <mat-icon>login</mat-icon> Iniciar sesión
+      <!-- Notificaciones -->
+      <button mat-icon-button>
+        <mat-icon>notifications</mat-icon>
+      </button>
+
+      <!-- Usuario -->
+      <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
+        <img src="cuenta.png" alt="Usuario" />
+        <span>{{ userName }}</span>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/perfil">
+          <mat-icon>person</mat-icon> Perfil
         </button>
-      </ng-container>
-
-      <!-- Logeado -->
-      <ng-template #loggedBlock>
-
-        <button mat-icon-button>
-          <mat-icon>notifications</mat-icon>
+        <button mat-menu-item routerLink="/config">
+          <mat-icon>settings</mat-icon> Configuración
         </button>
-
-        <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
-          <img src="assets/avatar.png" alt="Usuario" />
-          <span>{{ userName }}</span>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon> Cerrar sesión
         </button>
+      </mat-menu>
 
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item routerLink="/perfil">
-            <mat-icon>person</mat-icon> Perfil
-          </button>
-          <button mat-menu-item routerLink="/config">
-            <mat-icon>settings</mat-icon> Configuración
-          </button>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon> Cerrar sesión
-          </button>
-        </mat-menu>
-
-      </ng-template>
     </div>
   </header>
 
-  <!-- LAYOUT PRINCIPAL -->
+  <!-- MAIN -->
   <div class="main-wrapper">
 
     <!-- SIDEBAR -->
     <aside class="sidebar" [class.collapsed]="isCollapsed">
+
       <div class="logo-section">
         <img src="logo_shovi.png" class="logo" alt="logo" />
         <h2 *ngIf="!isCollapsed">SHOVI BAR-GRILL</h2>
       </div>
 
       <nav class="menu">
+
         <a routerLink="/pages/dashboard" routerLinkActive="active">
           <mat-icon>dashboard</mat-icon>
           <span *ngIf="!isCollapsed">Dashboard</span>
         </a>
+
         <a routerLink="/pages/category" routerLinkActive="active">
           <mat-icon>category</mat-icon>
           <span *ngIf="!isCollapsed">Categorías</span>
         </a>
+
         <a routerLink="/pages/delivery" routerLinkActive="active">
-          <mat-icon>moped_package</mat-icon>
+          <mat-icon>moped</mat-icon>
           <span *ngIf="!isCollapsed">Delivery</span>
         </a>
+
         <a routerLink="/pages/menuitem" routerLinkActive="active">
           <mat-icon>restaurant_menu</mat-icon>
           <span *ngIf="!isCollapsed">Menú</span>
         </a>
+
         <a routerLink="/pages/order" routerLinkActive="active">
           <mat-icon>shopping_cart</mat-icon>
           <span *ngIf="!isCollapsed">Pedidos</span>
         </a>
-        <a routerLink="/pages/orderitem" routerLinkActive="active">
-          <mat-icon>shopping_cart</mat-icon>
-          <span *ngIf="!isCollapsed">Detalle Pedidos</span>
-        </a>
+
         <a routerLink="/pages/payment" routerLinkActive="active">
           <mat-icon>payment</mat-icon>
           <span *ngIf="!isCollapsed">Pagos</span>
         </a>
+
         <a routerLink="/pages/table" routerLinkActive="active">
           <mat-icon>table_restaurant</mat-icon>
           <span *ngIf="!isCollapsed">Mesas</span>
         </a>
+
         <a routerLink="/pages/reservation" routerLinkActive="active">
           <mat-icon>book_online</mat-icon>
           <span *ngIf="!isCollapsed">Reservas</span>
         </a>
+
         <a routerLink="/pages/user" routerLinkActive="active">
-          <mat-icon>group_add</mat-icon>
+          <mat-icon>group</mat-icon>
           <span *ngIf="!isCollapsed">Usuarios</span>
         </a>
+
         <a routerLink="/pages/role" routerLinkActive="active">
-          <mat-icon>person_lock</mat-icon>
+          <mat-icon>admin_panel_settings</mat-icon>
           <span *ngIf="!isCollapsed">Roles</span>
         </a>
+
       </nav>
 
       <button class="toggle-btn" (click)="toggleSidebar()">
-        <mat-icon>{{ isCollapsed ? "chevron_right" : "chevron_left" }}</mat-icon>
+        <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
       </button>
+
     </aside>
 
-    <!-- CONTENIDO -->
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="content">
       <router-outlet></router-outlet>
     </main>

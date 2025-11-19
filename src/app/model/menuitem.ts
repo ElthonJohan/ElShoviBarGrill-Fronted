@@ -6,6 +6,6 @@ export class MenuItem {
   description!: string;
   price!: number;
   imageUrl!: string;
-  available!: boolean;  
+  active!: boolean;  
   idCategory!: number;
 }
