@@ -1,16 +1,24 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { environment } from '../environments/environment';
-
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes)
+    provideRouter(routes),
+    // Datepicker
+    importProvidersFrom(MatNativeDateModule),
+
+    // Locale español
+    { provide: MAT_DATE_LOCALE, useValue: 'es-PE' }
+
+
     ,
   // Proveer HttpClient (y que use los interceptors registrados en DI)
   provideHttpClient(withInterceptorsFromDi()),

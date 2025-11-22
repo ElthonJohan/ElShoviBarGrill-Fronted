@@ -13,9 +13,6 @@
 $primary-light: mat.$red-palette;
 $tertiary-light: mat.$orange-palette;
 
-// ---- MODO OSCURO ----
-$primary-dark: mat.$red-palette;
-$tertiary-dark: mat.$orange-palette;
 
 // ======================================================
 // 3. Definir tema LIGHT (Modo Claro)
@@ -30,14 +27,6 @@ $light-theme: mat.define-theme((
 
 // ======================================================
 // 4. Definir tema DARK (Modo Oscuro)
-// ======================================================
-$dark-theme: mat.define-theme((
-  color: (
-    theme-type: dark,
-    primary: $primary-dark,
-    tertiary: $tertiary-dark
-  ),
-));
 
 // ======================================================
 // 5. Aplicar temas con clases del host
@@ -48,11 +37,4 @@ $dark-theme: mat.define-theme((
   @include mat.all-component-colors($light-theme);
   @include mat.all-component-typographies($dark-theme);
   @include mat.all-component-densities($light-theme);
-}
-
-// -------- MODO OSCURO --------
-.dark-theme {
-  @include mat.all-component-colors($dark-theme);
-  @include mat.all-component-typographies($light-theme);
-  @include mat.all-component-densities($dark-theme);
 }

@@ -12,10 +12,6 @@ import { ThemeService } from './theme.service';
 })
 export class App {
   protected readonly title = signal('appointmentapp-frontend');
-  constructor(private themeService: ThemeService) {}
 
-toggleTheme() {
-  this.themeService.toggleTheme();
-}
 
 }

@@ -13,6 +13,7 @@ import { LoginComponent } from './pages/login-component/login-component';
 import { RegisterComponent } from './pages/register-component/register-component';
 import { DashboardComponent } from './pages/dashboard-component/dashboard-component';
 import { HomeComponent } from './pages/home-component/home-component';
+import { ProductComponent } from './pages/product-component/product-component';
 
 
 export const routes: Routes = [
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'pages/dashboard', component: DashboardComponent },
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
+  { path: 'pages/product', component: ProductComponent },
   { path: 'pages/order', component: OrderComponent },
   { path: 'pages/delivery', component: DeliveryComponent },
   { path: 'pages/orderitem', component: OrderItemComponent },
