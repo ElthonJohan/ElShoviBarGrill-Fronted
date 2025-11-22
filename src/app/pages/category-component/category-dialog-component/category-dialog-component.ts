@@ -33,6 +33,12 @@ export class CategoryDialogComponent {
    form!:FormGroup;
    isEdit=false;
 
+   actives=[
+      { value: true, label: 'Activo' },
+    { value: false, label: 'Inactivo' }
+    ];
+
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: Category,
     private _dialogRef: MatDialogRef<CategoryDialogComponent>,
@@ -43,11 +49,12 @@ export class CategoryDialogComponent {
 
   ngOnInit(): void {
     this.isEdit=!!this.data;
-    this.category = {... this.data}; //spread operator
 
     this.form=this.fb.group({
-      name: this.fb.control(this.category.name ??'',[Validators.required]),
-      description: this.fb.control(this.category.description ?? '')
+      name: [this.data?.name||null, Validators.required],
+      description: [this.data?.description||null],
+      active: [this.data?.active||null, Validators.required],
+
 
     })
   }
@@ -80,12 +87,15 @@ export class CategoryDialogComponent {
     const payload:Category={
       ...this.data,
       name:formVal.name,
-      description:formVal.description
-    }
+      description:formVal.description,
+      active:formVal.active
+    };
+
+    console.log("Payload: ", payload);
 
     if(payload != null && payload.idCategory > 0){
       //UPDATE
-      this.categoryService.update(this.category.idCategory, this.category)
+      this.categoryService.update(payload.idCategory, payload)
         .pipe(switchMap ( () => this.categoryService.findAll()))
         .subscribe({
       next: (data) => {
@@ -97,7 +107,7 @@ export class CategoryDialogComponent {
     });
     }else{
       //INSERT
-      this.categoryService.save(this.category)
+      this.categoryService.save(payload)
         .pipe(switchMap ( () => this.categoryService.findAll()))
         .subscribe({
       next: (data) => {

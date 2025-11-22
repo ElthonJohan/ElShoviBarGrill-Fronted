@@ -20,6 +20,17 @@
       <mat-error *ngIf="form.get('description')?.hasError('required') && form.get('description')?.touched">Descripción es requerida</mat-error>
     </mat-form-field>
 
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="active">
+        <mat-option *ngFor="let a of actives" [value]="a.value">
+          {{a.label}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('active')?.hasError('required') && form.get('active')?.touched">Descripción es requerida</mat-error>
+    </mat-form-field>
+
     </form>
 
     <!-- ACCIONES -->

@@ -7,6 +7,16 @@
 
     <!-- FORM -->
     <form [formGroup]="form" class="form-grid">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nomde de Usuario</mat-label>
+        <input matInput formControlName="userName" placeholder="Thom" />
+
+        <mat-error *ngIf="form.get('userName')?.hasError('required')">
+          Nombre de usuario es requerido
+        </mat-error>
+      </mat-form-field>
+
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input

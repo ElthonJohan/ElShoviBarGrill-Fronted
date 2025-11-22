@@ -85,10 +85,10 @@ export class UserComponent {
     if (!this.dataSource) return;
     this.dataSource.filter = e.target.value.trim();
   }
+  // getRolesString(user: User): string {
+  //   return user.roles.map(r => r.name).join(', ');
+  // }
 
-  getRolesString(user: User): string {
-    return user.roles.map(r => r.name).join(', ');
-  }
 
   delete(id: number) {
     this.userService

@@ -109,45 +109,6 @@ mat-row:hover {
   background: rgba(255, 255, 255, 0.04) !important;
 }
 
-/* Badges de estado */
-.badge-active {
-  background: #16c172;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-}
-
-.badge-inactive {
-  background: #d9534f;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-}
-
-
-/* ===============================
-   BADGES DE ESTADO
-   =============================== */
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
-  display: inline-block;
-  text-transform: uppercase;
-}
-.status-badge.active {
-  background-color: #16a34a;
-  color: white;
-}
-
-.status-badge.inactive {
-  background-color: #dc2626;
-  color: white;
-}
-
 
 /* ===============================
    BOTONES DE ACCIÓN
@@ -259,6 +220,18 @@ mat-row:hover {
   box-shadow: 0 0 18px rgba(255, 120, 40, 0.9),
               0 0 40px rgba(255, 120, 40, 0.4);
 }
+
+.product-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #ff7a00;
+  box-shadow: 0 0 10px rgba(255, 120, 0, 0.3);
+}
+
+
+
 
 .state-active {
    padding: 4px 12px;
