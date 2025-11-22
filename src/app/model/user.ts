@@ -8,6 +8,6 @@ export class User {
   password!: string;
   fullName!: string;
   active!: boolean;
-  createdAt!: Date;
+  createdAt!: string | Date;
   roles: Role[];
 }
