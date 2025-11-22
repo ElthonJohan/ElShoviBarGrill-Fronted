@@ -1,18 +1,78 @@
-.example-container {
-    display: flex;
-    flex-direction: column;
+/* === CONTENEDOR PRINCIPAL === */
+.dialog-container {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-.example-container>* {
-    width: 100%;
+/* WRAPPER DEL DIALOG (Tamaño perfecto, elegante) */
+.dialog-wrapper {
+  width: 700px;
+  max-width: 90vw;
+  background: linear-gradient(90deg, #000000, #645e55);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 0 50px rgba(255, 120, 0, 0.25);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+
 }
 
-.example-spacer {
-    flex: 1 1 auto;
+/* === HEADER === */
+.dialog-header {
+  background: linear-gradient(90deg, #ff6a00, #ff9e00);
+  box-shadow: 0 0 25px rgba(255, 120, 0, 0.5);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 25px;
+  text-align: center;
 }
-.full-width {
-    width: 100%;
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: white;
+  font-weight: 600;
 }
-.full-width-mat {
-    width: 100%;
+
+/* === GRID === */
+.form-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
 }
+/* Campos que ocupan toda la fila */
+.full-row {
+  grid-column: span 2;
+}
+
+/* === MAT-FORM-FIELD === */
+mat-form-field {
+  width: 100%;
+}
+
+mat-label {
+  color: #eeeeee !important;
+}
+
+input,
+.mat-mdc-select-value-text {
+  color: #ffffff !important;
+}
+
+/* === BOTONES === */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #ff6a00, #ff9e00) !important;
+  color: #000 !important;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 8px 25px;}
+
+.btn-secondary {
+color: #ccc !important;
+  border-radius: 10px;}

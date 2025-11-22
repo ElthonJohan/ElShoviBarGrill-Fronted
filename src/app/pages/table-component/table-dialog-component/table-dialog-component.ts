@@ -12,6 +12,7 @@ import { map, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -32,6 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class TableDialogComponent {
   table: Table;
   form!: FormGroup;
+  isEdit=false;
   statuses = [
     { value: 'ACTIVO', label: 'Activo' },
     { value: 'INACTIVO', label: 'Inactivo' }
@@ -41,10 +43,13 @@ export class TableDialogComponent {
     @Inject(MAT_DIALOG_DATA) private data: Table,
     private _dialogRef: MatDialogRef<TableDialogComponent>,
     private tableService: TableService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+      private snackBar: MatSnackBar
+
   ){}
 
   ngOnInit(): void {
+    this.isEdit=!!this.data;
     this.table = { ...this.data };
     this.form = this.fb.group({
       tableNumber: this.fb.control(this.table.tableNumber ?? '', {
@@ -55,14 +60,6 @@ export class TableDialogComponent {
       capacity: this.fb.control(this.table.capacity ?? '', [Validators.required]),
       status: this.fb.control(this.table.status ?? '', [Validators.required])
     });
-    //this.medic = this.data;
-    /*this.medic = new Medic();
-    this.medic.idMedic = this.data.idMedic;
-    this.medic.idSpecialty = this.data.idSpecialty;
-    this.medic.primaryName = this.data.primaryName;
-    this.medic.surname = this.data.surname;
-    this.medic.photo = this.data.photo;*/
-
   }
 
   /** Async validator: checks backend for existing tableNumber and ignores current table id */
@@ -85,6 +82,18 @@ export class TableDialogComponent {
   close(){
     this._dialogRef.close();
   }
+  handleError(err: any) {
+  const message = err?.error || 'Error inesperado';
+
+  this.snackBar.open(
+    message,
+    'Cerrar',
+    {
+      duration: 4000,
+      panelClass: ['snackbar-error']
+    }
+  );
+}
 
   operate(){
     if (this.form.invalid) {
@@ -100,26 +109,35 @@ export class TableDialogComponent {
       capacity: formVal.capacity,
       status: formVal.status
     };
+        console.log('Payload enviado:', payload);
+
 
     if (payload != null && payload.idTable > 0 ) {
       // UPDATE
       this.tableService.update(payload.idTable, payload)
         .pipe(switchMap(() => this.tableService.findAll()))
-        .subscribe(data => {
-          this.tableService.setModelChange(data);
-          this.tableService.setMessageChange('UPDATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.tableService.setModelChange(data);
+        this.tableService.setMessageChange('MESA ACTUALIZADA');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     } else {
       // INSERT
       this.tableService.save(payload)
         .pipe(switchMap(() => this.tableService.findAll()))
-        .subscribe(data => {
-          this.tableService.setModelChange(data);
-          this.tableService.setMessageChange('CREATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.tableService.setModelChange(data);
+        this.tableService.setMessageChange('MESA CREADA');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     }
 
-    this.close();
   }
 
 }

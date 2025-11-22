@@ -109,22 +109,6 @@ mat-row:hover {
   background: rgba(255, 255, 255, 0.04) !important;
 }
 
-/* Badges de estado */
-.badge-active {
-  background: #16c172;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-}
-
-.badge-inactive {
-  background: #d9534f;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 12px;
-}
 
 
 /* ===============================

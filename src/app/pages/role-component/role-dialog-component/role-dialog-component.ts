@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-role-dialog-component',
@@ -39,15 +40,18 @@ import { MatButtonModule } from '@angular/material/button';
 export class RoleDialogComponent {
   role: Role;
   form!: FormGroup;
+  isEdit=false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: Role,
     private _dialogRef: MatDialogRef<RoleDialogComponent>,
     private roleService: RoleService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar:MatSnackBar
   ) {}
 
   ngOnInit(): void {
+    this.isEdit=!!this.data;
     this.role = { ...this.data };
     this.form = this.fb.group({
       name: this.fb.control(this.role.name ?? '', {
@@ -57,13 +61,6 @@ export class RoleDialogComponent {
       }),
       description: this.fb.control(this.role.description ?? '')
     });
-    //this.medic = this.data;
-    /*this.medic = new Medic();
-    this.medic.idMedic = this.data.idMedic;
-    this.medic.idSpecialty = this.data.idSpecialty;
-    this.medic.primaryName = this.data.primaryName;
-    this.medic.surname = this.data.surname;
-    this.medic.photo = this.data.photo;*/
   }
 
   /** Async validator: checks backend for existing tableNumber and ignores current table id */
@@ -86,6 +83,18 @@ export class RoleDialogComponent {
   close() {
     this._dialogRef.close();
   }
+    handleError(err: any) {
+  const message = err?.error || 'Error inesperado';
+
+  this.snackBar.open(
+    message,
+    'Cerrar',
+    {
+      duration: 4000,
+      panelClass: ['snackbar-error']
+    }
+  );
+}
 
   operate() {
     if (this.form.invalid) {
@@ -106,21 +115,28 @@ export class RoleDialogComponent {
       this.roleService
         .update(payload.idRole, payload)
         .pipe(switchMap(() => this.roleService.findAll()))
-        .subscribe((data) => {
-          this.roleService.setModelChange(data);
-          this.roleService.setMessageChange('UPDATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.roleService.setModelChange(data);
+        this.roleService.setMessageChange('ROL ACTUALIZADO');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     } else {
       // INSERT
       this.roleService
         .save(payload)
         .pipe(switchMap(() => this.roleService.findAll()))
-        .subscribe((data) => {
-          this.roleService.setModelChange(data);
-          this.roleService.setMessageChange('CREATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.roleService.setModelChange(data);
+        this.roleService.setMessageChange('ROL CREADO');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     }
 
-    this.close();
   }
 }

@@ -143,6 +143,10 @@ mat-row:hover {
   color: white;
 }
 
+.status-badge.pendiente {
+  background-color: #e09500;
+  color: white;
+}
 .status-badge.inactive {
   background-color: #dc2626;
   color: white;

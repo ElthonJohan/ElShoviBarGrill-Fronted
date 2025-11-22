@@ -13,7 +13,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { MatChipListbox, MatChipListboxChange, MatChip } from '@angular/material/chips';
 
 @Component({
   selector: 'app-user-component',
@@ -74,7 +73,10 @@ export class UserComponent {
 
   openDialog(user?: User) {
     this._dialog.open(UserDialogComponent, {
-      width: '750px',
+      width: '707px',
+    maxWidth: '95vw',
+    autoFocus: false,
+    disableClose: true,
       data: user
     });
   }

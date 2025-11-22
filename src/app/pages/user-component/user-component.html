@@ -50,29 +50,29 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Fecha de Creación
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.createdAt }}</td>
+        <td mat-cell *matCellDef="let row">
+          {{ row.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}
+        </td>
       </ng-container>
 
       <!-- CAPACIDAD -->
       <ng-container matColumnDef="active">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
         <td mat-cell *matCellDef="let row">
-  <span [ngClass]="row.active ? 'state-active' : 'state-inactive'">
-    {{ row.active ? 'Activo' : 'Inactivo' }}
-  </span>
-</td>
-
+          <span [ngClass]="row.active ? 'state-active' : 'state-inactive'">
+            {{ row.active ? "Activo" : "Inactivo" }}
+          </span>
+        </td>
       </ng-container>
 
       <!-- CAPACIDAD -->
       <ng-container matColumnDef="roles">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Roles</th>
         <td mat-cell *matCellDef="let row">
-  <span *ngFor="let r of row.roles" class="role-badge">
-    {{ r.name.toUpperCase() }}
-  </span>
-</td>
-
+          <span *ngFor="let r of row.roles" class="role-badge">
+            {{ r.name.toUpperCase() }}
+          </span>
+        </td>
       </ng-container>
 
       <!-- ACCIONES -->

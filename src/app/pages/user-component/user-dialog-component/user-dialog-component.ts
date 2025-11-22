@@ -1,8 +1,18 @@
 import { Component, Inject } from '@angular/core';
 import { User } from '../../../model/user';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { UserService } from '../../../services/user-service';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { Role } from '../../../model/role';
 import { CommonModule } from '@angular/common';
@@ -11,7 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDatepicker, MatDatepickerToggle, MatDatepickerInput } from "@angular/material/datepicker";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-dialog-component',
@@ -23,45 +33,53 @@ import { MatDatepicker, MatDatepickerToggle, MatDatepickerInput } from "@angular
     MatSelectModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule,
-    MatDatepicker,
-    MatDatepickerToggle,
-    MatDatepickerInput
+    MatButtonModule
 ],
   templateUrl: './user-dialog-component.html',
   styleUrl: './user-dialog-component.css',
 })
 export class UserDialogComponent {
-   user: User;
+  user: User;
   form!: FormGroup;
-  roles:Role[] = []; 
+  roles: Role[] = [];
+  isEdit=false;
   statuses = [
     { value: true, label: 'Activo' },
-    { value: false, label: 'Inactivo' }
+    { value: false, label: 'Inactivo' },
   ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: User,
     private _dialogRef: MatDialogRef<UserDialogComponent>,
     private userService: UserService,
-    private fb: FormBuilder
-  ){}
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.user = { ...this.data };
+    this.isEdit=!!this.data;
+    
+    this.user = {
+      ...this.data,
+      roles: this.data?.roles ?? [], // ← inicializar si no existe
+    };
     this.form = this.fb.group({
       email: this.fb.control(this.user.email ?? '', {
         validators: [Validators.required],
         asyncValidators: [this.userEmailUniqueValidator()],
-        updateOn: 'blur'
+        updateOn: 'blur',
       }),
-      userName: this.fb.control(this.user.userName ?? '', [Validators.required]),
-      password: this.fb.control(this.user.password ?? '', [Validators.required]),
-      fullName: this.fb.control(this.user.fullName ?? '', ),
-      createdAt: this.fb.control(this.user.createdAt ?? '', ),
+      userName: this.fb.control(this.user.userName ?? '', [
+        Validators.required,
+      ]),
+      password: this.fb.control(this.user.password ?? '', [
+        Validators.required,
+      ]),
+      fullName: this.fb.control(this.user.fullName ?? ''),
+      createdAt: this.fb.control(this.user.createdAt ?? ''),
       active: this.fb.control(this.user.active ?? '', [Validators.required]),
-      roles: this.fb.control(this.user.roles ?? '', [Validators.required])
-    });
+      roles: this.fb.control(this.user.roles.map(r => r.idRole) ?? [], Validators.required)
+    }),
     //this.medic = this.data;
     /*this.medic = new Medic();
     this.medic.idMedic = this.data.idMedic;
@@ -70,8 +88,7 @@ export class UserDialogComponent {
     this.medic.surname = this.data.surname;
     this.medic.photo = this.data.photo;*/
 
-    this.userService.getRoles().subscribe(roles => this.roles = roles);
-
+    this.userService.getRoles().subscribe((roles) => (this.roles = roles));
   }
 
   /** Async validator: checks backend for existing email and ignores current user id */
@@ -83,7 +100,9 @@ export class UserDialogComponent {
       }
       return this.userService.findAll().pipe(
         map((users: User[]) => {
-          const exists = users.some(t => t.email == value && t.idUser !== this.user?.idUser);
+          const exists = users.some(
+            (t) => t.email == value && t.idUser !== this.user?.idUser
+          );
           return exists ? { userEmailExists: true } : null;
         }),
         catchError(() => of(null))
@@ -91,11 +110,24 @@ export class UserDialogComponent {
     };
   }
 
-  close(){
+  close() {
     this._dialogRef.close();
   }
+    handleError(err: any) {
+  const message = err?.error || 'Error inesperado';
 
-  operate(){
+  this.snackBar.open(
+    message,
+    'Cerrar',
+    {
+      duration: 4000,
+      panelClass: ['snackbar-error']
+    }
+  );
+}
+
+  operate() {
+    
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -110,28 +142,38 @@ export class UserDialogComponent {
       active: formVal.active,
       password: formVal.password,
       fullName: formVal.fullName,
-      createdAt: formVal.createdAt,
-      roles: formVal.roles
-    };
+      roles: formVal.roles.map((id: number) => ({ idRole: id })), // 👈 IMPORTANTE
 
-    if (payload != null && payload.idUser > 0 ) {
+    };
+    console.log("Payload que se envía al backend:", payload);
+
+    if (payload != null && payload.idUser > 0) {
       // UPDATE
-      this.userService.update(payload.idUser, payload)
+      this.userService
+        .update(payload.idUser, payload)
         .pipe(switchMap(() => this.userService.findAll()))
-        .subscribe(data => {
-          this.userService.setModelChange(data);
-          this.userService.setMessageChange('UPDATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.userService.setModelChange(data);
+        this.userService.setMessageChange('USUARIO ACTUALIZADO');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     } else {
       // INSERT
-      this.userService.save(payload)
+      this.userService
+        .save(payload)
         .pipe(switchMap(() => this.userService.findAll()))
-        .subscribe(data => {
-          this.userService.setModelChange(data);
-          this.userService.setMessageChange('CREATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.userService.setModelChange(data);
+        this.userService.setMessageChange('USUARIO CREADO');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     }
 
-    this.close();
   }
 }

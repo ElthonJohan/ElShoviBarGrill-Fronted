@@ -25,10 +25,10 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './role-component.html',
-  styleUrls: ['./role-component.css']
+  styleUrls: ['./role-component.css'],
 })
 export class RoleComponent implements OnInit {
   dataSource: MatTableDataSource<Role> = new MatTableDataSource<Role>();
@@ -37,7 +37,7 @@ export class RoleComponent implements OnInit {
     { def: 'idRole', label: 'idRole', hide: true },
     { def: 'name', label: 'name', hide: false },
     { def: 'description', label: 'description', hide: false },
-    { def: 'actions', label: 'actions', hide: false }
+    { def: 'actions', label: 'actions', hide: false },
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -47,12 +47,18 @@ export class RoleComponent implements OnInit {
     private roleService: RoleService,
     private _dialog: MatDialog,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.roleService.findAll().subscribe((data) => this.createTable(data));
-    this.roleService.getModelChange().subscribe(data => this.createTable(data));
-    this.roleService.getMessageChange().subscribe(data => this._snackBar.open(data, 'INFO', { duration: 2000 }));
+    this.roleService
+      .getModelChange()
+      .subscribe((data) => this.createTable(data));
+    this.roleService
+      .getMessageChange()
+      .subscribe((data) =>
+        this._snackBar.open(data, 'INFO', { duration: 2000 })
+      );
   }
 
   createTable(data: Role[]) {
@@ -62,13 +68,16 @@ export class RoleComponent implements OnInit {
   }
 
   getDisplayedColumns() {
-    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+    return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
   }
 
   openDialog(table?: Role) {
     this._dialog.open(RoleDialogComponent, {
-      width: '750px',
-      data: table
+      width: '702px',
+      maxWidth: '95vw',
+      autoFocus: false,
+      disableClose: true,
+      data: table,
     });
   }
 

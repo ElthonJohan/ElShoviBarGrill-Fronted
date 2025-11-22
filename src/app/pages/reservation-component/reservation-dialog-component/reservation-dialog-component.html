@@ -1,51 +1,72 @@
-<mat-dialog-content>
-  <mat-toolbar><span>Reservation Info</span></mat-toolbar>
+<mat-dialog-content class="dialog-container">
 
-  <form [formGroup]="form" class="example-container">
+  <div class="dialog-wrapper">
 
-    <mat-form-field appearance="fill">
-      <mat-label>Fecha de Reservación</mat-label>
-      <input matInput formControlName="reservationDate" placeholder="Fecha de Reservación" />
-      <mat-error *ngIf="form.get('reservationDate')?.hasError('required') && form.get('reservationDate')?.touched">Fecha de Reservaciónes requerido</mat-error>
-    </mat-form-field>
+    <!-- HEADER -->
+    <div class="dialog-header">
+      <h2>{{ isEdit ? 'Editar Reserva' : 'Nueva Reserva' }}</h2>
+    </div>
 
+    <!-- FORM -->
+    <form [formGroup]="form" class="form-grid">
 
-    <mat-form-field appearance="fill">
-      <mat-label>Tiempo de Reserva</mat-label>
-      <input matInput formControlName="reservationTime" placeholder="Tiempo de Reserva" />
-      <mat-error *ngIf="form.get('reservationTime')?.hasError('required') && form.get('reservationTime')?.touched">Tiempo de Reserva es requerida</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Estado</mat-label>
-      <mat-select formControlName="status" >
-        <mat-option *ngFor="let s of statuss" [value]="s.value">{{ s.label }}</mat-option>
-      </mat-select>
-      <mat-error *ngIf="form.get('status')?.hasError('required') && form.get('status')?.touched">Estado es requerido</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Mesa</mat-label>
-      <input matInput formControlName="idTable" placeholder="Mesa" type="number" />
-      <mat-error *ngIf="form.get('idTable')?.hasError('required') && form.get('idTable')?.touched">Mesa es requerido</mat-error>
-    </mat-form-field>
-
-    <!-- Selección de Usuarios -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Usuarios</mat-label>
-        <mat-select formControlName="idUser">
-          <mat-option *ngFor="let u of users" [value]="u.idUser">{{
-            u.username
-          }}</mat-option>
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="user">
+          <mat-option *ngFor="let u of users" [value]="u.idUser">
+            {{ u.userName }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field appearance="fill">
+        <mat-label>Mesa</mat-label>
+        <mat-select formControlName="table">
+          <mat-option *ngFor="let t of tables" [value]="t.idTable">
+            Mesa {{ t.tableNumber }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <div class="actions">
-      <button mat-button type="button" (click)="operate()" [disabled]="form.invalid">Guardar</button>
-      <button mat-button type="button" (click)="close()">Cancelar</button>
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="reservationDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Hora inicio</mat-label>
+        <input matInput type="time" formControlName="reservationTimeStart">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Hora fin</mat-label>
+        <input matInput type="time" formControlName="reservationTimeEnd">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="PENDIENTE">Pendiente</mat-option>
+          <mat-option value="CONFIRMADA">Confirmada</mat-option>
+          <mat-option value="CANCELADA">Cancelada</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+
+    <!-- ACCIONES -->
+    <div class="dialog-actions">
+      <button mat-flat-button color="primary" class="btn-primary" (click)="operate()" [disabled]="form.invalid">
+        {{ isEdit ? 'Actualizar' : 'Guardar' }}
+      </button>
+
+      <button mat-button class="btn-secondary" (click)="close()">
+        Cancelar
+      </button>
     </div>
 
-  </form>
+  </div>
 
 </mat-dialog-content>

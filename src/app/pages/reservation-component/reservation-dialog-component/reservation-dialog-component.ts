@@ -1,8 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { Reservation } from '../../../model/reservation';
 import { Table } from '../../../model/table';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { ReservationService } from '../../../services/reservation-service';
 import { TableService } from '../../../services/table-service';
 import { User } from '../../../model/user';
@@ -14,6 +23,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {
+  MatDatepickerInput,
+  MatDatepicker,
+  MatDatepickerToggle,
+} from '@angular/material/datepicker';
+import { timeRangeValidator } from '../../../validators/time-range.validator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reservation-dialog-component',
@@ -25,19 +41,26 @@ import { MatButtonModule } from '@angular/material/button';
     MatSelectModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerInput,
+    MatDatepicker,
+    MatDatepickerToggle,
   ],
   templateUrl: './reservation-dialog-component.html',
   styleUrl: './reservation-dialog-component.css',
 })
 export class ReservationDialogComponent {
-  reservation: Reservation;
-  tables: Table[];
-  users: User[];
   form!: FormGroup;
+  isEdit = false;
+
+  users: User[] = [];
+  tables: Table[] = [];
+
   statuss = [
-      { value: 'ACTIVO', label: 'Activo' },
-    { value: 'INACTIVO', label: 'Inactivo' }
+    { value: 'ACTIVO', label: 'Activo' },
+    { value: 'PENDIENTE', label: 'Pendiente' },
+    { value: 'CANCELADA', label: 'Cancelada' },
+    { value: 'INACTIVO', label: 'Inactivo' },
   ];
 
   constructor(
@@ -46,80 +69,141 @@ export class ReservationDialogComponent {
     private reservationService: ReservationService,
     private tableService: TableService,
     private userService: UserService,
-    private fb: FormBuilder
-  ){}
+    private fb: FormBuilder,
+      private snackBar: MatSnackBar
+
+  ) {}
 
   ngOnInit(): void {
-    this.reservation = { ...this.data };
-    this.tables = [];
-    this.users = [];
-    
-    // Cargar mesas
-    this.tableService.findAll().subscribe(
-      (cats: Table[]) => {
-        this.tables = cats;
-      }
-    );
+    this.isEdit = !!this.data;
 
-    // Cargar usuarios
-    this.userService.findAll().subscribe(
-      (cats: User[]) => {
-        this.users = cats;
-      }
-    );
-    
+    // ====== Preparar valores iniciales de fecha y horas ======
+    let startDate: Date | null = null;
+  // Convertir horas si vienen con segundos
+  const startTime = this.data?.reservationTimeStart
+    ? this.data.reservationTimeStart.substring(0, 5)
+    : '';
+
+  const endTime = this.data?.reservationTimeEnd
+    ? this.data.reservationTimeEnd.substring(0, 5)
+    : '';
+
     this.form = this.fb.group({
-      reservationDate: this.fb.control(this.reservation.reservationDate ?? '', [Validators.required]),
-      reservationTime: this.fb.control(this.reservation.reservationTime ?? '', [Validators.required]),
-      status: this.fb.control(this.reservation.status ?? false, [Validators.required]),
-      idTable: this.fb.control(this.reservation.idTable ?? '', [Validators.required]),
-      idUser: this.fb.control(this.reservation.idUser ?? '', [Validators.required]),
+    user: [this.data?.idUser || null, Validators.required],
+    table: [this.data?.idTable || null, Validators.required],
+
+    reservationDate: [
+      this.data?.reservationDate ? new Date(this.data.reservationDate) : null,
+      Validators.required
+    ],
+
+    reservationTimeStart: [
+      startTime,
+      [Validators.required, Validators.pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)]
+    ],
+
+    reservationTimeEnd: [
+      endTime,
+      [Validators.required, Validators.pattern(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)]
+    ],
+
+    status: [this.data?.status || 'PENDIENTE', Validators.required]
+  },{
+    Validators:timeRangeValidator
+  });
+
+  this.loadUsers();
+  this.loadTables();
+  }
+
+  loadUsers() {
+    // Aquí llamas a tu userService
+    // Cargar usuarios
+    this.userService.findAll().subscribe((cats: User[]) => {
+      this.users = cats;
     });
   }
 
+  loadTables() {
+    // Aquí llamas a tableService
+    this.tableService.findAll().subscribe((cats: Table[]) => {
+      this.tables = cats;
+    });
+  }
   /** Async validator: checks backend for existing tableNumber and ignores current table id */
 
-
-  close(){
+  close() {
     this._dialogRef.close();
   }
+  handleError(err: any) {
+  const message = err?.error || 'Error inesperado';
+
+  this.snackBar.open(
+    message,
+    'Cerrar',
+    {
+      duration: 4000,
+      panelClass: ['snackbar-error']
+    }
+  );
+}
 
 
-  operate(){
+  operate() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    // merge form values into table object
-    const formVal = this.form.value;
+    const form = this.form.value;
+
+    const startTimeStr: string = form.reservationTimeStart;
+    const endTimeStr: string = form.reservationTimeEnd;
+
+    // Fecha → LocalDate (YYYY-MM-DD)
+    const dateISO = form.reservationDate.toISOString().split('T')[0];
+
     const payload: Reservation = {
-      ...this.reservation,
-      reservationDate: formVal.reservationDate,
-      reservationTime: formVal.reservationTime,
-      idTable: formVal.idTable,
-      idUser: formVal.idUser ,
-      status: formVal.status
+      ...this.data,
+      idUser: form.user,
+      idTable: form.table,
+      reservationDate: dateISO,
+      reservationTimeStart: startTimeStr,
+      reservationTimeEnd: endTimeStr,
+      status: form.status,
     };
 
-    if (payload != null && payload.idReservation > 0 ) {
-      // UPDATE
-      this.reservationService.update(payload.idReservation, payload)
-        .pipe(switchMap(() => this.reservationService.findAll()))
-        .subscribe(data => {
-          this.reservationService.setModelChange(data);
-          this.reservationService.setMessageChange('UPDATED!');
-        });
-    } else {
-      // INSERT
-      this.reservationService.save(payload)
-        .pipe(switchMap(() => this.reservationService.findAll()))
-        .subscribe(data => {
-          this.reservationService.setModelChange(data);
-          this.reservationService.setMessageChange('CREATED!');
-        });
-    }
+    console.log('Payload enviado:', payload);
+// UPDATE
+if (payload.idReservation && payload.idReservation > 0) {
+  this.reservationService
+    .update(payload.idReservation, payload)
+    .pipe(switchMap(() => this.reservationService.findAll()))
+    .subscribe({
+      next: (data) => {
+        this.reservationService.setModelChange(data);
+        this.reservationService.setMessageChange('RESERVA ACTUALIZADA');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
+} 
+else {
+  // INSERT
+  this.reservationService
+    .save(payload)
+    .pipe(switchMap(() => this.reservationService.findAll()))
+    .subscribe({
+      next: (data) => {
+        this.reservationService.setModelChange(data);
+        this.reservationService.setMessageChange('RESERVA CREADA');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
+}
 
-    this.close();
   }
 }
+// idTable: formVal.idTable,
+// idUser: formVal.idUser ,

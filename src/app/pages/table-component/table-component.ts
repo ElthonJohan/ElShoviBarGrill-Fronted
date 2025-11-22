@@ -71,7 +71,10 @@ export class TableComponent {
 
   openDialog(table?: Table) {
     this._dialog.open(TableDialogComponent, {
-      width: '750px',
+      width: '702px',
+    maxWidth: '95vw',
+    autoFocus: false,
+    disableClose: true,
       data: table
     });
   }

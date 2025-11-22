@@ -1,82 +1,61 @@
 <mat-dialog-content class="dialog-container">
+  <div class="dialog-wrapper">
+    <!-- HEADER -->
+    <div class="dialog-header">
+      <h2>{{ isEdit ? "Editar Mesa" : "Nueva Mesa" }}</h2>
+    </div>
 
-  <mat-toolbar class="dialog-title">
-    <span>Información de Usuario</span>
-  </mat-toolbar>
+    <!-- FORM -->
+    <form [formGroup]="form" class="form-grid">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="example@gmail.com"
+        />
 
-  <form [formGroup]="form" class="dialog-form">
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          El email es requerido
+        </mat-error>
 
-    <!-- Número de mesa -->
-    <mat-form-field appearance="fill" class="dialog-input">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" placeholder="example@gmail.com" />
+        <mat-error *ngIf="form.get('email')?.hasError('userEmailExists')">
+          Este email ya está en uso
+        </mat-error>
+      </mat-form-field>
 
-      <mat-error *ngIf="form.get('email')?.hasError('required')">
-        El email es requerido
-      </mat-error>
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" placeholder="*****" />
 
-      <mat-error *ngIf="form.get('email')?.hasError('emailExists')">
-        Este email ya está en uso
-      </mat-error>
-    </mat-form-field>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+          La capacidad es requerida
+        </mat-error>
+      </mat-form-field>
 
-    <!-- Capacidad -->
-    <mat-form-field appearance="fill" class="dialog-input">
-      <mat-label>Capacidad</mat-label>
-      <input matInput formControlName="userName" placeholder="Thom" />
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre Completo</mat-label>
+        <input matInput formControlName="fullName" placeholder="Juan Perez" />
 
-      <mat-error *ngIf="form.get('userName')?.hasError('required')">
-        La capacidad es requerida
-      </mat-error>
-    </mat-form-field>
+        <mat-error *ngIf="form.get('fullName')?.hasError('required')">
+          La capacidad es requerida
+        </mat-error>
+      </mat-form-field>
 
-     <!-- Capacidad -->
-    <mat-form-field appearance="fill" class="dialog-input">
-      <mat-label>Capacidad</mat-label>
-      <input matInput formControlName="password" placeholder="*****" />
+      <mat-form-field appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="active">
+          <mat-option *ngFor="let s of statuses" [value]="s.value">
+            {{ s.label }}
+          </mat-option>
+        </mat-select>
 
-      <mat-error *ngIf="form.get('password')?.hasError('required')">
-        La capacidad es requerida
-      </mat-error>
-    </mat-form-field>
+        <mat-error *ngIf="form.get('active')?.hasError('required')">
+          El estado es requerido
+        </mat-error>
+      </mat-form-field>
 
-     <!-- Capacidad -->
-    <mat-form-field appearance="fill" class="dialog-input">
-      <mat-label>Capacidad</mat-label>
-      <input matInput formControlName="fullName" placeholder="Juan Perez" />
-
-      <mat-error *ngIf="form.get('fullName')?.hasError('required')">
-        La capacidad es requerida
-      </mat-error>
-    </mat-form-field>
-
-   
-
-
-     <!-- Capacidad -->
-    <mat-form-field appearance="fill" class="dialog-input">
-      <mat-label>Capacidad</mat-label>
-      <input matInput formControlName="createdAt" placeholder="Ej: 4" />
-
-      <mat-error *ngIf="form.get('createdAt')?.hasError('required')">
-        La capacidad es requerida
-      </mat-error>
-    </mat-form-field>
-    <!-- Estado -->
-    <mat-form-field appearance="fill" class="dialog-input">
-      <mat-label>Estado</mat-label>
-      <mat-select formControlName="active">
-        <mat-option *ngFor="let s of statuses" [value]="s.value">
-          {{ s.label }}
-        </mat-option>
-      </mat-select>
-
-      <mat-error *ngIf="form.get('active')?.hasError('required')">
-        El estado es requerido
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="dialog-input">
+      <mat-form-field appearance="fill">
         <mat-label>Roles</mat-label>
         <mat-select formControlName="roles" multiple>
           <mat-option *ngFor="let role of roles" [value]="role.idRole">{{
@@ -84,16 +63,23 @@
           }}</mat-option>
         </mat-select>
       </mat-form-field>
-    <!-- Botones -->
+    </form>
+
+    <!-- ACCIONES -->
     <div class="dialog-actions">
-      <button mat-raised-button color="primary" class="btn-save" (click)="operate()" [disabled]="form.invalid">
-        Guardar
+      <button
+        mat-flat-button
+        color="primary"
+        class="btn-primary"
+        (click)="operate()"
+        [disabled]="form.invalid"
+      >
+        {{ isEdit ? "Actualizar" : "Guardar" }}
       </button>
 
-      <button mat-raised-button color="warn" class="btn-cancel" (click)="close()">
+      <button mat-button class="btn-secondary" (click)="close()">
         Cancelar
       </button>
     </div>
-  </form>
-
+  </div>
 </mat-dialog-content>

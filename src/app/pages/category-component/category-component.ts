@@ -14,6 +14,7 @@ import { switchMap } from 'rxjs';
 import { Category } from '../../model/category';
 import { CategoryDialogComponent } from './category-dialog-component/category-dialog-component';
 import { MatDialog } from '@angular/material/dialog';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-category',
@@ -25,7 +26,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatButtonModule,
     MatIconModule,
     MatSortModule,
-    RouterOutlet,
+    NgClass,
   ],
   templateUrl: './category-component.html',
   styleUrl: './category-component.css',
@@ -48,13 +49,14 @@ export class CategoryComponent {
   constructor(
     private categoryService: CategoryService,
     private _snackBar: MatSnackBar,
-        private _dialog: MatDialog,
-
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.categoryService.findAll().subscribe((data) => this.createTable(data));
-    this.categoryService.getModelChange().subscribe((data) => this.createTable(data));
+    this.categoryService
+      .getModelChange()
+      .subscribe((data) => this.createTable(data));
     this.categoryService.getMessageChange().subscribe((msg) =>
       this._snackBar.open(msg, 'INFO', {
         duration: 2000,
@@ -71,19 +73,22 @@ export class CategoryComponent {
   }
 
   getDisplayedColumns() {
-    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+    return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
   }
 
   applyFilter(e: any) {
     this.dataSource.filter = e.target.value.trim().toLowerCase();
   }
 
-   openDialog(category?: Category) {
-      this._dialog.open(CategoryDialogComponent, {
-        width: '750px',
-        data: category
-      });
-    }
+  openDialog(category?: Category) {
+    this._dialog.open(CategoryDialogComponent, {
+      width: '702px',
+      maxWidth: '95vw',
+      autoFocus: false,
+      disableClose: true,  
+      data: category,
+    });
+  }
 
   delete(id: number) {
     this.categoryService

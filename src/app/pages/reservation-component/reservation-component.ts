@@ -12,7 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDatepickerModule, MatDatepickerToggle} from '@angular/material/datepicker';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -25,7 +26,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    CommonModule
   ],
   templateUrl: './reservation-component.html',
   styleUrl: './reservation-component.css',
@@ -36,10 +38,12 @@ export class ReservationComponent {
   columnsDefinitions = [
     { def: 'idReservation', label: 'idReservation', hide: true },
     { def: 'reservationDate', label: 'reservationDate', hide: false },
-    { def: 'reservationTime', label: 'description', hide: false },
+    { def: 'reservationTimeStart', label: 'reservationTimeStart', hide: false },
+    { def: 'reservationTimeEnd', label: 'reservationTimeEnd', hide: false },
+
     { def: 'status', label: 'status', hide: false },
-    { def: 'idTable', label: 'isTable', hide: false },
-    { def: 'idUser', label: 'idUser', hide: false },
+    { def: 'table', label: 'table', hide: false },
+    { def: 'user', label: 'user', hide: false },
     { def: 'actions', label: 'actions', hide: false }
 
   ];
@@ -69,16 +73,30 @@ export class ReservationComponent {
     return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
   }
 
-  openDialog(table?: Reservation) {
+  openDialog(reservation?: Reservation) {
     this._dialog.open(ReservationDialogComponent, {
-      width: '750px',
-      data: table
+      width: '710px',
+    maxWidth: '95vw',
+    autoFocus: false,
+    disableClose: true,
+      data: reservation
     });
   }
+  formatTime(timeString: string): string {
+  if (!timeString) return '';
+
+  const [hours, minutes] = timeString.split(':').map(Number);
+
+  const date = new Date();
+  date.setHours(hours, minutes, 0);
+
+  return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric' }).format(date);
+}
+
 
   applyFilter(e: any) {
     if (!this.dataSource) return;
-    this.dataSource.filter = e.target.value.trim();
+    this.dataSource.filter = e.target.value.trim().toLowerCase();
   }
 
   delete(id: number) {
