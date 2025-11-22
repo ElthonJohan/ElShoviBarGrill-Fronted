@@ -60,13 +60,4 @@ export class LayoutComponent {
     this.router.navigate(['/login']);
   }
 
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-
-  const host = document.querySelector('app-layout');
-  const html = document.documentElement;
-
-  html.classList.toggle('dark', this.isDarkMode);
-  host?.classList.toggle('dark', this.isDarkMode);
-  }
 }
