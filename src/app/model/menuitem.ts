@@ -8,4 +8,6 @@ export class MenuItem {
   imageUrl!: string;
   active!: boolean;  
   idCategory!: number;
+
+  categoryName!:string;
 }

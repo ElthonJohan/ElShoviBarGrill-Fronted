@@ -10,4 +10,7 @@ export class Reservation {
   reservationTimeEnd!: string;
 
   status!: string;
+
+  userName!:string;
+  tableNumber!:number;
 }
