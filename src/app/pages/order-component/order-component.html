@@ -3,6 +3,42 @@
   <input matInput (keyup)="applyFilter($event)" placeholder="Nombre" #input>
 </mat-form-field>
 
+<!-- Botón 'Seguir comprando' centrado encima de la orden -->
+<div class="follow-center">
+  <button mat-raised-button class="follow-btn" routerLink="/pages/menuitem">Seguir comprando</button>
+</div>
+
+<div *ngIf="checkoutTotal !== null" class="checkout-banner">
+
+  <div class="confirm-top">
+    <button mat-raised-button color="accent" (click)="confirmOrder()">Confirmar pedido</button>
+  </div>
+
+  <div *ngIf="checkoutItems?.length" class="checkout-items">
+    <ul>
+      <li *ngFor="let it of checkoutItems" class="checkout-item">
+        <div class="item-left">
+          <img [src]="it.imageUrl || 'https://via.placeholder.com/80x80?text=Sin+Imagen'" alt="{{it.name}}" class="item-thumb" />
+          <div class="item-info">
+            <div class="item-name">{{ it.name }}</div>
+          </div>
+        </div>
+        <div class="item-right">
+          <div class="price">S/ {{ it.price | number:'1.2-2' }}</div>
+          <div class="qty">x {{ it.quantity }}</div>
+          <div class="subtotal">S/ {{ (it.price * it.quantity) | number:'1.2-2' }}</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="checkout-subtotal">Subtotal: S/ {{ checkoutTotal | number:'1.2-2' }}</div>
+
+    <div style="height:10px"></div>
+
+    <div class="checkout-total">Total: S/ {{ checkoutTotal | number:'1.2-2' }}</div>
+  </div>
+</div>
+
 
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
@@ -82,3 +118,5 @@
     </button>
 
 </div>
+
+ 
