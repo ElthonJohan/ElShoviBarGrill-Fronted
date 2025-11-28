@@ -32,7 +32,7 @@
       <mat-form-field appearance="fill">
         <mat-label>Estado</mat-label>
         <mat-select formControlName="status">
-          <mat-option *ngFor="let s of statuses" value="s.value">{{
+          <mat-option *ngFor="let s of statuses" [value]="s.value">{{
             s.label
           }}</mat-option>
         </mat-select>

@@ -40,7 +40,13 @@ export class LayoutComponent {
   }
 
   toggleSidebar() {
+      if (window.innerWidth <= 800) {
+    // MODO MÓVIL: abrir/cerrar drawer
+    this.isSidebarOpen = !this.isSidebarOpen;
+  } else {
+    // MODO ESCRITORIO: colapsar/expandir
     this.isCollapsed = !this.isCollapsed;
+  }
   }
 
   isLoggedIn(): boolean {
@@ -59,5 +65,19 @@ export class LayoutComponent {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
+
+  isSidebarOpen = false;
+
+toggleMobileSidebar() {
+  this.isSidebarOpen = !this.isSidebarOpen;
+}
+
+onContentClick() {
+  if (window.innerWidth <= 800) {
+    this.isSidebarOpen = false;
+  }
+}
+
+
 
 }

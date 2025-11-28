@@ -1,219 +1,96 @@
-.container {
-  max-width: 800px;
-  margin: 20px auto;
+.order-container {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.full-width {
-  width: 100%;
-  margin-top: 15px;
+.row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.table-container {
-  max-height: 500px;
-  overflow: auto;
+.subtitle {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: 600;
 }
-.button-group {
-  margin-top: 15px;
+
+/* === CARRUSEL === */
+.menu-carousel {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  overflow-x: auto;
+  gap: 25px;
+  padding: 15px 0;
 }
-.action-button {
-  margin-right: 8px;
-}
-.filter-input {
-  margin-bottom: 15px;
-}
-.header-cell {
-  font-weight: bold;
-}
-.data-cell {
-  padding: 8px;
-}
-.sort-icon {
-  vertical-align: middle;
-  margin-left: 4px;
-}
-.pagination {
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-}
-.empty-state {
+
+.menu-card {
+  min-width: 180px;
+  background: #1f1f1f;
+  border-radius: 12px;
+  padding: 12px;
   text-align: center;
-  margin-top: 50px;
-  color: #888;
+  transition: transform .2s;
+  cursor: pointer;
 }
-.loading-spinner {
+
+.menu-card:hover {
+  transform: scale(1.05);
+}
+
+.menu-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+
+.menu-list {
   display: flex;
-  justify-content: center;
-  margin-top: 50px;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 20px 0;
 }
-.error-message {
-  color: red;
-  text-align: center;
+
+.menu-card {
+  padding: 15px;
+  width: 200px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+}
+
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 20px;
 }
-.dialog-actions {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+
+.item-table th,
+.item-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
-.dialog-full-width {
-  width: 100%;
+
+.qty-input {
+  width: 60px;
 }
-.dialog-error {
-  color: red;
-  margin-top: 10px;
-}
-.input-field {
-  width: 100%;
-  margin-top: 10px;
-}
-.select-field {
-  width: 100%;
-  margin-top: 10px;
-}
-.checkbox-field {
-  margin-top: 10px;
-}
-.textarea-field {
-  width: 100%;
-  margin-top: 10px;
-  min-height: 100px;
-}
-.dialog-container {
-  min-width: 400px;
-}
-.dialog-header {
-  font-size: 20px;
-  font-weight: bold;
-}
-.dialog-content {
-  margin-top: 15px;
-}
-.dialog-footer {
-  margin-top: 20px;
+
+.total-box {
   text-align: right;
-}
-.success-message {
-  color: green;
-  text-align: center;
+  font-size: 20px;
   margin-top: 20px;
 }
-.error-message {
-  color: red;
-  text-align: center;
+
+.save-btn {
   margin-top: 20px;
+  width: 100%;
 }
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
-}
-.table-header {
-  font-weight: bold;
-}
-.table-row:hover {
-  background-color: #f5f5f5;
-}
-.action-icon {
-  cursor: pointer;
-  margin-right: 8px;
-}
-.filter-bar {
-  margin-bottom: 15px;
-  display: flex;
-  gap: 10px;
-}
-.pagination-controls {
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-}
-.sortable-header {
-  cursor: pointer;
-}
-.active-sort {
-  color: #1976d2;
-}
-.inactive-sort {
-  color: #888;
-}
-.no-data {
+
+.no-items {
   text-align: center;
-  margin-top: 50px;
-  color: #888;
-}
-.error-banner {
-  background-color: #ffcccc;
-  color: #a94442;
-  padding: 10px;
-  margin-top: 15px;
-  text-align: center;
-}
-.success-banner {
-  background-color: #dff0d8;
-  color: #3c763d;
-  padding: 10px;
-  margin-top: 15px;
-  text-align: center;
-}
-.dialog-error-message {
-  color: red;
-  margin-top: 10px;
-}
-.dialog-success-message {
-  color: green;
-  margin-top: 10px;
-}
-.loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.dialog-loading {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-.action-buttons {
-  display: flex;
-  gap: 10px;
-}
-.dialog-actions {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-.dialog-full-width {
-  width: 100%;
-}
-.dialog-error {
-  color: red;
-  margin-top: 10px;
-}
-.input-field {
-  width: 100%;
-  margin-top: 10px;
-}
-.select-field {
-  width: 100%;
-  margin-top: 10px;
-}
-.checkbox-field {
-  margin-top: 10px;
-}
-.textarea-field {
-  width: 100%;
-  margin-top: 10px;
-  min-height: 100px;
+  padding: 20px;
+  font-size: 16px;
+  color: gray;
 }

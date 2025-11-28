@@ -5,23 +5,19 @@
     <button class="menu-btn" (click)="toggleSidebar()">
       <mat-icon>menu</mat-icon>
     </button>
-    <div class="fuego-title" >
-      <img src="fuego.png" alt="" width="50px" height="auto" style="margin-right: 0px;" />
-      <h1 class="title">SHOVI BAR - GRILL</h1>
 
+    <div class="fuego-title">
+      <img src="fuegoShovi.png" class="fuego-img" width="50">
+      <h1 class="title">SHOVI BAR - GRILL</h1>
     </div>
 
-
     <div class="actions">
-
-      <!-- Notificaciones -->
       <button mat-icon-button>
         <mat-icon>notifications</mat-icon>
       </button>
 
-      <!-- Usuario -->
       <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
-        <img src="cuenta.png" alt="Usuario" />
+        <img src="cuenta.png" />
         <span>{{ userName }}</span>
       </button>
 
@@ -36,88 +32,47 @@
           <mat-icon>logout</mat-icon> Cerrar sesión
         </button>
       </mat-menu>
-
     </div>
   </header>
 
-  <!-- MAIN -->
-  <div class="main-wrapper">
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar" [class.collapsed]="isCollapsed">
-
+  <!-- WRAPPER STRUCTURE -->
+  <div class="layout-body">
+    
+    <!-- SIDEBAR FIJO -->
+    <aside class="sidebar" [class.collapsed]="isCollapsed" [class.open]="isSidebarOpen">
       <div class="logo-section">
-        <img src="logo_shovi.png" class="logo" alt="logo" />
+        <img src="logo_shovi.png" class="logo" />
         <h2 *ngIf="!isCollapsed">SHOVI BAR-GRILL</h2>
       </div>
 
       <nav class="menu">
-
-        <a routerLink="/pages/dashboard" routerLinkActive="active">
-          <mat-icon>dashboard</mat-icon>
-          <span *ngIf="!isCollapsed">Dashboard</span>
-        </a>
-
-        <a routerLink="/pages/category" routerLinkActive="active">
-          <mat-icon>category</mat-icon>
-          <span *ngIf="!isCollapsed">Categorías</span>
-        </a>
-
-        <a routerLink="/pages/delivery" routerLinkActive="active">
-          <mat-icon>moped</mat-icon>
-          <span *ngIf="!isCollapsed">Delivery</span>
-        </a>
-
-        <a routerLink="/pages/menuitem" routerLinkActive="active">
-          <mat-icon>restaurant_menu</mat-icon>
-          <span *ngIf="!isCollapsed">Menú</span>
-        </a>
-
-        <a routerLink="/pages/product" routerLinkActive="active">
-          <mat-icon>inventory_2</mat-icon>
-          <span *ngIf="!isCollapsed">Inventario</span>
-        </a>
-
-        <a routerLink="/pages/order" routerLinkActive="active">
-          <mat-icon>shopping_cart</mat-icon>
-          <span *ngIf="!isCollapsed">Pedidos</span>
-        </a>
-
-        <a routerLink="/pages/payment" routerLinkActive="active">
-          <mat-icon>payment</mat-icon>
-          <span *ngIf="!isCollapsed">Pagos</span>
-        </a>
-
-        <a routerLink="/pages/table" routerLinkActive="active">
-          <mat-icon>table_restaurant</mat-icon>
-          <span *ngIf="!isCollapsed">Mesas</span>
-        </a>
-
-        <a routerLink="/pages/reservation" routerLinkActive="active">
-          <mat-icon>book_online</mat-icon>
-          <span *ngIf="!isCollapsed">Reservas</span>
-        </a>
-
-        <a routerLink="/pages/user" routerLinkActive="active">
-          <mat-icon>group</mat-icon>
-          <span *ngIf="!isCollapsed">Usuarios</span>
-        </a>
-
-        <a routerLink="/pages/role" routerLinkActive="active">
-          <mat-icon>admin_panel_settings</mat-icon>
-          <span *ngIf="!isCollapsed">Roles</span>
-        </a>
-
+        <a routerLink="/pages/dashboard" routerLinkActive="active"><mat-icon>dashboard</mat-icon><span *ngIf="!isCollapsed">Dashboard</span></a>
+        <a routerLink="/pages/category" routerLinkActive="active"><mat-icon>category</mat-icon><span *ngIf="!isCollapsed">Categorías</span></a>
+        <a routerLink="/pages/delivery" routerLinkActive="active"><mat-icon>moped</mat-icon><span *ngIf="!isCollapsed">Delivery</span></a>
+        <a routerLink="/pages/menuitem" routerLinkActive="active"><mat-icon>restaurant_menu</mat-icon><span *ngIf="!isCollapsed">Menú</span></a>
+        <a routerLink="/pages/product" routerLinkActive="active"><mat-icon>inventory_2</mat-icon><span *ngIf="!isCollapsed">Inventario</span></a>
+        <a routerLink="/pages/orderregister" routerLinkActive="active"><mat-icon>shopping_cart</mat-icon><span *ngIf="!isCollapsed">Pedidos</span></a>
+        <a routerLink="/pages/payment" routerLinkActive="active"><mat-icon>payment</mat-icon><span *ngIf="!isCollapsed">Pagos</span></a>
+        <a routerLink="/pages/table" routerLinkActive="active"><mat-icon>table_restaurant</mat-icon><span *ngIf="!isCollapsed">Mesas</span></a>
+        <a routerLink="/pages/reservation" routerLinkActive="active"><mat-icon>book_online</mat-icon><span *ngIf="!isCollapsed">Reservas</span></a>
+        <a routerLink="/pages/user" routerLinkActive="active"><mat-icon>group</mat-icon><span *ngIf="!isCollapsed">Usuarios</span></a>
+        <a routerLink="/pages/role" routerLinkActive="active"><mat-icon>admin_panel_settings</mat-icon><span *ngIf="!isCollapsed">Roles</span></a>
       </nav>
 
       <button class="toggle-btn" (click)="toggleSidebar()">
         <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
       </button>
-
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="content">
+    <!-- BACKDROP (CLICK PARA CERRAR SIDEBAR EN MÓVIL) -->
+    <div 
+      class="backdrop"
+      [class.open]="isSidebarOpen"
+      (click)="isSidebarOpen = false">
+    </div>
+
+    <!-- CONTENIDO -->
+    <main class="content" [class.collapsed]="isCollapsed" (click)="onContentClick()">
       <router-outlet></router-outlet>
     </main>
 

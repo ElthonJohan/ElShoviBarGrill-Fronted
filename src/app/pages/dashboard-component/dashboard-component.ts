@@ -2,14 +2,15 @@ import { AfterViewInit, Component } from '@angular/core';
 import { DashboardService, DashboardStats, VentasDiarias, CategoriaVentas, MetodoPago, VentasPorUsuario } from '../../services/dashboard-service';
 import Chart from 'chart.js/auto';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSpinner } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   imports: [MatIconModule,
-    MatSpinner,
-    CommonModule
+    CommonModule,
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './dashboard-component.html',
   styleUrls: ['./dashboard-component.css']
@@ -47,57 +48,57 @@ export class DashboardComponent implements AfterViewInit {
   cargarDashboard() {
     this.aplicarEstiloCharts();
 
-    // 1. Stats
+   // 1. Cargar stats
     this.dashboardService.getStats().subscribe({
-      next: (data) => this.stats = data
+      next: data => this.stats = data
     });
 
     // 2. Ventas diarias
     this.dashboardService.getVentasDiarias().subscribe({
-      next: (data) => this.crearVentasChart(data)
+      next: data => setTimeout(() =>
+        this.crearVentasChart(data), 100)
     });
 
-    // 3. Categorías más vendidas
+    // 3. Categorías
     this.dashboardService.getCategoriasMasVendidas().subscribe({
-      next: (data) => this.crearCategoriasChart(data)
+      next: data => setTimeout(() =>
+        this.crearCategoriasChart(data), 100)
     });
 
     // 4. Métodos de pago
     this.dashboardService.getMetodosPago().subscribe({
-      next: (data) => this.crearMetodosPagoChart(data)
+      next: data => setTimeout(() =>
+        this.crearMetodosPagoChart(data), 100)
     });
 
     // 5. Ventas por usuario
     this.dashboardService.getVentasPorUsuario().subscribe({
-      next: (data) => {
-        this.crearVentasUsuarioChart(data);
+      next: data => {
+        setTimeout(() =>
+          this.crearVentasUsuarioChart(data), 100);
+
         this.loading = false;
       }
     });
   }
 
+
+
   // =================== GRÁFICOS ===================
 
+  
   private crearVentasChart(data: VentasDiarias[]) {
     if (this.ventasChart) this.ventasChart.destroy();
-
-    const labels = data
-      .map(d => d.fecha)
-      .reverse(); // por si viene descendente
-
-    const valores = data
-      .map(d => d.total)
-      .reverse();
 
     this.ventasChart = new Chart('ventasChart', {
       type: 'line',
       data: {
-        labels,
+        labels: data.map(d => d.fecha).reverse(),
         datasets: [{
           label: 'Ventas (S/)',
-          data: valores,
-          tension: 0.4,
+          data: data.map(d => d.total).reverse(),
           borderWidth: 3,
+          tension: 0.4,
           fill: true
         }]
       }
@@ -107,23 +108,15 @@ export class DashboardComponent implements AfterViewInit {
   private crearCategoriasChart(data: CategoriaVentas[]) {
     if (this.categoriasChart) this.categoriasChart.destroy();
 
-    const labels = data.map(d => d.categoria);
-    const valores = data.map(d => d.cantidadVendida);
-
     this.categoriasChart = new Chart('categoriasChart', {
       type: 'bar',
       data: {
-        labels,
+        labels: data.map(d => d.categoria),
         datasets: [{
           label: 'Cantidad vendida',
-          data: valores,
+          data: data.map(d => d.cantidadVendida),
           borderWidth: 1
         }]
-      },
-      options: {
-        plugins: {
-          legend: { display: false }
-        }
       }
     });
   }
@@ -131,15 +124,12 @@ export class DashboardComponent implements AfterViewInit {
   private crearMetodosPagoChart(data: MetodoPago[]) {
     if (this.metodosPagoChart) this.metodosPagoChart.destroy();
 
-    const labels = data.map(d => d.metodo);
-    const valores = data.map(d => d.total);
-
     this.metodosPagoChart = new Chart('metodosPagoChart', {
       type: 'doughnut',
       data: {
-        labels,
+        labels: data.map(d => d.metodo),
         datasets: [{
-          data: valores
+          data: data.map(d => d.total)
         }]
       }
     });
@@ -148,24 +138,17 @@ export class DashboardComponent implements AfterViewInit {
   private crearVentasUsuarioChart(data: VentasPorUsuario[]) {
     if (this.ventasUsuarioChart) this.ventasUsuarioChart.destroy();
 
-    const labels = data.map(d => d.usuario);
-    const valores = data.map(d => d.total);
-
     this.ventasUsuarioChart = new Chart('ventasUsuarioChart', {
       type: 'bar',
       data: {
-        labels,
+        labels: data.map(d => d.usuario),
         datasets: [{
-          label: 'Ventas (S/)',
-          data: valores,
+          data: data.map(d => d.total),
           borderWidth: 1
         }]
       },
       options: {
-        indexAxis: 'y', // barras horizontales
-        plugins: {
-          legend: { display: false }
-        }
+        indexAxis: 'y'
       }
     });
   }

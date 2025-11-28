@@ -15,6 +15,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { OrderStatus } from '../../../model/enums/orderstatus';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-order-dialog-component',
@@ -32,79 +34,80 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './order-dialog-component.css',
 })
 export class OrderDialogComponent {
-   order: Order;
-  users: User[];
-  tables: Table[];
-  form!: FormGroup;
+   form!: FormGroup;
+  isEdit = false;
 
+  users: User[] = [];
+  tables: Table[] = [];
+
+  estatus=OrderStatus
+
+  statuss = [
+    { value: 'ACTIVO', label: 'Activo' },
+    { value: 'PENDIENTE', label: 'Pendiente' },
+    { value: 'CANCELADA', label: 'Cancelada' },
+    { value: 'INACTIVO', label: 'Inactivo' },
+  ];
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: Order,
     private _dialogRef: MatDialogRef<OrderDialogComponent>,
     private orderService: OrderService,
     private userService: UserService,
     private tableService: TableService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ){}
 
   ngOnInit(): void {
-    this.order = { ...this.data };
-    this.users = [];
-    this.tables = [];
+        this.isEdit = !!this.data;
 
-    
-    // Cargar usuarios
-    this.userService.findAll().subscribe(
-      (cats: User[]) => {
-        this.users = cats;
-      }
-    );
-
-    // Cargar usuarios
-    this.tableService.findAll().subscribe(
-      (cats: Table[]) => {
-        this.tables = cats;
-      }
-    );
     
     this.form = this.fb.group({
-      idUser: this.fb.control(this.order.idUser ?? ''),
-      idTable: this.fb.control(this.order.idTable ?? ''),
-      idPayment: this.fb.control(this.order.idPayment ?? ''),
+      user: [this.data?.idUser || null, Validators.required],
+    table: [this.data?.idTable || null],
+    payment: [this.data?.idPayment || null],
 
-      totalAmount: this.fb.control(this.order.totalAmount ?? '', [Validators.required]),
-      status: this.fb.control(this.order.status ?? false, [Validators.required]),
-      orderType: this.fb.control(this.order.orderType ?? '', [Validators.required]),
-      notes: this.fb.control(this.order.notes ?? ''),
-      createdAt: this.fb.control(this.order.createdAt ?? '', [Validators.required]),
-      items: this.fb.control(this.order.items ?? '', [Validators.required]),
-
+    orderType: [this.data?.orderType || null, Validators.required],
+    status: [this.data?.status || null, Validators.required],
+    totalAmount: [this.data?.totalAmount || null],
+    notes: [this.data?.notes || null],
+    createdAt: [this.data?.createdAt || null],
+    items: [this.data?.items || null, Validators.required],
+    });
+      this.loadUsers();
+  this.loadTables();
+  }
+  loadUsers() {
+    // Aquí llamas a tu userService
+    // Cargar usuarios
+    this.userService.findAll().subscribe((cats: User[]) => {
+      this.users = cats;
     });
   }
 
-  /** Async validator: checks backend for existing tableNumber and ignores current table id */
-  // menuNameUniqueValidator() {
-  //   return (control: AbstractControl) => {
-  //     const value = control.value;
-  //     if (value == null || value === '') {
-  //       return of(null);
-  //     }
-  //     return this.orderService.findAll().pipe(
-  //       map((orders: Order[]) => {
-  //         const exists = orders.some(t => t.name == value && t.idorder !== this.order?.idorder);
-  //         return exists ? { menuNameExists: true } : null;
-  //       }),
-  //       catchError(() => of(null))
-  //     );
-  //   };
-  // }
-
+  loadTables() {
+    // Aquí llamas a tableService
+    this.tableService.findAll().subscribe((cats: Table[]) => {
+      this.tables = cats;
+    });
+  }
   close(){
     this._dialogRef.close();
   }
 
-  // compareBoolean(b1: boolean, b2: boolean): boolean {
-  //   return b1 === b2;
-  // }
+    handleError(err: any) {
+  const message = err?.error || 'Error inesperado';
+
+  this.snackBar.open(
+    message,
+    'Cerrar',
+    {
+      duration: 4000,
+      panelClass: ['snackbar-error']
+    }
+  );
+}
+
 
   operate(){
     if (this.form.invalid) {
@@ -113,39 +116,47 @@ export class OrderDialogComponent {
     }
 
     // merge form values into table object
-    const formVal = this.form.value;
+    const form = this.form.value;
+    
     const payload: Order = {
-      ...this.order,
-      idUser: formVal.idUser,
-      idTable: formVal.idTable,
-      idPayment: formVal.idPayment,
+      ...this.data,
+      idUser: form.user,
+      idTable: form.table,
+      idPayment: form.idPayment,
 
-      totalAmount: formVal.totalAmount,
-      orderType: formVal.orderType,
-      notes: formVal.notes ? formVal.notes : '',
-      status: formVal.status,
-      createdAt: formVal.createdAt,
-      items: formVal.items
+      totalAmount: form.totalAmount,
+      orderType: form.orderType,
+      notes: form.notes ? form.notes : '',
+      status: form.status,
+      createdAt: form.createdAt,
+      items: form.items
     };
 
     if (payload != null && payload.idOrder > 0 ) {
       // UPDATE
       this.orderService.update(payload.idOrder, payload)
         .pipe(switchMap(() => this.orderService.findAll()))
-        .subscribe(data => {
-          this.orderService.setModelChange(data);
-          this.orderService.setMessageChange('UPDATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.orderService.setModelChange(data);
+        this.orderService.setMessageChange('ORDEN ACTUALIZADA');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     } else {
       // INSERT
       this.orderService.save(payload)
         .pipe(switchMap(() => this.orderService.findAll()))
-        .subscribe(data => {
-          this.orderService.setModelChange(data);
-          this.orderService.setMessageChange('CREATED!');
-        });
+        .subscribe({
+      next: (data) => {
+        this.orderService.setModelChange(data);
+        this.orderService.setMessageChange('ORDEN CREADA');
+        this._dialogRef.close(payload);
+      },
+      error: (err) => this.handleError(err)
+    });
     }
 
-    this.close();
   }
 }

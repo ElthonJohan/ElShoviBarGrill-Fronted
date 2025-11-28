@@ -14,6 +14,8 @@ import { RegisterComponent } from './pages/register-component/register-component
 import { DashboardComponent } from './pages/dashboard-component/dashboard-component';
 import { HomeComponent } from './pages/home-component/home-component';
 import { ProductComponent } from './pages/product-component/product-component';
+import { OrderRegisterComponent } from './pages/order-register-component/order-register-component';
+import { DeliveryRegisterComponent } from './pages/delivery-component/delivery-register-component/delivery-register-component';
 
 
 export const routes: Routes = [
@@ -31,7 +33,10 @@ export const routes: Routes = [
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/product', component: ProductComponent },
   { path: 'pages/order', component: OrderComponent },
+  { path: 'pages/orderregister', component: OrderRegisterComponent },
   { path: 'pages/delivery', component: DeliveryComponent },
+  { path: 'pages/delivery/new', component: DeliveryRegisterComponent },
+
   { path: 'pages/orderitem', component: OrderItemComponent },
   { path: 'pages/payment', component: PaymentComponent },
   { path: 'pages/reservation', component: ReservationComponent },

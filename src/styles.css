@@ -15,12 +15,38 @@ body {
   @apply bg-[#0d0d0d] text-gray-200 font-sans;
 }
 
-/* Scrollbar premium */
+/* ===== Scrollbar Moderno ===== */
+
+::-webkit-scrollbar {
+  width: 5px;            /* grosor */
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #3a3a3abd;    /* fondo del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #454545;    /* color naranja (puedes cambiar) */
+  border-radius: 10px;    /* redondeado */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #be6003;    /* color naranja (puedes cambiar) */
+  border-radius: 10px;    /* redondeado */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b1b1b1;    /* color al pasar el mouse */
+}
+
+
+/* Scrollbar premium
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb {
   background: #f97316;
   border-radius: 10px;
-}
+} */
 
 /* ========================================
    OVERRIDE DEL DIALOGO GLOBAL

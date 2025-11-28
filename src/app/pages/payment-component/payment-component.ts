@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-payment-component',
@@ -22,7 +23,8 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule  
+    MatIconModule  ,
+    CommonModule
   ],
   templateUrl: './payment-component.html',
   styleUrl: './payment-component.css',
@@ -32,11 +34,10 @@ export class PaymentComponent {
 
   columnsDefinitions = [
     { def: 'idPayment', label: 'idPayment', hide: true },
-    { def: 'amount', label: 'amount', hide: false },
-    { def: 'name', label: 'name', hide: false },
-    { def: 'paymentDate', label: 'paymentDate', hide: false },
     { def: 'paymentMethod', label: 'paymentMethod', hide: false },
+    { def: 'paymentDate', label: 'paymentDate', hide: false },
     { def: 'status', label: 'status', hide: false },
+    { def: 'amount', label: 'amount', hide: false },
     { def: 'actions', label: 'actions', hide: false }
 
   ];
