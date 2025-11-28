@@ -32,9 +32,9 @@ export class HomeComponent implements OnInit {
 currentImage = 0;
 
 testimonials = [
-  { text: 'La mejor parrilla de Cajamarca. Ambiente espectacular.', author: 'Carlos M.' },
-  { text: 'Volvería mil veces. Atención A1 y comida deliciosa.', author: 'Rosa P.' },
-  { text: 'Los tragos y la música hacen que la noche sea perfecta.', author: 'Jorge L.' }
+  { text: 'La mejor parrilla de Cajamarca. Ambiente espectacular.', author: 'Elthon G.' },
+  { text: 'Volvería mil veces. Atención A1 y comida deliciosa.', author: 'Juan C.' },
+  { text: 'Los tragos y la música hacen que la noche sea perfecta.', author: 'Edu C.' }
 ];
 
 currentTestimonial = 0;
