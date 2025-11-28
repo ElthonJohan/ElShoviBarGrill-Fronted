@@ -1,11 +1,13 @@
 import { Category } from './category';
 
 export class MenuItem {
-  id!: number;
+  idMenuItem!: number;
   name!: string;
   description!: string;
   price!: number;
   imageUrl!: string;
-  available!: boolean;
-  category!: Category;
+  active!: boolean;  
+  idCategory!: number;
+
+  categoryName!:string;
 }

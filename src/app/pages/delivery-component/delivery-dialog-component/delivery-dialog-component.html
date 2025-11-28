@@ -1,0 +1,49 @@
+<mat-dialog-content>
+    <mat-toolbar><span>Medic Info</span></mat-toolbar>
+
+<div class="example-container">
+
+    <!-- <mat-form-field>
+        <mat-label>Specialty</mat-label>
+        <mat-select [(ngModel)]="delivery.order.idOrder">
+          @for (sp of orders; track sp) {
+            <mat-option [value]="sp.idOrder">{{sp.user}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field> -->
+
+    <mat-form-field>
+        <input matInput placeholder="Primary Name" [(ngModel)]="delivery.address">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Surname" [(ngModel)]="delivery.phone">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="CMP" [(ngModel)]="delivery.driverName">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Photo" [(ngModel)]="delivery.vehiclePlate">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Photo" [(ngModel)]="delivery.status">
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Photo" [(ngModel)]="delivery.deliveryTime">
+    </mat-form-field>
+
+
+    <!-- @if (delivery.photo) {
+        <img mat-card-image [src]="delivery.photo">
+    } -->
+
+    <button mat-button (click)="operate()">Done</button>
+    <button mat-button (click)="close()">Cancel</button>
+
+</div>
+
+</mat-dialog-content>

@@ -1,0 +1,89 @@
+<div class="container mx-auto px-6 py-10">
+
+  <!-- Título -->
+  <h1 class="text-4xl font-bold text-center mb-10 text-gray-800">
+    Nuestro Menú
+  </h1>
+
+  <!-- Filtros de Categorías -->
+  <div class="flex justify-center gap-4 flex-wrap mb-10">
+
+    <!-- Botón "Todos" -->
+    <button
+      class="px-5 py-2 rounded-full border transition"
+      [class.bg-black]="selectedCategory === null"
+      [class.text-white]="selectedCategory === null"
+      (click)="filterByCategory(null)">
+      Todos
+    </button>
+
+    <!-- Botones dinámicos -->
+    <button
+      *ngFor="let c of categories"
+      (click)="filterByCategory(c.idCategory)"
+      class="px-5 py-2 rounded-full border transition"
+      [class.bg-black]="selectedCategory === c.idCategory"
+      [class.text-white]="selectedCategory === c.idCategory">
+      {{ c.name }}
+    </button>
+
+  </div>
+
+  <!-- Loading Skeleton -->
+  <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div *ngFor="let n of [1,2,3,4,5,6]" class="animate-pulse bg-gray-200 h-64 rounded-2xl"></div>
+  </div>
+
+  <!-- Productos filtrados -->
+<!-- Productos filtrados -->
+<div *ngIf="!loading" 
+     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+
+  <div *ngFor="let p of filteredProducts"
+    class="group bg-white/80 backdrop-blur-md border border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.08)] rounded-3xl overflow-hidden 
+           hover:shadow-[0_10px_40px_rgba(0,0,0,0.18)] hover:-translate-y-2 transition-all duration-300">
+
+    <!-- Imagen -->
+    <div class="relative">
+      <img [src]="p.imageUrl || 'https://via.placeholder.com/400x300?text=Sin+Imagen'"
+          alt="producto"
+          class="w-full h-52 object-cover rounded-t-3xl group-hover:brightness-90 transition">
+
+      <!-- Badge -->
+      <div class="absolute top-3 left-3 bg-black/70 text-white text-xs px-3 py-1 rounded-full backdrop-blur-md">
+        {{ p.name.length > 15 ? (p.name | slice:0:15) + '…' : p.name }}
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="p-5">
+
+      <h3 class="text-xl font-semibold mb-2 text-gray-800 group-hover:text-black transition">
+        {{ p.name }}
+      </h3>
+
+      <p class="text-gray-500 text-sm leading-relaxed h-12 overflow-hidden">
+        {{ p.description }}
+      </p>
+
+      <div class="flex justify-between items-center mt-4">
+
+        <span class="text-lg font-bold text-green-600">
+          S/ {{ p.price }}
+        </span>
+
+        <!-- Botón -->
+        <button
+          class="px-4 py-2 bg-black text-white rounded-xl
+                 hover:bg-gray-900 active:scale-95 transition-all duration-200 shadow-md">
+          Agregar
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</div>

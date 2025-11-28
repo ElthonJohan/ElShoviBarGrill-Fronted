@@ -1,0 +1,113 @@
+<div class="crud-wrapper">
+  <!-- FILTRO -->
+  <mat-form-field appearance="fill" class="filter-box">
+    <mat-label>Filtrar usuarios</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Buscar por nombre, estado..."
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- TABLA GLASS -->
+  <div class="table-card mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="glass-table">
+      <!-- ID (oculto si no quieres mostrarlo) -->
+      <ng-container matColumnDef="idUser">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Usuario</th>
+        <td mat-cell *matCellDef="let row">{{ row.idUser }}</td>
+      </ng-container>
+
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
+        <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+      </ng-container>
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="userName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Nombre de Usuario
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.userName }}</td>
+      </ng-container>
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="password">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Comtraseña</th>
+        <td mat-cell *matCellDef="let row">{{ row.password }}</td>
+      </ng-container>
+
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Nombre Completo
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.fullName }}</td>
+      </ng-container>
+
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          Fecha de Creación
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.createdAt | date : "dd/MM/yyyy HH:mm:ss" }}
+        </td>
+      </ng-container>
+
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngClass]="row.active ? 'state-active' : 'state-inactive'">
+            {{ row.active ? "Activo" : "Inactivo" }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- CAPACIDAD -->
+      <ng-container matColumnDef="roles">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Roles</th>
+        <td mat-cell *matCellDef="let row">
+          <span *ngFor="let r of row.roles" class="role-badge">
+            {{ r.name.toUpperCase() }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- ACCIONES -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button class="btn-edit" (click)="openDialog(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            class="btn-delete"
+            (click)="delete(row.idUser)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
+    </table>
+
+    <!-- PAGINACIÓN -->
+    <mat-paginator
+      class="glass-paginator"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Select page of items"
+    >
+    </mat-paginator>
+
+    <!-- BOTÓN FLOTANTE ADD -->
+    <button mat-fab class="fab-add" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 10px;
+}
+
+/* GRID TARJETAS */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--content-bg);
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.dark-theme .card {
+  background: #1f1f1f;
+  box-shadow: 0 2px 8px rgba(255,255,255,0.05);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+.card-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 30px;
+}
+
+.success { background: #2ecc71; }
+.warning { background: #f1c40f; }
+.info    { background: #3498db; }
+.danger  { background: #e74c3c; }
+
+/* TXT TARJETAS */
+.card-content h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+.card-content p {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.dark-theme .card-content h3 { color: #ccc; }
+
+/* GRID GRÁFICAS */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 20px;
+}
+
+.chart-box {
+  background: var(--content-bg);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.dark-theme .chart-box {
+  background: #1c1c1c;
+}

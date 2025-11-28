@@ -1,0 +1,142 @@
+<div class="order-container">
+
+  <h2>Registrar Orden</h2>
+
+  <form [formGroup]="form">
+
+    <!-- =====================
+         SECCIÓN DE DATOS BÁSICOS
+         ===================== -->
+    <div class="row">
+
+      <!-- Usuario -->
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="idUser">
+          <mat-option *ngFor="let u of users" [value]="u.idUser">
+            {{ u.userName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Tipo de orden -->
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo de Orden</mat-label>
+        <mat-select formControlName="orderType">
+          <mat-option *ngFor="let t of types" [value]="t.value">
+             {{ t.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Tipo de orden -->
+      <mat-form-field appearance="fill">
+        <mat-label>Estado de Orden</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let t of statuss" [value]="t.value">
+             {{ t.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Mesa (solo si no es delivery) -->
+      <mat-form-field appearance="fill" *ngIf="form.value.orderType !== 'DELIVERY'">
+        <mat-label>Mesa</mat-label>
+        <mat-select formControlName="idTable">
+          <mat-option *ngFor="let t of tables" [value]="t.idTable">
+            Mesa {{ t.tableNumber }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+       <!-- NOTAS -->
+    <mat-form-field appearance="fill" class="notes-field">
+      <mat-label>Notas</mat-label>
+      <textarea matInput formControlName="notes"></textarea>
+    </mat-form-field>
+
+    </div>
+
+
+  <!-- ====================== -->
+  <!--     CARRUSEL MENU      -->
+  <!-- ====================== -->
+
+  <h3 class="subtitle">Productos</h3>
+
+  <div class="menu-carousel">
+    <div class="menu-card" *ngFor="let item of menuItems" (click)="addItem(item)">
+      <img [src]="item.imageUrl" alt="">
+      <h4>{{ item.name }}</h4>
+      <p>S/ {{ item.price }}</p>
+      <button mat-flat-button color="primary">Agregar</button>
+    </div>
+  </div>
+
+
+    <!-- =====================
+         TABLA DE ITEMS
+         ===================== -->
+    <h3>Items seleccionados</h3>
+
+    <table class="item-table" *ngIf="items.controls.length > 0">
+
+      <thead>
+        <tr>
+          <th>Nombre</th>   
+          <th>Cantidad</th>
+          <th>Precio</th>
+          <th>Subtotal</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let it of items.controls; let i = index" [formGroup]="getItemFormGroup(i)">
+
+          <td>{{ it.value.name }}</td>
+
+          <td>
+            <input type="number" min="1" formControlName="quantity" class="qty-input">
+          </td>
+
+          <td>S/{{ it.value.unitPrice }}</td>
+
+          <td>
+            S/{{ it.value.quantity * it.value.unitPrice }}
+          </td>
+
+          <td>
+            <button mat-icon-button color="warn" (click)="removeItem(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+    <div *ngIf="items.controls.length === 0" class="no-items">
+      No hay items en la orden.
+    </div>
+
+
+    <!-- =====================
+         TOTAL
+         ===================== -->
+    <div class="total-box">
+      TOTAL: <strong>S/{{ total }}</strong>
+    </div>
+
+
+    <!-- =====================
+         BOTÓN GUARDAR
+         ===================== -->
+    <button mat-raised-button color="primary" (click)="saveOrder()" class="save-btn">
+      Guardar Orden
+    </button>
+
+  </form>
+
+</div>

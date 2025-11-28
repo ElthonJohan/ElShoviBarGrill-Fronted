@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+// ======================================================
+// 1. Core de Angular Material (Necesario en M3)
+// ======================================================
+@include mat.core();
+
+// ======================================================
+// 2. Definir paletas M3 permitidas (solo primary y tertiary)
+// ======================================================
+
+// ---- MODO CLARO ----
+$primary-light: mat.$red-palette;
+$tertiary-light: mat.$orange-palette;
+
+
+// ======================================================
+// 3. Definir tema LIGHT (Modo Claro)
+// ======================================================
+$light-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: $primary-light,
+    tertiary: $tertiary-light
+  ),
+));
+
+// ======================================================
+// 4. Definir tema DARK (Modo Oscuro)
+
+// ======================================================
+// 5. Aplicar temas con clases del host
+// ======================================================
+
+// -------- MODO CLARO --------
+.light-theme {
+  @include mat.all-component-colors($light-theme);
+  @include mat.all-component-typographies($dark-theme);
+  @include mat.all-component-densities($light-theme);
+}

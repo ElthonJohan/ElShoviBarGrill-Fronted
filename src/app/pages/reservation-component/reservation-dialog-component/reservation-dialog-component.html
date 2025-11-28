@@ -1,0 +1,72 @@
+<mat-dialog-content class="dialog-container">
+
+  <div class="dialog-wrapper">
+
+    <!-- HEADER -->
+    <div class="dialog-header">
+      <h2>{{ isEdit ? 'Editar Reserva' : 'Nueva Reserva' }}</h2>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" class="form-grid">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="user">
+          <mat-option *ngFor="let u of users" [value]="u.idUser">
+            {{ u.userName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Mesa</mat-label>
+        <mat-select formControlName="table">
+          <mat-option *ngFor="let t of tables" [value]="t.idTable">
+            Mesa {{ t.tableNumber }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="reservationDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Hora inicio</mat-label>
+        <input matInput type="time" formControlName="reservationTimeStart">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Hora fin</mat-label>
+        <input matInput type="time" formControlName="reservationTimeEnd">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="PENDIENTE">Pendiente</mat-option>
+          <mat-option value="CONFIRMADA">Confirmada</mat-option>
+          <mat-option value="CANCELADA">Cancelada</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+
+    <!-- ACCIONES -->
+    <div class="dialog-actions">
+      <button mat-flat-button color="primary" class="btn-primary" (click)="operate()" [disabled]="form.invalid">
+        {{ isEdit ? 'Actualizar' : 'Guardar' }}
+      </button>
+
+      <button mat-button class="btn-secondary" (click)="close()">
+        Cancelar
+      </button>
+    </div>
+
+  </div>
+
+</mat-dialog-content>

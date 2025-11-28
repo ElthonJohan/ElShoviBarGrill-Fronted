@@ -1,0 +1,76 @@
+<mat-dialog-content class="dialog-container">
+
+  <div class="dialog-wrapper">
+
+    <!-- HEADER -->
+    <div class="dialog-header">
+      <h2>{{ isEdit ? 'Editar Reserva' : 'Nueva Reserva' }}</h2>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" class="form-grid">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let c of categories" [value]="c.idCategory">
+            {{ c.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" placeholder="nombre"/>
+         <mat-error *ngIf="form.get('name')?.hasError('required')">
+        El nombre es requerida
+      </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Descripción</mat-label>
+        <input matInput formControlName="description" placeholder="..."/>
+         
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Precio</mat-label>
+        <input matInput formControlName="price" placeholder="S/."/>
+         <mat-error *ngIf="form.get('price')?.hasError('required')">
+        La capacidad es requerida
+      </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Imagen</mat-label>
+        <input matInput formControlName="imageUrl" placeholder="link"/>
+         <mat-error *ngIf="form.get('imageUrl')?.hasError('required')">
+        La capacidad es requerida
+      </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="fill">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="active">
+          <mat-option *ngFor="let a of actives" [value]="a.value">{{a.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+
+    <!-- ACCIONES -->
+    <div class="dialog-actions">
+      <button mat-flat-button color="primary" class="btn-primary" (click)="operate()" [disabled]="form.invalid">
+        {{ isEdit ? 'Actualizar' : 'Guardar' }}
+      </button>
+
+      <button mat-button class="btn-secondary" (click)="close()">
+        Cancelar
+      </button>
+    </div>
+
+  </div>
+
+</mat-dialog-content>

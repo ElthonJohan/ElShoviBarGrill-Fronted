@@ -1,0 +1,71 @@
+<div class="delivery-container">
+  <h2>Registrar Delivery</h2>
+
+  <form [formGroup]="form" (ngSubmit)="saveDelivery()">
+
+     <!-- ORDEN -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Orden ID</mat-label>
+      <input matInput formControlName="idOrder">
+    </mat-form-field>
+
+    <!-- USUARIO -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Usuario</mat-label>
+      <input matInput formControlName="userName">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="address">
+      <mat-error *ngIf="form.get('address')?.invalid">
+        Ingrese una dirección válida (mínimo 3 caracteres)
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone">
+      <mat-error *ngIf="form.get('phone')?.invalid">
+        El teléfono debe tener 9 dígitos
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre del conductor</mat-label>
+      <input matInput formControlName="driverName">
+      <mat-error *ngIf="form.get('driverName')?.invalid">
+        Ingrese un nombre válido (mínimo 3 caracteres)
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Placa del vehículo</mat-label>
+      <input matInput formControlName="vehiclePlate">
+      <mat-error *ngIf="form.get('vehiclePlate')?.invalid">
+        Ingrese una placa válida (6–15 caracteres)
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Estado del delivery</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let s of statusOptions" [value]="s.value">
+          {{ s.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha y hora de entrega</mat-label>
+      <input type="datetime-local" matInput formControlName="deliveryTime">
+      <mat-error *ngIf="form.get('deliveryTime')?.invalid">
+        La fecha y hora de entrega es obligatoria
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" class="full-width">
+      Guardar Delivery
+    </button>
+  </form>
+</div>
