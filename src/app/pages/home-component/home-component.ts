@@ -17,20 +17,36 @@ export class HomeComponent implements OnInit {
   loading = true;
   error = false;
 
-  // ----- Horario como carrusel -----
-  scheduleCards = [
-    { days: 'Lunes a Viernes', hours: '12:00 pm - 11:00 pm' },
-    { days: 'Sábados y Domingos', hours: '11:00 am - 12:00 am' }
-  ];
   activeCardIndex = 0;
 
   constructor(
     private router: Router,
     private categoryService: CategoryService
   ) {}
+  heroImages = [
+  "https://i.postimg.cc/J43kGgjB/principal.jpg",
+  "https://i.postimg.cc/J0YdJqyy/bartender.webp",
+  "https://i.postimg.cc/xTqZQW7y/carne.jpg"
+];
+
+currentImage = 0;
+
+testimonials = [
+  { text: 'La mejor parrilla de Cajamarca. Ambiente espectacular.', author: 'Carlos M.' },
+  { text: 'Volvería mil veces. Atención A1 y comida deliciosa.', author: 'Rosa P.' },
+  { text: 'Los tragos y la música hacen que la noche sea perfecta.', author: 'Jorge L.' }
+];
+
+currentTestimonial = 0;
+currentYear = new Date().getFullYear();
 
   ngOnInit(): void {
-    this.loadCategories();
+    setInterval(() => {
+    this.currentImage = (this.currentImage + 1) % this.heroImages.length;
+  }, 5000);
+  setInterval(() => {
+    this.currentTestimonial = (this.currentTestimonial + 1) % this.testimonials.length;
+  }, 10000);
   }
 
   loadCategories() {
@@ -46,14 +62,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // ----- Navegación de las tarjetas de horario -----
-  prevCard() {
-    this.activeCardIndex = (this.activeCardIndex - 1 + this.scheduleCards.length) % this.scheduleCards.length;
-  }
-
-  nextCard() {
-    this.activeCardIndex = (this.activeCardIndex + 1) % this.scheduleCards.length;
-  }
 
   // ----- Navegación a categorías y menú -----
   goToCategory(id: number) {
