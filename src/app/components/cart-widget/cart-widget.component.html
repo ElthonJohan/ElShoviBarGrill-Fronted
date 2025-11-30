@@ -1,0 +1,39 @@
+<div class="cart-widget">
+  <button class="cart-btn" (click)="toggle()">
+    <mat-icon>shopping_cart</mat-icon>
+    <span class="badge" *ngIf="totalCount > 0">{{ totalCount }}</span>
+  </button>
+
+  <div class="panel" *ngIf="open">
+    <h4>Carrito ({{ totalCount }})</h4>
+
+    <div *ngIf="items.length === 0" class="empty">No hay productos en el carrito</div>
+
+    <div *ngFor="let it of items" class="item">
+      <img [src]="it.imageUrl || 'https://via.placeholder.com/64'" alt="{{it.name}}"/>
+      <div class="meta">
+        <div class="name">{{ it.name }}</div>
+        <div class="line">
+          <span class="price">S/ {{ it.price | number:'1.2-2' }}</span>
+          <span class="mult"> x {{ it.quantity }}</span>
+          <span class="equals"> = </span>
+          <span class="subtotal">S/ {{ (it.price * it.quantity) | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="qty">
+        <button (click)="decrease(it)">-</button>
+        <span>{{ it.quantity }}</span>
+        <button (click)="increase(it)">+</button>
+      </div>
+      <button class="remove" (click)="remove(it)">x</button>
+    </div>
+
+    <div class="totals" *ngIf="items.length > 0">
+      <div class="total-label">Total:</div>
+      <div class="total-amount">S/ {{ totalAmount | number:'1.2-2' }}</div>
+    </div>
+    <div class="actions" *ngIf="items.length > 0">
+      <button class="checkout" (click)="checkout()">Generar orden de compra</button>
+    </div>
+  </div>
+</div>
