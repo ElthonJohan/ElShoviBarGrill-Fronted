@@ -15,6 +15,8 @@ import { DashboardComponent } from './pages/dashboard-component/dashboard-compon
 import { HomeComponent } from './pages/home-component/home-component';
 import { ProductComponent } from './pages/product-component/product-component';
 import { carritoComponent } from './pages/carrito-component/carrito-component';
+import { OrderRegisterComponent } from './pages/order-register-component/order-register-component';
+import { DeliveryRegisterComponent } from './pages/delivery-component/delivery-register-component/delivery-register-component';
 
 
 export const routes: Routes = [
