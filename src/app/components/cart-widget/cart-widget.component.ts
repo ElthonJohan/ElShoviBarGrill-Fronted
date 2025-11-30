@@ -55,7 +55,7 @@ export class CartWidgetComponent {
     }
     this.open = false; // cerrar panel
     // navegar a pedidos
-    this.router.navigate(['/pages/carrito']);
+    this.router.navigate(['carrito']);
   }
 
 }

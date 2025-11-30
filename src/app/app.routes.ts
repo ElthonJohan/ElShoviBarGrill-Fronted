@@ -30,13 +30,26 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
 
-  // Layout para clientes (solo CLIENTE)
+
+  // Layout publico
   {
     path: '',
     component: ClienteLayoutComponent,
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'ordenes', component: OrderComponent },
+{ path: 'menu', component: MenuItemComponent }, 
+    { path: 'carrito', component: carritoComponent },
+     //{ path: 'perfil', component: PerfilClienteComponent }
+    ]
+  },
+  // Layout para clientes (solo CLIENTE)
+  {
+    path: '',
+    component: ClienteLayoutComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['cliente'] },
+    children: [
+      { path: 'menu', component: MenuItemComponent },
       //{ path: 'perfil', component: PerfilClienteComponent }
     ]
   },
@@ -48,7 +61,7 @@ export const routes: Routes = [
     data: { roles: ['ADMIN', 'MESERO'] },
     children: [
       { path: 'pages/dashboard', component: DashboardComponent },
-    { path: 'pages/carrito', component: carritoComponent },
+    { path: 'carrito', component: carritoComponent },
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/product', component: ProductComponent },
@@ -70,37 +83,11 @@ export const routes: Routes = [
     ]
   },
 
-  // Home público
-  // { path: 'home', component: HomeComponent },
-
   // Auth
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  // Pages
-  // { path: 'pages/dashboard', component: DashboardComponent },
-  //   { path: 'pages/carrito', component: carritoComponent },
-  // { path: 'pages/category', component: CategoryComponent },
-  // { path: 'pages/menuitem', component: MenuItemComponent },
-  // { path: 'pages/product', component: ProductComponent },
-  // { path: 'pages/order', component: OrderComponent },
-  // { path: 'pages/order/:id', component: OrderComponent },
-  // {path: 'pages/order-details/:id', component: OrderDetailsComponent},
-
-  // { path: 'pages/orderregister', component: OrderRegisterComponent },
-  // { path: 'pages/delivery', component: DeliveryComponent },
-  // { path: 'pages/delivery/new', component: DeliveryRegisterComponent },
-
-  // { path: 'pages/orderitem', component: OrderItemComponent },
-  // { path: 'pages/payment', component: PaymentComponent },
-  // { path: 'pages/reservation', component: ReservationComponent },
-  // { path: 'pages/role', component: RoleComponent },
-  // { path: 'pages/table', component: TableComponent },
-  // { path: 'pages/user', component: UserComponent },
-
-  // Ruta por defecto
-  // { path: '', redirectTo: '/home', pathMatch: 'full' },
-
-  // // Not found
-  // { path: '**', redirectTo: '/home' },
+  // Fallback
+  { path: '**', redirectTo: 'home' }
+ 
 ];

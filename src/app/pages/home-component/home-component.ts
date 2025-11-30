@@ -65,10 +65,10 @@ currentYear = new Date().getFullYear();
 
   // ----- Navegación a categorías y menú -----
   goToCategory(id: number) {
-    this.router.navigate(['/pages/menuitem'], { queryParams: { categoryId: id } });
+    this.router.navigate(['menu'], { queryParams: { categoryId: id } });
   }
 
   goToMenu() {
-    this.router.navigate(['/pages/menuitem']);
+    this.router.navigate(['menu']);
   }
 }
