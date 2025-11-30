@@ -1,51 +1,178 @@
 <div class="home-container">
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-overlay">
-      <h1 class="hero-title">Bienvenido a El Shovi Bar-Grill</h1>
-      <p class="hero-subtitle">Descubre nuestro menú y vive la experiencia</p>
-      <button class="btn-menu" (click)="goToMenu()">Ver Menú Completo</button>
-    </div>
-  </section>
+<!-- Hero -->
+<section class="hero-slider">
+  <div class="slide" *ngFor="let img of heroImages; let i = index"
+       [class.active]="i === currentImage">
+    <img [src]="img" class="hero-img" />
+  </div>
 
-  <!-- Horario de Atención -->
-<section class="schedule">
-  <h2 class="section-title">Horario de Atención</h2>
-
-  <div class="schedule-container">
-    <!-- Flecha izquierda -->
-    <button class="arrow left" (click)="prevCard()">&#10094;</button>
-
-    <!-- Tarjetas -->
-    <div class="schedule-card-wrapper">
-      <div class="schedule-card" *ngFor="let card of scheduleCards; let i = index"
-           [class.active]="i === activeCardIndex">
-        <p>{{ card.days }}: <strong>{{ card.hours }}</strong></p>
-      </div>
-    </div>
-
-    <!-- Flecha derecha -->
-    <button class="arrow right" (click)="nextCard()">&#10095;</button>
+  <div class="hero-overlay">
+    <h1 class="hero-title">Bienvenido a El Shovi Bar-Grill</h1>
+    <p class="hero-subtitle">Una experiencia inolvidable te espera.</p>
   </div>
 </section>
 
-  <!-- Categorías -->
-  <section class="categories">
-    <h2 class="section-title">Categorías</h2>
-    <div *ngIf="loading" class="loading">Cargando categorías...</div>
-    <div *ngIf="error" class="error">Error al cargar categorías.</div>
-    <div class="category-list" *ngIf="!loading && !error">
-      <div class="category-card fade" *ngFor="let cat of categories" (click)="goToCategory(cat.idCategory)">
-        <h3>{{ cat.name }}</h3>
-        <p>{{ cat.description }}</p>
-      </div>
-    </div>
+  
+<!-- Barra informativa fondo dividido -->
+<div class="split-background">
+  <div class="left-bg"></div>
+  <div class="right-bg"></div>
+</div>
+
+<!-- Barra informativa -->
+<div class="info-bar">
+  <div class="info-item left">
+    <span>📍 Jr. San Camilo - Cajamarca</span>
+  </div>
+
+  <div class="info-item center">
+    <span>📞 954 387 663</span>
+  </div>
+
+  <div class="info-item right">
+    <span>🕒 Lun - Vier: 10:00 am - 11:00 pm</span>
+    <span>Sab - Dom: 11:00 am - 12:00 pm</span>
+  </div>
+</div>
+
+<section class="split-section">
+  <!-- Imagen a la izquierda -->
+  <div class="split-left">
+    <img src="https://i.postimg.cc/25T6YNpw/happy-bar-grill-mall.jpg" alt="Imagen muestra">
+  </div>
+
+  <!-- Fondo negro a la derecha -->
+  <div class="split-right">
+    <h2>Sobre Nosotros</h2>
+    <p>El Shovi Bar-Grill es un espacio único en Cajamarca donde combinamos la tradición de la parrilla con un estilo
+      moderno y acogedor. Nos especializamos en carnes, pollos y preparaciones a la brasa, destacando sabores intensos y
+      técnicas de cocción que realzan la textura y jugosidad en cada plato. Nuestra barra ofrece bebidas clásicas,
+      cocteles especiales y opciones ideales para acompañar cualquier ocasión. Con un ambiente cálido, música agradable y
+      atención cercana, El Shovi Bar-Grill es el lugar perfecto para disfrutar en familia, compartir con amigos o celebrar
+      momentos especiales. Queremos que cada visita sea una experiencia llena de sabor, buen ambiente y comodidad.
+    </p>
+  </div>
   </section>
 
-  <!-- Botón fijo de WhatsApp -->
-  <a class="whatsapp-btn" href="https://wa.me/51954387663" target="_blank" rel="noopener noreferrer">
-    <img src="https://i.postimg.cc/15hwYnCz/whats-Aap.jpg" alt="WhatsApp">
-  </a>
+ <!-- Sección Redes Sociales -->
+<section class="social-section">
+  <h2 class="social-title">Síguenos en nuestras Redes Sociales</h2>
 
-</div>
+  <div class="social-container">
+
+    <!-- Facebook -->
+    <div class="social-item">
+      <a href="https://www.facebook.com/ElShoviBarGrill" target="_blank" class="social-btn facebook">
+        <img src="https://i.postimg.cc/sg04Kqx6/Logo-de-Facebook.png" alt="Facebook">
+        <span class="social-title-text">Facebook</span>
+      </a>
+      <p class="social-text">
+        Síguenos en Facebook y entérate de todas las novedades que tenemos para ti.
+      </p>
+    </div>
+
+    <!-- Instagram -->
+    <div class="social-item instagram">
+      <a href="https://www.instagram.com/elshovi.bargrill/" target="_blank" class="social-btn instagram">
+        <img src="https://i.postimg.cc/j5hW3ncv/Instagram-logo-2022.jpg" alt="Instagram">
+        <span class="social-title-text">Instagram</span>
+      </a>
+      <p class="social-text">
+        Conéctate con nosotros en Instagram y descubre contenido exclusivo y momentos especiales.
+      </p>
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="social-item">
+      <a href="https://wa.me/51954387663" target="_blank" class="social-btn whatsapp">
+        <img src="https://i.postimg.cc/Wbydyvm2/Whats-App-svg.webp" alt="WhatsApp">
+        <span class="social-title-text">WhatsApp</span>
+      </a>
+      <p class="social-text">
+        Escríbenos por WhatsApp para consultas personalizadas.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Sección Menú -->
+<section class="menu-black-section">
+
+  <h2 class="menu-black-title">¿Listo para vivir la experiencia El Shovi?</h2>
+
+  <p class="menu-black-text">
+    Te esperamos para disfrutar de la mejor parrilla, bebidas y ambiente de Cajamarca.
+  </p>
+  <button class="menu-black-btn" (click)="goToMenu()">
+    Ver Menú
+  </button>
+
+</section>
+
+<section class="image-strip">
+  <img src="https://i.postimg.cc/Kzncv1HH/parrilla.webp" alt="">
+  <img src="https://i.postimg.cc/63LwxD8P/pollo-brasa.avif" alt="">
+  <img src="https://i.postimg.cc/NMbV4Y9B/cockteles.avif" alt="">
+  <img src="https://i.postimg.cc/brC7z8pC/vino.avif" alt="">
+</section>
+
+
+/*Ubicacion mapa*/
+<section class="location-section">
+  <h2 class="location-title">Ubícanos</h2>
+
+  <div class="map-container">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d248.69978999814964!2d-78.4983388!3d-7.1745613!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91b25bbebe7e4507%3A0x3e6e2b7be09d291d!2sEl%20Shovi%20Bar%20Grill!5e1!3m2!1ses!2spe!4v1764303251077!5m2!1ses!2spe"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+<!-- Sección de Testimonios -->
+<section class="testimonials-section">
+  <h2>Lo que dicen nuestros clientes</h2>
+
+  <div class="testimonials-slider">
+    <div class="testimonial" *ngFor="let t of testimonials; let i = index" [class.active]="i === currentTestimonial">
+      <p class="testimonial-text">“{{ t.text }}”</p>
+      <h4 class="testimonial-author">– {{ t.author }}</h4>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-col">
+      <h3>El Shovi Bar-Grill</h3>
+      <p>Pasión por el sabor, ambiente y calidad.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p>📍 Jr. San Camilo - Cajamarca</p>
+      <p>📞 954 387 663</p>
+      <p>🕒 Todos los días</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Síguenos</h4>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/ElShoviBarGrill" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com/elshovi.bargrill/" target="_blank">Instagram</a>
+        <a href="https://wa.me/51954387663" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © {{ currentYear }} El Shovi Bar-Grill – Todos los derechos reservados.
+  </div>
+</footer>

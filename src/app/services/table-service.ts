@@ -9,8 +9,13 @@ import { Table } from '../model/table';
 })
 export class TableService extends GenericService<Table> {
 
+
+  private uri: string;
+
   constructor(http: HttpClient, @Inject('API_URL') apiUrl: string) {
     super(http, `${apiUrl}/tables`);
+    this.uri = `${apiUrl}/tables`;
   }
+
 
 }

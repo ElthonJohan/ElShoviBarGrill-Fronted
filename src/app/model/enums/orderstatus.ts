@@ -14,7 +14,7 @@ export const OrderStatusLabels: Record<OrderStatus , string> = {
   [OrderStatus.COMPLETADA]: 'Completada',
   [OrderStatus.PENDIENTE]: 'Pendiente',
   [OrderStatus.EN_PREPARACION]: 'En preparación',
-  [OrderStatus.LISTO]: 'Para llevar',
+  [OrderStatus.LISTO]: 'Listo',
   [OrderStatus.ENTREGADO]: 'Entregado',
   [OrderStatus.CANCELADO]: 'Cancelado'
 };
