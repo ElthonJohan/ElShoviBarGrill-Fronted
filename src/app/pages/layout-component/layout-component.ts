@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartWidgetComponent } from '../../components/cart-widget/cart-widget.component';
+import { CartWidgetComponent } from '../../components/cart-widget/cart-widget.component'; // se agregó 
 
 @Component({
   selector: 'app-layout',
@@ -22,8 +22,8 @@ import { CartWidgetComponent } from '../../components/cart-widget/cart-widget.co
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
-    RouterModule,
-    CartWidgetComponent
+    RouterModule, // se agregó
+    CartWidgetComponent // se agregó
   ],
   templateUrl: './layout-component.html',
   styleUrls: ['./layout-component.css']

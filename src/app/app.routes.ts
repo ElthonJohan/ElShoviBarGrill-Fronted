@@ -14,6 +14,7 @@ import { RegisterComponent } from './pages/register-component/register-component
 import { DashboardComponent } from './pages/dashboard-component/dashboard-component';
 import { HomeComponent } from './pages/home-component/home-component';
 import { ProductComponent } from './pages/product-component/product-component';
+import { carritoComponent } from './pages/carrito-component/carrito-component';
 
 
 export const routes: Routes = [
@@ -27,6 +28,7 @@ export const routes: Routes = [
 
   // Pages
   { path: 'pages/dashboard', component: DashboardComponent },
+    { path: 'pages/carrito', component: carritoComponent },
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/product', component: ProductComponent },

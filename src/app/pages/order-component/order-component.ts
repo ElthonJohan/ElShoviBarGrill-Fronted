@@ -9,10 +9,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { OrderDialogComponent } from './order-dialog-component/order-dialog-component';
 import { switchMap } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
+/*Se agregó*/ 
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart-service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+/* Hasta aquí*/
 import { CartItem } from '../../services/cart-service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -21,12 +23,12 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-order-component',
   imports: [
-    CommonModule,
+    CommonModule, // se agregó
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     MatFormFieldModule,
-    RouterModule,
+    RouterModule, // se agregó
     MatInputModule,
     MatButtonModule,
     MatIconModule
@@ -36,8 +38,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class OrderComponent {
    dataSource: MatTableDataSource<Order> = new MatTableDataSource<Order>();
-  checkoutTotal: number | null = null;
-  checkoutItems: CartItem[] = [];
+  checkoutTotal: number | null = null; // se agregó
+  checkoutItems: CartItem[] = []; // se agregó
 
   columnsDefinitions = [
     { def: 'idOrder', label: 'idOrder', hide: true },
@@ -61,8 +63,8 @@ export class OrderComponent {
   constructor(
     private orderService: OrderService,
     private _dialog: MatDialog,
-    private _snackBar: MatSnackBar,
-    private cartService: CartService,
+    private _snackBar: MatSnackBar, // se agregó
+    private cartService: CartService, // hasta aquí
     private router: Router
   ) { }
 
@@ -71,6 +73,7 @@ export class OrderComponent {
     this.orderService.getModelChange().subscribe(data => this.createTable(data));
     this.orderService.getMessageChange().subscribe(data => this._snackBar.open(data, 'INFO', { duration: 2000 }));
 
+    // Se agregó desde aquí
     // leer payload de checkout (total + items) si viene desde el carrito
     try {
       const raw = localStorage.getItem('elshovi_checkout_payload');
@@ -97,6 +100,7 @@ export class OrderComponent {
     } catch (e) {
       console.error('Error leyendo checkout payload', e);
     }
+    // Hasta aquí
   }
 
   createTable(data: Order[]) {
