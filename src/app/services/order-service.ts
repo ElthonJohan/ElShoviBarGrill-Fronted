@@ -23,5 +23,22 @@ override save(order: Order): Observable<Order> {
   return this.http.post<Order>(this.uri, order);
 }
 
+payOrder(idOrder: number, paymentMethod: string) {
+  return this.http.post(`${this.uri}/${idOrder}/pay`, {
+    paymentMethod: paymentMethod
+  });
+}
+
+
+checkMesaDisponible(idMesa: number, idOrder?: number) {
+  return this.http.get<boolean>(`${this.uri}/checkMesa/${idMesa}?exclude=${idOrder || ''}`);
+}
+
+
+mesaOcupada(idTable: number) {
+  return this.http.get<boolean>(`${this.uri}/mesa/ocupada/${idTable}`);
+}
+
+
 
 }

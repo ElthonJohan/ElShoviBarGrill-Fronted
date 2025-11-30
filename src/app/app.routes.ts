@@ -33,6 +33,7 @@ export const routes: Routes = [
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/product', component: ProductComponent },
   { path: 'pages/order', component: OrderComponent },
+  { path: 'pages/order/:id', component: OrderComponent },
   { path: 'pages/orderregister', component: OrderRegisterComponent },
   { path: 'pages/delivery', component: DeliveryComponent },
   { path: 'pages/delivery/new', component: DeliveryRegisterComponent },

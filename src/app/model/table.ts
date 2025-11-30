@@ -3,4 +3,6 @@ export class Table {
   tableNumber!: number;
   capacity!: number;
   status!: string;
+
+  ocupada?: boolean;
 }

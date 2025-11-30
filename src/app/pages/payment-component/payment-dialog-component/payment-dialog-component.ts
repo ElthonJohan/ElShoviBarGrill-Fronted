@@ -10,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { OrderService } from '../../../services/order-service';
 
 @Component({
   selector: 'app-payment-dialog-component',
@@ -27,76 +28,32 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './payment-dialog-component.css',
 })
 export class PaymentDialogComponent {
-  payment: Payment;
-  form!: FormGroup;
-  statuses = [
-      { value: 'FINALIZADO', label: 'Finalizado' },
-    { value: 'PENDIENTE', label: 'Pendiente' },
-    { value: 'RECHAZADO', label: 'Rechazado' }
-  ];
-
+ 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: Payment,
-    private _dialogRef: MatDialogRef<PaymentDialogComponent>,
-    private paymentService: PaymentService,
-    private fb: FormBuilder
-  ){}
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private orderService: OrderService,
+    private dialogRef: MatDialogRef<PaymentDialogComponent>
+  ) {}
 
-  ngOnInit(): void {
-    this.payment = { ...this.data };
-    
-    
-    this.form = this.fb.group({
-      name: this.fb.control(this.payment.amount ?? ''),
-      paymentDate: this.fb.control(this.payment.paymentDate ?? '', [Validators.required]),
-      paymentMethod: this.fb.control(this.payment.paymentMethod ?? false, [Validators.required]),
-      status: this.fb.control(this.payment.status ?? '', [Validators.required]),
+  paymentMethod = "";
+
+  pagar() {
+     if (!this.paymentMethod) {
+    alert("Selecciona un método de pago");
+    return;
+  }
+
+  this.orderService.payOrder(this.data.idOrder, this.paymentMethod)
+    .subscribe({
+      next: () => {
+        alert("Pago registrado correctamente");
+        this.dialogRef.close(true);
+      },
+      error: err => {
+        console.error(err);
+        alert("Error al registrar el pago");
+      }
     });
-  }
-
-  /** Async validator: checks backend for existing tableNumber and ignores current table id */
-
-  close(){
-    this._dialogRef.close();
-  }
-
-
-
-  operate(){
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    // merge form values into table object
-    const formVal = this.form.value;
-    const payload: Payment = {
-      ...this.payment,
-      amount: formVal.name,
-      paymentDate: formVal.paymentDate,
-      status: formVal.status,
-      paymentMethod: formVal.paymentMethod,
-    };
-
-    if (payload != null && payload.idPayment > 0 ) {
-      // UPDATE
-      this.paymentService.update(payload.idPayment, payload)
-        .pipe(switchMap(() => this.paymentService.findAll()))
-        .subscribe(data => {
-          this.paymentService.setModelChange(data);
-          this.paymentService.setMessageChange('UPDATED!');
-        });
-    } else {
-      // INSERT
-      this.paymentService.save(payload)
-        .pipe(switchMap(() => this.paymentService.findAll()))
-        .subscribe(data => {
-          this.paymentService.setModelChange(data);
-          this.paymentService.setMessageChange('CREATED!');
-        });
-    }
-
-    this.close();
   }
 
 }

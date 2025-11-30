@@ -1,6 +1,6 @@
 <div class="order-container">
 
-  <h2>Registrar Orden</h2>
+  <h2>{{ editingId ? 'Editar Orden' : 'Registrar Orden' }}</h2>
 
   <form [formGroup]="form">
 
@@ -43,9 +43,14 @@
       <mat-form-field appearance="fill" *ngIf="form.value.orderType !== 'DELIVERY'">
         <mat-label>Mesa</mat-label>
         <mat-select formControlName="idTable">
-          <mat-option *ngFor="let t of tables" [value]="t.idTable">
-            Mesa {{ t.tableNumber }}
-          </mat-option>
+          <mat-option *ngFor="let t of tables" 
+                [value]="t.idTable"
+                [disabled]="t.ocupada">
+
+      Mesa {{ t.tableNumber }}
+      <span *ngIf="t.ocupada" style="color: red;">(Ocupada)</span>
+
+    </mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -133,8 +138,11 @@
     <!-- =====================
          BOTÓN GUARDAR
          ===================== -->
-    <button mat-raised-button color="primary" (click)="saveOrder()" class="save-btn">
-      Guardar Orden
+    <button mat-raised-button
+     color="primary" 
+     (click)="saveOrder()" 
+     class="save-btn">
+      {{ editingId ? 'Actualizar Orden' : 'Guardar Orden' }}
     </button>
 
   </form>
