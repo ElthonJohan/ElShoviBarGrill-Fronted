@@ -139,8 +139,9 @@ mat-row:hover {
   text-transform: uppercase;
 }
 .status-badge.active {
-  background-color: #16a34a;
+  background-color: #048217;
   color: white;
+  
 }
 
 .status-badge.pendiente {
@@ -286,7 +287,7 @@ mat-row:hover {
 
 .status.PENDING { background: #f39c12; }
 .status.CONFIRMED { background: #3498db; }
-.status.COMPLETED { background: #2ecc71; }
+.status.COMPLETED { background: #098324; }
 .status.CANCELLED { background: #e74c3c; }
 
 

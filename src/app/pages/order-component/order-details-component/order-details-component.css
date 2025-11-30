@@ -1,0 +1,8 @@
+:host {
+  display: block;
+}
+
+mat-card {
+  color: #fff;
+  backdrop-filter: blur(4px);
+}

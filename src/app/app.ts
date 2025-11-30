@@ -2,11 +2,12 @@ import { Component, signal } from '@angular/core';
 import { LayoutComponent } from './pages/layout-component/layout-component';
 import { RegisterComponent } from "./pages/register-component/register-component";
 import { ThemeService } from './theme.service';
+import { RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-root',
   standalone: true, 
-  imports: [LayoutComponent],
+  imports: [ RouterModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css'] 
 })

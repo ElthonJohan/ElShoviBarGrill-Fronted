@@ -1,0 +1,144 @@
+<div class="p-6 max-w-5xl mx-auto text-gray-200">
+  <!-- Back button -->
+  <button
+    mat-button
+    class="mb-6 flex items-center gap-2 text-orange-400 hover:text-orange-300 transition"
+    (click)="volver()"
+  >
+    <mat-icon>arrow_back</mat-icon>
+    Volver
+  </button>
+
+  <mat-card
+    class="bg-gray-900 shadow-2xl rounded-3xl p-8 border border-gray-700"
+  >
+    <h1 class="text-4xl font-bold mb-8 flex items-center gap-3">
+      <mat-icon class="text-orange-400" style="font-size: 40px"
+        >receipt</mat-icon
+      >
+      Detalle de la Orden
+    </h1>
+
+    <!-- INFO PRINCIPAL -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Informacion -->
+      <div class="bg-gray-800 rounded-2xl p-5 border border-gray-700 shadow-lg">
+
+  <h2 class="text-2xl font-semibold mb-4">Información</h2>
+
+  <!-- USUARIO + MESA EN UNA SOLA FILA -->
+  <div class="flex items-center justify-around gap-8 mb-4">
+
+    <!-- Usuario -->
+    <div class="flex items-center gap-4">
+      <!-- Avatar -->
+      <div class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-xl font-bold shadow-lg">
+        {{ order?.userName?.substring(0,1).toUpperCase() }}
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-400">Usuario</p>
+        <p class="text-lg font-semibold">{{ order?.userName }}</p>
+      </div>
+    </div>
+
+    <!-- Mesa (solo si existe) -->
+    <div *ngIf="order?.tableNumber" class="flex items-center gap-4">
+
+      <div class="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-around shadow-lg">
+        <mat-icon class="text-white">table_bar</mat-icon>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-400">Mesa</p>
+         <!-- 👇 Mostrar badge especial cuando es LLEVAR -->
+    <span *ngIf="order.tableNumber === -1"
+          class="px-1 py-0 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold rounded-full shadow-lg">
+      Para llevar
+    </span>
+
+    <!-- 👇 Si es una mesa real -->
+    <span *ngIf="order.tableNumber !== -1"
+          class="text-lg font-semibold">
+      Mesa {{ order.tableNumber }}
+    </span>
+      </div>
+
+    </div>
+
+  </div>
+  
+
+  <!-- Estado -->
+  <p class="mt-4">
+    <strong>Estado: </strong>
+    <span class="px-2 py-1 rounded-md text-black font-bold"
+      [ngClass]="{
+        'bg-green-400': order?.status === 'COMPLETADA',
+        'bg-yellow-300': order?.status === 'PENDIENTE',
+        'bg-blue-300': order?.status === 'EN_PREPARACION'
+      }">
+      {{ order?.status }}
+    </span>
+  </p>
+
+  <p><strong>Tipo:</strong> {{ order?.orderType }}</p>
+  <p><strong>Notas:</strong> {{ order?.notes || '—' }}</p>
+
+</div>
+
+
+      <!-- Pago -->
+      <div class="bg-gray-800 rounded-2xl p-5 border border-gray-700 shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4">Pago</h2>
+
+        <ng-container *ngIf="order?.idPayment; else noPago">
+          <p><strong>Método:</strong> {{ order?.paymentMethod }}</p>
+          <p><strong>Monto pagado:</strong> S/ {{ order?.totalAmount }}</p>
+          <p>
+            <strong>Fecha:</strong> {{ order?.createdAt | date : "medium" }}
+          </p>
+        </ng-container>
+
+        <ng-template #noPago>
+          <p class="text-red-400 font-semibold">⛔ Pago no registrado</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <mat-divider class="my-8"></mat-divider>
+
+    <!-- PRODUCTOS -->
+    <h2 class="text-3xl font-semibold mb-4">Productos</h2>
+
+    <div class="space-y-4">
+      <div
+        *ngFor="let item of items"
+        class="flex items-center gap-5 p-4 bg-gray-800 rounded-2xl border border-gray-700 shadow-md hover:shadow-xl transition"
+      >
+        <img
+          [src]="item.imageUrl"
+          class="w-24 h-24 rounded-xl object-cover border border-gray-600 shadow"
+        />
+
+        <div class="flex-1">
+          <p class="text-xl font-semibold">{{ item.name }}</p>
+          <p class="text-sm text-gray-400">
+            Cantidad: <strong>{{ item.quantity }}</strong> — Precio unitario: S/
+            {{ item.unitPrice }}
+          </p>
+        </div>
+
+        <div class="text-right text-xl font-bold text-green-400">
+          S/ {{ item.quantity * item.unitPrice }}
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="my-8"></mat-divider>
+
+    <div class="text-right text-4xl font-bold tracking-wide">
+      Total: <span class="text-green-400">S/ {{ order?.totalAmount }}</span>
+    </div>
+  </mat-card>
+</div>

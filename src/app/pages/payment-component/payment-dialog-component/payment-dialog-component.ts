@@ -3,7 +3,7 @@ import { Payment } from '../../../model/payment';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { PaymentService } from '../../../services/payment-service';
-import { switchMap } from 'rxjs';
+import { finalize, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -44,10 +44,14 @@ export class PaymentDialogComponent {
   }
 
   this.orderService.payOrder(this.data.idOrder, this.paymentMethod)
+    .pipe(
+      finalize(() => {
+        this.dialogRef.close(true);  // 👈 SIEMPRE CERRAR
+      })
+    )
     .subscribe({
-      next: () => {
+      next: (res) => {
         alert("Pago registrado correctamente");
-        this.dialogRef.close(true);
       },
       error: err => {
         console.error(err);

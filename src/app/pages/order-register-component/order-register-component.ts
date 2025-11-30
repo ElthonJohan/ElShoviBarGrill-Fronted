@@ -162,6 +162,19 @@ constructor(
   }
 
   openPayDialog(order: Order) {
+    // Si ya tiene pago asociado
+  if (order.idPayment) {
+    alert("Esta orden ya tiene un pago registrado.");
+    return;
+  }
+
+  // Si el estado ya es COMPLETADA
+  if (order.status === 'COMPLETADA') {
+    alert("Esta orden ya fue completada y no requiere pago.");
+    return;
+  }
+
+
   const dialogRef = this._dialog.open(PaymentDialogComponent, {
     width: "400px",
     data: {

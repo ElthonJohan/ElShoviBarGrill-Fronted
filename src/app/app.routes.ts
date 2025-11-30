@@ -17,25 +17,45 @@ import { ProductComponent } from './pages/product-component/product-component';
 import { carritoComponent } from './pages/carrito-component/carrito-component';
 import { OrderRegisterComponent } from './pages/order-register-component/order-register-component';
 import { DeliveryRegisterComponent } from './pages/delivery-component/delivery-register-component/delivery-register-component';
+import { OrderDetailsComponent } from './pages/order-component/order-details-component/order-details-component';
+import { ClienteLayoutComponent } from './pages/cliente-layout-component/cliente-layout-component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { RoleGuard } from './guards/role-guard';
+import { LayoutComponent } from './pages/layout-component/layout-component';
 
 
 export const routes: Routes = [
 
-  // Home público
-  { path: 'home', component: HomeComponent },
+   // Ruta inicial: redirige a home
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
-  // Auth
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
 
-  // Pages
-  { path: 'pages/dashboard', component: DashboardComponent },
+  // Layout para clientes (solo CLIENTE)
+  {
+    path: '',
+    component: ClienteLayoutComponent,
+    children: [
+      { path: 'home', component: HomeComponent },
+      { path: 'ordenes', component: OrderComponent },
+      //{ path: 'perfil', component: PerfilClienteComponent }
+    ]
+  },
+  // Layout para administradores y empleados
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [RoleGuard],
+    data: { roles: ['ADMIN', 'MESERO'] },
+    children: [
+      { path: 'pages/dashboard', component: DashboardComponent },
     { path: 'pages/carrito', component: carritoComponent },
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/product', component: ProductComponent },
   { path: 'pages/order', component: OrderComponent },
   { path: 'pages/order/:id', component: OrderComponent },
+  {path: 'pages/order-details/:id', component: OrderDetailsComponent},
+
   { path: 'pages/orderregister', component: OrderRegisterComponent },
   { path: 'pages/delivery', component: DeliveryComponent },
   { path: 'pages/delivery/new', component: DeliveryRegisterComponent },
@@ -46,10 +66,41 @@ export const routes: Routes = [
   { path: 'pages/role', component: RoleComponent },
   { path: 'pages/table', component: TableComponent },
   { path: 'pages/user', component: UserComponent },
+      // otras rutas
+    ]
+  },
+
+  // Home público
+  // { path: 'home', component: HomeComponent },
+
+  // Auth
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  // Pages
+  // { path: 'pages/dashboard', component: DashboardComponent },
+  //   { path: 'pages/carrito', component: carritoComponent },
+  // { path: 'pages/category', component: CategoryComponent },
+  // { path: 'pages/menuitem', component: MenuItemComponent },
+  // { path: 'pages/product', component: ProductComponent },
+  // { path: 'pages/order', component: OrderComponent },
+  // { path: 'pages/order/:id', component: OrderComponent },
+  // {path: 'pages/order-details/:id', component: OrderDetailsComponent},
+
+  // { path: 'pages/orderregister', component: OrderRegisterComponent },
+  // { path: 'pages/delivery', component: DeliveryComponent },
+  // { path: 'pages/delivery/new', component: DeliveryRegisterComponent },
+
+  // { path: 'pages/orderitem', component: OrderItemComponent },
+  // { path: 'pages/payment', component: PaymentComponent },
+  // { path: 'pages/reservation', component: ReservationComponent },
+  // { path: 'pages/role', component: RoleComponent },
+  // { path: 'pages/table', component: TableComponent },
+  // { path: 'pages/user', component: UserComponent },
 
   // Ruta por defecto
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  // { path: '', redirectTo: '/home', pathMatch: 'full' },
 
-  // Not found
-  { path: '**', redirectTo: '/home' },
+  // // Not found
+  // { path: '**', redirectTo: '/home' },
 ];

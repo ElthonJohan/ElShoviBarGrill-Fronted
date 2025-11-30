@@ -60,7 +60,7 @@ export class LoginComponent {
           localStorage.setItem('user', JSON.stringify(userToStore));
 
           // Redirigir
-          this.router.navigate(['/pages/home']);
+          this.router.navigate(['/home']);
         },
 
         error: () => {
