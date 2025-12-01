@@ -11,7 +11,7 @@
 <div *ngIf="checkoutTotal !== null" class="checkout-banner">
 
   <div class="confirm-top">
-    <button mat-raised-button color="accent" (click)="confirmOrder()">Confirmar pedido</button>
+    <button mat-raised-button color="accent" routerLink="/pages/tarjeta-component">Confirmar pedido</button>
   </div>
 
   <div *ngIf="checkoutItems?.length" class="checkout-items">
@@ -48,9 +48,9 @@
         <td mat-cell *matCellDef="let row"> {{row.idMenuItem}} </td>
       </ng-container>
         
-      <ng-container matColumnDef="totalAmount">
+      <ng-container matColumnDef="userName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Usuario </th>
-        <td mat-cell *matCellDef="let row"> {{row.totalAmount}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.userName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="idTable">
@@ -97,7 +97,7 @@
         <th mat-header-cell *matHeaderCellDef > Actions </th>
         <td mat-cell *matCellDef="let row" >   
 
-            <button mat-button color="warn" (click)="delete(row.idTable)" >
+            <button mat-button color="warn" (click)="delete(row.idOrder)" >
                 <mat-icon>delete</mat-icon> Delete
             </button>
         </td>

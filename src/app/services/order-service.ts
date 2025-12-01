@@ -1,44 +1,45 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GenericService } from './generic-service';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Order } from '../model/order';
-
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService extends GenericService<Order> {
   private uri: string;
+
   constructor(
     http: HttpClient,
-     @Inject('API_URL') apiUrl: string) 
-     {
+    @Inject('API_URL') private apiUrl: string
+  ) {
     super(http, `${apiUrl}/orders`);
     this.uri = `${apiUrl}/orders`;
   }
 
-override save(order: Order): Observable<Order> {
-  return this.http.post<Order>(this.uri, order);
-}
+  // Guardar nueva orden (override opcional si tu GenericService ya tiene save)
+  override save(order: Order): Observable<Order> {
+    return this.http.post<Order>(this.uri, order);
+  }
 
-payOrder(idOrder: number, paymentMethod: string) {
-  return this.http.post(`${this.uri}/${idOrder}/pay`, {
-    paymentMethod: paymentMethod
-  });
-}
+  // Crear orden usando tu endpoint createFromDto
+  createOrder(order: any): Observable<Order> {
+    return this.http.post<Order>(`${this.uri}/createFromDto`, order);
+  }
 
+  // Registrar pago de una orden
+  payOrder(idOrder: number, paymentMethod: string): Observable<any> {
+    return this.http.post(`${this.uri}/${idOrder}/pay`, { paymentMethod });
+  }
 
-checkMesaDisponible(idMesa: number, idOrder?: number) {
-  return this.http.get<boolean>(`${this.uri}/checkMesa/${idMesa}?exclude=${idOrder || ''}`);
-}
+  // Verificar si la mesa tiene otras órdenes activas
+  checkMesaDisponible(idMesa: number, idOrder?: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.uri}/checkMesa/${idMesa}?exclude=${idOrder || ''}`);
+  }
 
-
-mesaOcupada(idTable: number) {
-  return this.http.get<boolean>(`${this.uri}/mesa/ocupada/${idTable}`);
-}
-
-
-
+  // Saber si la mesa está ocupada
+  mesaOcupada(idTable: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.uri}/mesa/ocupada/${idTable}`);
+  }
 }

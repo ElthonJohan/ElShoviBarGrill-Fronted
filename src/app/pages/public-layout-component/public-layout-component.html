@@ -1,4 +1,5 @@
 <mat-toolbar color="primary" class="flex justify-between px-6">
+
   <!-- Logo / Nombre -->
   <div class="flex items-center space-x-2">
     <mat-icon>local_bar</mat-icon>
@@ -7,12 +8,17 @@
 
   <!-- Links de navegación -->
   <div class="flex space-x-4">
-    <a mat-button routerLink="/home">Inicio</a>
-    <a mat-button routerLink="/menu">Menú</a>
-    <a mat-button routerLink="/reservas">Reservas</a>
-    <a mat-button routerLink="/eventos">Eventos</a>
+    <a mat-button routerLink="/home" class="nav-button">Inicio</a>
+    <a mat-button routerLink="/menu" class="nav-button">Menú</a>
+    <a mat-button routerLink="/reservas" class="nav-button">Reservas</a>
+    <a mat-button routerLink="/eventos" class="nav-button">Eventos</a>
   </div>
-  <app-cart-widget></app-cart-widget>
+
+  <!-- Sección derecha: carrito + usuario/login -->
+  <div class="flex items-center space-x-4">
+
+    <!-- Carrito -->
+    <app-cart-widget class="cart-widget"></app-cart-widget>
 
   <div>
      <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
@@ -46,5 +52,3 @@
 
 <!-- Aquí se renderiza el contenido -->
 <router-outlet></router-outlet>
-
-

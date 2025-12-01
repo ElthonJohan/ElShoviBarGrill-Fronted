@@ -1,0 +1,54 @@
+<div class="credit-card-wrapper">
+  <div class="credit-card">
+    <div class="chip"></div>
+    <div class="card-number-preview">{{ model.numero || '•••• •••• •••• ••••' }}</div>
+    <div class="card-footer">
+      <div class="card-holder">
+        <span>TITULAR</span>
+        <p>{{ model.nombre || 'NOMBRE Y APELLIDO' }}</p>
+      </div>
+      <div class="card-exp">
+        <span>EXP</span>
+        <p>{{ (model.mes || 'MM') + '/' + (model.anio || 'YY') }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <h2>Datos de Tarjeta</h2>
+
+    <form class="payment-form" (ngSubmit)="guardar()">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del titular</mat-label>
+        <input matInput [(ngModel)]="model.nombre" name="nombre" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Número de tarjeta</mat-label>
+        <input matInput maxlength="16" [(ngModel)]="model.numero" name="numero" required />
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="field-small">
+          <mat-label>Mes</mat-label>
+          <input matInput maxlength="2" [(ngModel)]="model.mes" name="mes" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field-small">
+          <mat-label>Año</mat-label>
+          <input matInput maxlength="2" [(ngModel)]="model.anio" name="anio" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="field-small">
+          <mat-label>CVV</mat-label>
+          <input matInput maxlength="3" [(ngModel)]="model.cvv" name="cvv" required />
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit">
+        Registrar pago
+      </button>
+    </form>
+  </div>
+</div>

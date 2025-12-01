@@ -133,12 +133,12 @@ export class carritoComponent {
       this._snackBar.open('No hay items para confirmar', 'OK', { duration: 2000 });
       return;
     }
-
+    
     // construir payload mínimo para backend
     const orderPayload: any = {
       totalAmount: this.checkoutTotal,
       items: this.checkoutItems.map(i => ({ idMenuItem: i.id, quantity: i.quantity, unitPrice: i.price })),
-      status: 'PENDING'
+      status: 'PENDIENTE'
     };
 
     this.orderService.save(orderPayload).subscribe({
@@ -153,6 +153,8 @@ export class carritoComponent {
         console.error('Error creando pedido', err);
         this._snackBar.open('Error al crear pedido', 'OK', { duration: 2000 });
       }
+      
     });
+    
   }
 }

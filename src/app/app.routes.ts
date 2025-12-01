@@ -34,7 +34,7 @@ export const routes: Routes = [
   // ========================
   {
     path: '',
-    component: PublicLayoutComponent,
+    component: ClienteLayoutComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -63,7 +63,7 @@ export const routes: Routes = [
     path: 'admin',
     component: LayoutComponent,
     canActivate: [RoleGuard],
-    data: { roles: ['administrador', 'mesero'] },
+    data: { roles: ['ADMIN', 'MESERO'] },
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'category', component: CategoryComponent },

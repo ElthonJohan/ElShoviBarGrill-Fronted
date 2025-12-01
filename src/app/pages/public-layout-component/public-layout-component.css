@@ -1,14 +1,102 @@
+/* === NAVBAR PRINCIPAL === */
 mat-toolbar {
-  background: #1f1f1f; /* fondo oscuro elegante */
-  color: #fff;
+  background: #0d0d0d !important;      /* Negro profundo */
+  height: 75px;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid rgba(255, 200, 0, 0.25);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.8);
+  font-family: 'Poppins', sans-serif;
 }
 
-a[mat-button] {
-  color: #fff;
-  font-weight: 500;
+/* === LOGO Y TÍTULO === */
+mat-toolbar .font-bold {
+  color: #f2c94c;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
-a[mat-button]:hover {
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 4px;
+/* === BOTONES DE NAVEGACIÓN (links como botones) === */
+.nav-button {
+  background: #d4a017;        /* amarillo oscuro */
+  color: #ffffff !important;  /* texto blanco */
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: 0.25s ease;
+}
+
+.nav-button:hover {
+  background: #f5c542;       /* amarillo más claro al pasar */
+  box-shadow: 0 0 10px rgba(255, 200, 0, 0.6);
+  transform: translateY(-1px);
+}
+
+/* === BOTÓN DE LOGIN === */
+.login-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+}
+
+.login-btn-custom {
+  color: #ffffff; 
+  border: 2px solid #b58900; 
+  background: transparent;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.login-btn-custom:hover {
+  background: #b58900; 
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+.login-btn-custom mat-icon {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.login-btn-custom:hover mat-icon {
+  transform: rotate(20deg);
+}
+
+/* === CARRITO === */
+::ng-deep app-cart-widget mat-icon {
+  color: #ffffff !important;
+}
+
+/* === USUARIO === */
+.user-info {
+  color: #ffffff;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.2);
+  transition: background 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-info:hover {
+  background: rgba(0,0,0,0.4);
+  transform: scale(1.05);
+}
+
+.user-info mat-icon {
+  font-size: 20px;
+  vertical-align: middle;
 }
