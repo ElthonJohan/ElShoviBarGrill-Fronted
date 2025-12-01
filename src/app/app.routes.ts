@@ -24,6 +24,8 @@ import { RoleGuard } from './guards/role-guard';
 import { LayoutComponent } from './pages/layout-component/layout-component';
 import { PublicLayoutComponent } from './pages/public-layout-component/public-layout-component';
 import { NgModule } from '@angular/core';
+import { TarjetaComponent } from './pages/tarjeta-component/tarjeta-component';
+import { AccessDenied } from './pages/access-denied/access-denied';
 
 
 export const routes: Routes = [
@@ -52,6 +54,7 @@ export const routes: Routes = [
     data: { roles: ['cliente'] },
     children: [
       { path: 'carrito', component: carritoComponent },
+      { path: 'pages/tarjeta-component', component:TarjetaComponent },
       // aquí puedes agregar más rutas cliente
     ]
   },
@@ -89,6 +92,9 @@ export const routes: Routes = [
   // ========================
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+
+  // Página de acceso denegado
+{ path: 'access-denied', component: AccessDenied },
 
   // ========================
   // ❌ Fallback

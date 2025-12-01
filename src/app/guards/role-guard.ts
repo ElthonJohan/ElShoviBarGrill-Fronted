@@ -24,10 +24,12 @@ export class RoleGuard implements CanActivate {
     // Verificar si al menos un rol coincide
     const hasAccess = userRoles.some(role => expectedRoles.includes(role));
 
-    if (hasAccess) {
-      return true;
-    }
+    if (!hasAccess) {
+        console.warn('Acceso denegado. Roles del usuario:', userRoles, 'Requeridos:', expectedRoles);
 
+  this.router.navigate(['/access-denied']);
+  return false;
+}
     // Si no coincide rol → redirigir
     this.router.navigate(['/home']);
     return false;

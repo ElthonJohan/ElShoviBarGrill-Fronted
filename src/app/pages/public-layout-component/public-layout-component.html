@@ -22,7 +22,7 @@
 
   <div>
      <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
-        <div class="flex items-center space-x-2">
+        <div class="user-info flex items-center space-x-2">
           <mat-icon>person</mat-icon>
           <span>{{ userName }}</span>
         </div>
@@ -48,7 +48,7 @@
       Ingresar
     </button>
   </div>
-</mat-toolbar>
+<mat-toolbar>
 
 <!-- Aquí se renderiza el contenido -->
 <router-outlet></router-outlet>

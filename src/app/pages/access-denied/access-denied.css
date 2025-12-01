@@ -1,0 +1,53 @@
+.denied-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0d0d0d;
+  color: white;
+  padding: 20px;
+}
+
+.denied-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  padding: 40px 50px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0px 12px 35px rgba(0,0,0,0.5);
+}
+
+.icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  text-shadow: 0px 0px 12px #ff6a1a;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #ff6a1a;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.btn-back {
+  background: #ff6a1a;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.btn-back:hover {
+  background: #ff8f4d;
+  box-shadow: 0 0 10px #ff8f4d;
+}

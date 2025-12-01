@@ -22,10 +22,26 @@
 
 
     <!-- Usuario -->
-    <div class="user-info flex items-center space-x-1">
-      <mat-icon>person</mat-icon>
-      <span>{{ userName }}</span>
-    </div>
+     <div>
+     <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
+        <div class="user-info flex items-center space-x-2">
+          <mat-icon>person</mat-icon>
+          <span>{{ userName }}</span>
+        </div>
+      </button>
+
+    <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/perfil">
+          <mat-icon>person</mat-icon> Perfil
+        </button>
+        <button mat-menu-item routerLink="/config">
+          <mat-icon>settings</mat-icon> Configuración
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon> Cerrar sesión
+        </button>
+      </mat-menu>
+  </div>
 
     <!-- Botón de login -->
     <div class="login-btn-container">
