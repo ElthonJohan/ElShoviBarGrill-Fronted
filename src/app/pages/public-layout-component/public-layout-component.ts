@@ -15,7 +15,7 @@ import { MatMenu, MatMenuModule } from "@angular/material/menu";
 export class PublicLayoutComponent {
   userName: string = '';
     cartItemCount: number = 0; // cantidad inicial del carrito
-    constructor(private auth: AuthService) {}
+    constructor(private auth: AuthService,private router: Router) {}
   
     ngOnInit() {
       this.userName = this.auth.getUserName();
