@@ -1,0 +1,29 @@
+<mat-toolbar color="primary" class="flex justify-between px-6">
+  <!-- Logo / Nombre -->
+  <div class="flex items-center space-x-2">
+    <mat-icon>local_bar</mat-icon>
+    <span class="font-bold text-lg">Shovi Bar - Grill</span>
+  </div>
+
+  <!-- Links de navegación -->
+  <div class="flex space-x-4">
+    <a mat-button routerLink="/home">Inicio</a>
+    <a mat-button routerLink="/menu">Menú</a>
+    <a mat-button routerLink="/reservas">Reservas</a>
+    <a mat-button routerLink="/eventos">Eventos</a>
+  </div>
+  <app-cart-widget></app-cart-widget>
+
+  <!-- Botón de login -->
+  <div>
+    <button mat-raised-button color="accent" routerLink="/login">
+      <mat-icon>login</mat-icon>
+      Ingresar
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- Aquí se renderiza el contenido -->
+<router-outlet></router-outlet>
+
+

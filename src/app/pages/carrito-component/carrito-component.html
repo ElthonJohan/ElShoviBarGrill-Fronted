@@ -1,0 +1,115 @@
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Nombre" #input>
+</mat-form-field>
+
+<!-- Botón 'Seguir comprando' centrado encima de la orden -->
+<div class="follow-center">
+  <button mat-raised-button class="follow-btn" routerLink="/pages/menuitem">Seguir comprando</button>
+</div>
+
+<div *ngIf="checkoutTotal !== null" class="checkout-banner">
+
+  <div class="confirm-top">
+    <button mat-raised-button color="accent" (click)="confirmOrder()">Confirmar pedido</button>
+  </div>
+
+  <div *ngIf="checkoutItems?.length" class="checkout-items">
+    <ul>
+      <li *ngFor="let it of checkoutItems" class="checkout-item">
+        <div class="item-left">
+          <img [src]="it.imageUrl || 'https://via.placeholder.com/80x80?text=Sin+Imagen'" alt="{{it.name}}" class="item-thumb" />
+          <div class="item-info">
+            <div class="item-name">{{ it.name }}</div>
+          </div>
+        </div>
+        <div class="item-right">
+          <div class="price">S/ {{ it.price | number:'1.2-2' }}</div>
+          <div class="qty">x {{ it.quantity }}</div>
+          <div class="subtotal">S/ {{ (it.price * it.quantity) | number:'1.2-2' }}</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="checkout-subtotal">Subtotal: S/ {{ checkoutTotal | number:'1.2-2' }}</div>
+
+    <div style="height:10px"></div>
+
+    <div class="checkout-total">Total: S/ {{ checkoutTotal | number:'1.2-2' }}</div>
+  </div>
+</div>
+<!--Hasta aquí -->
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+        
+      <ng-container matColumnDef="idMenuItem">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let row"> {{row.idMenuItem}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="totalAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Usuario </th>
+        <td mat-cell *matCellDef="let row"> {{row.totalAmount}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="idTable">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mesa Asignada </th>
+        <td mat-cell *matCellDef="let row"> {{row.idTable}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="idPayment">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Metodo de pago </th>
+        <td mat-cell *matCellDef="let row"> {{row.idPayment}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> MontoTotal </th>
+        <td mat-cell *matCellDef="let row"> {{row.totalAmount}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+        <td mat-cell *matCellDef="let row"> {{row.status}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="orderType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Orden </th>
+        <td mat-cell *matCellDef="let row"> {{ row.orderType }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="notes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Notas </th>
+        <td mat-cell *matCellDef="let row"> {{row.notes}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Categoria </th>
+        <td mat-cell *matCellDef="let row"> {{row.createdAt}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="items">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Items </th>
+        <td mat-cell *matCellDef="let row"> {{row.items}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef > Actions </th>
+        <td mat-cell *matCellDef="let row" >   
+
+            <button mat-button color="warn" (click)="delete(row.idTable)" >
+                <mat-icon>delete</mat-icon> Delete
+            </button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();"></tr>
+        
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of medics"></mat-paginator>
+
+</div>
+
+ 

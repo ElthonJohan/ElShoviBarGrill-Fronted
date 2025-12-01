@@ -1,0 +1,14 @@
+mat-toolbar {
+  background: #1f1f1f; /* fondo oscuro elegante */
+  color: #fff;
+}
+
+a[mat-button] {
+  color: #fff;
+  font-weight: 500;
+}
+
+a[mat-button]:hover {
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 4px;
+}

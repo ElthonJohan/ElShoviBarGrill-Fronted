@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MenuItemService } from '../../services/menu-item-service';
+import { CartService } from '../../services/cart-service'; // se agregó
 import { MatChipListbox,MatChipOption } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 @Component({
@@ -34,8 +35,7 @@ export class MenuItemComponent {
   filteredProducts: any[] = [];
   selectedCategory: number | null = null;
 
-  constructor(private menuItemService: MenuItemService) {}
-
+  constructor(private menuItemService: MenuItemService, private cartService: CartService) {} // Se agregó
   ngOnInit(): void {
     this.loadCategories();
     this.loadProducts();
@@ -53,9 +53,23 @@ loadProducts() {
   this.menuItemService.getProducts().subscribe(res => {
     console.log("Productos :", res);
     this.products = res.data ?? res;
+    // inicializar listado filtrado por defecto
+    this.filteredProducts = this.products; // se agregó 
     this.loading = false;
   });
 }
+
+// se agregó
+addToCart(product: any) {
+  const item = {
+    id: product.idMenuItem ?? product.id_menu_item ?? product.id,
+    name: product.name ?? product.nombre ?? 'Producto',
+    price: Number(product.price ?? product.precio ?? 0),
+    quantity: 1,
+    imageUrl: product.imageUrl ?? product.image_url ?? ''
+  };
+  this.cartService.addItem(item);
+} // hasta aquí 
 
 
 filterByCategory(idCategory: number | null) {
