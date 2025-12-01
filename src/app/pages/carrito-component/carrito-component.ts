@@ -46,6 +46,7 @@ export class carritoComponent {
     { def: 'idUser', label: 'idUser', hide: false },
     { def: 'idTable', label: 'idTable', hide: false },
     { def: 'idPayment', label: 'idPayment', hide: false },
+    { def: 'userName', label: 'userName', hide: false },
     { def: 'totalAmount', label: 'totalAmount', hide: false },
     { def: 'status', label: 'status', hide: false },
     { def: 'orderType', label: 'orderType', hide: false },

@@ -22,14 +22,16 @@ import { ClienteLayoutComponent } from './pages/cliente-layout-component/cliente
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RoleGuard } from './guards/role-guard';
 import { LayoutComponent } from './pages/layout-component/layout-component';
+import { TarjetaComponent } from './pages/tarjeta-component/tarjeta-component';
 
 
 export const routes: Routes = [
+  
 
    // Ruta inicial: redirige a home
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
-
+  {path: 'pages/tarjeta-component',component: TarjetaComponent},
 
   // Layout publico
   {
@@ -89,5 +91,7 @@ export const routes: Routes = [
 
   // Fallback
   { path: '**', redirectTo: 'home' }
+
+  
  
 ];

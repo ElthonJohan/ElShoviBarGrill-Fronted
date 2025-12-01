@@ -66,11 +66,20 @@ export class OrderItemComponent {
   }
 
   openDialog(table?: OrderItem) {
-    this._dialog.open(OrderItemDialogComponent, {
+    const dialogRef = this._dialog.open(OrderItemDialogComponent, {
       width: '750px',
       data: table
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.orderItemService.findAll().subscribe(data => {
+          this.orderItemService.setModelChange(data);
+        });
+      }
+    });
   }
+
 
   applyFilter(e: any) {
     if (!this.dataSource) return;
