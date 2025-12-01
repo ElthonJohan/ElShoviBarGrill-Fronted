@@ -7,13 +7,20 @@ import {
 } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+
 import { MatSelectModule } from '@angular/material/select';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { MatDivider } from "@angular/material/divider";
+import { MatPseudoCheckbox, MatPseudoCheckboxModule } from "@angular/material/core";
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+// Si usas el selector de roles:
+// import { MatSelectModule } from '@angular/material/select';
 
 export interface Role {
   idRole: number;
@@ -34,13 +41,19 @@ export interface Role {
     MatIconModule,
     MatSelectModule,
     HttpClientModule,
-  ],
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatFormField
+],
   templateUrl: './register-component.html',
   styleUrls: ['./register-component.css'],
 })
 export class RegisterComponent implements OnInit {
   form: FormGroup;
   roles: Role[] = [];
+
+  isAdmin = false;
+  
 
   constructor(
     private fb: FormBuilder,
@@ -54,41 +67,31 @@ export class RegisterComponent implements OnInit {
       // El backend valida tamaño entre 8 y 50 en algunos campos; reflejamos mínimo 8 aquí
       password: ['', [Validators.required, Validators.minLength(8)]],
       // permitimos seleccionar múltiples roles
-      roles: [[], Validators.required],
+      roles: [[]],
     });
   }
 
   ngOnInit(): void {
     // Traer todos los roles desde el backend
     // Intentamos enviar Authorization si el usuario ya está logueado
-    try {
-      const stored = localStorage.getItem('user');
-      const parsed = stored ? JSON.parse(stored) : null;
-      const token =
-        parsed?.token ||
-        parsed?.accessToken ||
-        parsed?.data?.token ||
-        parsed?.jwt;
+    const stored = localStorage.getItem('user');
+  const parsed = stored ? JSON.parse(stored) : null;
+  const token = parsed?.token || parsed?.accessToken || parsed?.data?.token || parsed?.jwt;
+  const roles = parsed?.roles || parsed?.authorities || [];
 
-      const options = token
-        ? { headers: { Authorization: `Bearer ${token}` } }
-        : {};
+  this.isAdmin = roles.includes('ROLE_ADMINISTRADOR');
 
-      this.http.get<Role[]>(`${environment.HOST}/roles`, options).subscribe({
-        next: (data) => (this.roles = data),
-        error: (err) => {
-          console.error('Error al cargar roles', err);
-          // Si recibimos 401, avisar en consola que la petición requiere autenticación
-          if (err?.status === 401) {
-            console.warn(
-              'GET /roles devuelve 401 — el endpoint requiere autorización.'
-            );
-          }
-        },
-      });
-    } catch (e) {
-      console.error('Error procesando token localStorage', e);
-    }
+  const options = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+  if (this.isAdmin) {
+    this.http.get<Role[]>(`${environment.HOST}/roles`, options).subscribe({
+      next: (data) => (this.roles = data),
+      error: (err) => console.error('Error al cargar roles', err),
+    });
+  } else {
+    // Asignar automáticamente rol cliente si no es admin
+    this.form.patchValue({ roles: [{ idRole: 3 }] }); // Ajusta el ID según tu base de datos
+  }
   }
 
   register(): void {
@@ -97,9 +100,9 @@ export class RegisterComponent implements OnInit {
     console.log('FORM VALUE', this.form.value);
 
     // Transformamos los ids seleccionados en la lista de roles que espera el backend
-    const selectedRoleIds: number[] = (this.form.value.roles || []).map(
-      (v: any) => Number(v)
-    );
+  const selectedRoleIds: number[] = this.isAdmin
+  ? (this.form.value.roles || []).map((v: any) => Number(v))
+  : [3]; // ID del rol cliente
 
     const user = {
       fullName: this.form.value.fullName,

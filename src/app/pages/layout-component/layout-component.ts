@@ -10,6 +10,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartWidgetComponent } from '../../components/cart-widget/cart-widget.component'; // se agregó 
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-layout',
@@ -33,13 +34,15 @@ export class LayoutComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   isCollapsed = false;
   isDarkMode = false;
-  userName = '';
+  userName: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private auth: AuthService) {}
 
-  ngOnInit() {
-    this.loadUserName();
-  }
+    ngOnInit() {
+      this.userName = this.auth.getUserName();
+    }
+
+
 
   toggleSidebar() {
       if (window.innerWidth <= 800) {
@@ -55,13 +58,13 @@ export class LayoutComponent {
     return !!localStorage.getItem('user');
   }
 
-  loadUserName() {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      const user = JSON.parse(userData);
-      this.userName = user.fullName || user.username || 'Usuario';
-    }
-  }
+  // loadUserName() {
+  //   const userData = localStorage.getItem('user');
+  //   if (userData) {
+  //     const user = JSON.parse(userData);
+  //     this.userName = user.fullName || user.username || 'Usuario';
+  //   }
+  // }
 
   logout(): void {
     localStorage.removeItem('user');

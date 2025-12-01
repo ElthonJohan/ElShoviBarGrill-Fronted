@@ -22,6 +22,7 @@ import { ClienteLayoutComponent } from './pages/cliente-layout-component/cliente
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RoleGuard } from './guards/role-guard';
 import { LayoutComponent } from './pages/layout-component/layout-component';
+import { PublicLayoutComponent } from './pages/public-layout-component/public-layout-component';
 
 
 export const routes: Routes = [
@@ -34,11 +35,11 @@ export const routes: Routes = [
   // Layout publico
   {
     path: '',
-    component: ClienteLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
       { path: 'home', component: HomeComponent },
-{ path: 'menu', component: MenuItemComponent }, 
-    { path: 'carrito', component: carritoComponent },
+      { path: 'menu', component: MenuItemComponent }, 
+      
      //{ path: 'perfil', component: PerfilClienteComponent }
     ]
   },
@@ -49,7 +50,7 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { roles: ['cliente'] },
     children: [
-      { path: 'menu', component: MenuItemComponent },
+      { path: 'carrito', component: carritoComponent },
       //{ path: 'perfil', component: PerfilClienteComponent }
     ]
   },
@@ -58,10 +59,9 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     canActivate: [RoleGuard],
-    data: { roles: ['ADMIN', 'MESERO'] },
+    data: { roles: ['administrador', 'mesero'] },
     children: [
       { path: 'pages/dashboard', component: DashboardComponent },
-    { path: 'carrito', component: carritoComponent },
   { path: 'pages/category', component: CategoryComponent },
   { path: 'pages/menuitem', component: MenuItemComponent },
   { path: 'pages/product', component: ProductComponent },
