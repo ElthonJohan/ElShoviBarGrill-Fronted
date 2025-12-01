@@ -47,6 +47,8 @@ export class LoginComponent {
       .subscribe({
         next: (res) => {
 
+            console.log('Login response:', res); // ¿incluye fullName/username?
+
           // Obtener token sin complicar nada
           const token =
             res?.token ??
@@ -71,6 +73,6 @@ export class LoginComponent {
   }
 
   goToRegister(): void {
-    this.router.navigate(['/register']);
+    this.router.navigate(['register']);
   }
 }

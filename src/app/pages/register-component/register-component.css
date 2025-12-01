@@ -1,27 +1,141 @@
-.register-container {
+/* 1. Fondo Degradado de la Página */
+
+
+/* Contenedor principal para centrar la tarjeta (si no lo haces en body) */
+.registration-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-mat-card {
-  width: 400px;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  min-height: 100vh; /* Ocupa toda la altura visible */
   padding: 20px;
+  
 }
 
+/* 2. Estilo de la Tarjeta del Formulario */
+.registration-card {
+  min-width: 300px;
+  max-width: 420px; /* Tamaño máximo similar al ejemplo */
+  width: 100%;
+  border-radius: 20px; /* Bordes muy redondeados */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  background-color: white !important; /* ¡Asegura el blanco total! */
+  overflow: hidden !important; /* Esto es útil si los contenidos internos se desbordan un poco */
+  padding: 20px 30px; /* Padding interno */
+  text-align: center; /* Centrar el contenido de la tarjeta si es necesario */
+  box-shadow: 0 4px 15px #cb77029d;
+}
+
+/* 3. Encabezado "SIGN UP" */
+.card-header {
+  padding-bottom: 20px; /* Espacio debajo del título */
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 2.2em; /* Tamaño de fuente grande */
+  font-weight: 700; /* Negrita */
+  color: #333; /* Color de texto oscuro */
+  margin-bottom: 5px;
+  text-align: center; /* Centrar el texto */
+  letter-spacing: 2px; /* Espaciado entre letras */
+}
+
+.underline-title {
+  width: 60px; /* Ancho de la línea */
+  height: 4px; /* Grosor de la línea */
+  background-color: #00b6e6; /* Color de la línea (azul/turquesa) */
+  margin: 0 auto; /* Centrar la línea */
+  border-radius: 2px; /* Bordes redondeados para la línea */
+}
+
+/* 1. Estilo para el texto dentro de los campos de Material */
+/* Apunta al elemento input nativo dentro de la clase .mat-form-field-element */
+mat-form-field-element {
+  /* ¡Importante! Forzamos el color del texto a negro o gris oscuro */
+  color: #333333 !important; 
+  /* Si el placeholder también es claro, también lo corregimos */
+}
+
+/* 2. Estilo para el texto del Placeholder */
+/* Esto asegura que el texto de ejemplo temporal se vea correctamente */
+.mat-form-field ::placeholder {
+  color: #777777 !important;
+  opacity: 1; /* Necesario para algunos navegadores */
+}
+
+/* 3. Estilo para el icono del Mat-Select (Roles) */
+/* El icono de la flecha podría ser claro, lo oscurecemos */
+.mat-select-arrow {
+  color: #333333 !important;
+}
+
+/* Asegúrate también de que los iconos estáticos sean oscuros (los que van a la derecha) */
+.mat-form-field-appearance-fill .mat-form-field-suffix .mat-icon {
+  color: #7b7b7b !important; /* Asegura el color oscuro que definimos antes */
+}
+
+/* 4. Campos de Formulario */
 .full-width {
   width: 100%;
+  margin-bottom: 15px; /* Espacio entre campos */
+  text-align: left; /* Alinea el contenido del campo a la izquierda */
+}
+
+/* 5. Checkbox */
+.remember-me-checkbox {
+  display: block; /* Para que ocupe su propia línea */
+  margin: 0 auto 20px auto; /* Centrar y añadir espacio inferior */
+  text-align: left; /* Alinea el texto a la izquierda dentro del checkbox */
+}
+
+/* 6. Botón Principal "Get Started" */
+.action-button {
+  background-color: #00b6e6; /* Color turquesa/azul */
+  color: rgb(53, 53, 53); /* Texto blanco */
+  height: 50px; /* Altura del botón */
+  font-size: 1.1em; /* Tamaño de fuente */
+  font-weight: 600; /* Negrita */
+  border-radius: 25px; /* Bordes muy redondeados (la mitad de la altura) */
+  box-shadow: 0 4px 15px #cb77029d;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+  margin-top: 15px;
+}
+
+.action-button:hover {
+  background: #E8D9C4 !important; /* Un tono más oscuro al pasar el ratón */
+  box-shadow: 0 6px 20px rgba(0, 182, 230, 0.6); /* Sombra más pronunciada */
   margin-bottom: 15px;
+
 }
 
-.login-link {
-  margin-top: 10px;
-  text-align: center;
+/* 7. Enlaces Secundarios ("Forgot Password?") */
+.text-center {
+  /* Elimina el padding superior para que se pegue al botón */
+  padding-top: 10px; /* Un poco de espacio */
+  padding-bottom: 5px; /* Reduce o elimina el padding inferior */
+  margin-top: 5px; /* Reduce o elimina el margen superior */
+  /* Asegúrate de que no tenga background propio */
+  background-color: transparent !important; 
+  border-bottom-left-radius: 20px; /* Para que la curva se mantenga */
+  border-bottom-right-radius: 20px;
 }
 
-.login-link a {
-  cursor: pointer;
-  color: #3f51b5;
-  text-decoration: underline;
+.secondary-link {
+  color: #ff6f61; /* Un color de acento distinto, como el rojo del ejemplo */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: color 0.3s ease;
+}
+
+.secondary-link:hover {
+  color: #e04a3f; /* Un tono más oscuro al pasar el ratón */
+}
+mat-card-footer {
+  background-color: transparent !important;
+}
+
+/* Sobrescribe el padding o margen interno de la sección de contenido de Material */
+mat-card-content {
+  padding-bottom: 0 !important; /* Elimina cualquier padding inferior que pueda estar afectando */
 }

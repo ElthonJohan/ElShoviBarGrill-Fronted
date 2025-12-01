@@ -75,7 +75,7 @@ export class TarjetaComponent {
   this.orderService.createOrder(nuevaOrden).subscribe({
     next: (res) => {
       console.log("Orden creada correctamente:", res);
-      this.router.navigate(['/orden-confirmada']);
+      this.router.navigate(['/order']);
       
     },
     error: (err) => console.error("Error al crear orden:", err)

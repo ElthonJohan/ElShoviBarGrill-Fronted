@@ -10,24 +10,28 @@ export class RoleGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    const expectedRoles = route.data['roles'];
-    const userRole = this.auth.getUserRole(); // tu método para obtener el rol actual
+    const expectedRoles: string[] = route.data['roles'] || [];
+  const userRoles = this.auth.getUserRoles(); // ahora devuelve array
 
-     // Permitir acceso si no se requiere rol
+
+  console.log('User roles:', userRoles, 'Expected:', expectedRoles);
+
+  // Permitir acceso si no se requiere rol
   if (!expectedRoles || expectedRoles.length === 0) {
     return true;
   }
 
-  // Permitir acceso si el rol coincide
-  if (expectedRoles.includes(userRole)) {
+  // Permitir acceso si al menos un rol coincide
+  if (userRoles.some(r => expectedRoles.includes(r))) {
     return true;
   }
 
-  // Permitir acceso a /home si no hay rol
-  if (route.routeConfig?.path === 'home' && userRole === 'INVITADO') {
+  // Permitir acceso a /home si es invitado
+  if (route.routeConfig?.path === 'home' && userRoles.includes('INVITADO')) {
     return true;
   }
 
   this.router.navigate(['/home']);
-  return false;}
+  return false;
+}
 }

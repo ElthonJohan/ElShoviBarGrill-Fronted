@@ -11,8 +11,12 @@ html, body {
 
   /* Tailwind */
 /* === GLOBAL DARK THEME === */
+/* Mover esto al archivo global (styles.scss) */
 body {
-  @apply bg-[#0d0d0d] text-gray-200 font-sans;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /* ¡Importante! Asegúrate de que este degradado no sea sobrescrito por un tema oscuro. */
+  background: linear-gradient(to right top, #3E160C, #785D32, #E8D9C4) !important; 
+
 }
 
 /* ===== Scrollbar Moderno ===== */
@@ -66,32 +70,33 @@ body {
   border-radius: 10px !important;
 } */
 
-.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+/* .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: linear-gradient(90deg, #000000, #645e55);
     border-radius: 10px !important;
 
-}
+} */
 
 /* Evita overlays transparentes */
-.mat-mdc-form-field-focus-overlay {
+/* .mat-mdc-form-field-focus-overlay {
   background: transparent !important;
-}
+} */
 
 /* Texto interno */
-.mdc-text-field__input,
+/* .mdc-text-field__input,
 .mat-mdc-select-value-text {
-  color: #fff !important;
-}
+  color: #1e1e1e !important;
+} */
 
 /* Icono flecha select */
-.mat-mdc-select-arrow svg {
+/* .mat-mdc-select-arrow svg {
   fill: #fff !important;
-}
+} */
 
 /* Fondo del panel select */
 .mat-mdc-select-panel {
-  background: #222 !important;
+  background: #474747 !important;
   color: #fff !important;
   border-radius: 10px !important;
 }
+
 

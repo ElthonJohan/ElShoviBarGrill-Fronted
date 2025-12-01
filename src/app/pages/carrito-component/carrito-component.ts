@@ -46,7 +46,6 @@ export class carritoComponent {
     { def: 'idUser', label: 'idUser', hide: false },
     { def: 'idTable', label: 'idTable', hide: false },
     { def: 'idPayment', label: 'idPayment', hide: false },
-    { def: 'userName', label: 'userName', hide: false },
     { def: 'totalAmount', label: 'totalAmount', hide: false },
     { def: 'status', label: 'status', hide: false },
     { def: 'orderType', label: 'orderType', hide: false },
@@ -134,12 +133,12 @@ export class carritoComponent {
       this._snackBar.open('No hay items para confirmar', 'OK', { duration: 2000 });
       return;
     }
-
+    
     // construir payload mínimo para backend
     const orderPayload: any = {
       totalAmount: this.checkoutTotal,
       items: this.checkoutItems.map(i => ({ idMenuItem: i.id, quantity: i.quantity, unitPrice: i.price })),
-      status: 'PENDING'
+      status: 'PENDIENTE'
     };
 
     this.orderService.save(orderPayload).subscribe({
@@ -154,6 +153,8 @@ export class carritoComponent {
         console.error('Error creando pedido', err);
         this._snackBar.open('Error al crear pedido', 'OK', { duration: 2000 });
       }
+      
     });
+    
   }
 }
