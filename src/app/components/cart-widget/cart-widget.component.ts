@@ -54,7 +54,7 @@ export class CartWidgetComponent {
       console.error('Could not store checkout payload', e);
     }
     this.open = false; // cerrar panel
-    // navegar a pedidos
+    // navegar a pago
     this.router.navigate(['/pages/tarjeta-component']);
   }
 

@@ -27,7 +27,6 @@ export class TarjetaComponent {
     private router: Router
   ) {}
 
-  // Variables que deberías reemplazar con las reales de tu app
   idUsuario = 1;
   idMesa = null;
   total = 50.0;
