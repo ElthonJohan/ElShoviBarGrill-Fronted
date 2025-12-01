@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { CategoryComponent } from './pages/category-component/category-component';
 import { MenuItemComponent } from './pages/menu-item-component/menu-item-component';
 import { OrderComponent } from './pages/order-component/order-component';
@@ -23,27 +23,28 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { RoleGuard } from './guards/role-guard';
 import { LayoutComponent } from './pages/layout-component/layout-component';
 import { PublicLayoutComponent } from './pages/public-layout-component/public-layout-component';
+import { NgModule } from '@angular/core';
 
 
 export const routes: Routes = [
 
-   // Ruta inicial: redirige a home
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-
-
-
-  // Layout publico
+   
+  // ========================
+  // 🌐 Rutas Públicas
+  // ========================
   {
     path: '',
     component: PublicLayoutComponent,
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'menu', component: MenuItemComponent }, 
-      
-     //{ path: 'perfil', component: PerfilClienteComponent }
+      { path: 'menu', component: MenuItemComponent },
     ]
   },
-  // Layout para clientes (solo CLIENTE)
+
+  // ========================
+  // 👤 Área del Cliente (solo CLIENTE)
+  // ========================
   {
     path: '',
     component: ClienteLayoutComponent,
@@ -51,43 +52,52 @@ export const routes: Routes = [
     data: { roles: ['cliente'] },
     children: [
       { path: 'carrito', component: carritoComponent },
-      //{ path: 'perfil', component: PerfilClienteComponent }
+      // aquí puedes agregar más rutas cliente
     ]
   },
-  // Layout para administradores y empleados
+
+  // ========================
+  // 🛠️ Área Admin / Mesero
+  // ========================
   {
-    path: '',
+    path: 'admin',
     component: LayoutComponent,
     canActivate: [RoleGuard],
     data: { roles: ['administrador', 'mesero'] },
     children: [
-      { path: 'pages/dashboard', component: DashboardComponent },
-  { path: 'pages/category', component: CategoryComponent },
-  { path: 'pages/menuitem', component: MenuItemComponent },
-  { path: 'pages/product', component: ProductComponent },
-  { path: 'pages/order', component: OrderComponent },
-  { path: 'pages/order/:id', component: OrderComponent },
-  {path: 'pages/order-details/:id', component: OrderDetailsComponent},
-
-  { path: 'pages/orderregister', component: OrderRegisterComponent },
-  { path: 'pages/delivery', component: DeliveryComponent },
-  { path: 'pages/delivery/new', component: DeliveryRegisterComponent },
-
-  { path: 'pages/orderitem', component: OrderItemComponent },
-  { path: 'pages/payment', component: PaymentComponent },
-  { path: 'pages/reservation', component: ReservationComponent },
-  { path: 'pages/role', component: RoleComponent },
-  { path: 'pages/table', component: TableComponent },
-  { path: 'pages/user', component: UserComponent },
-      // otras rutas
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'category', component: CategoryComponent },
+      { path: 'menuitem', component: MenuItemComponent },
+      { path: 'product', component: ProductComponent },
+      { path: 'order', component: OrderComponent },
+      { path: 'order/:id', component: OrderComponent },
+      { path: 'order-details/:id', component: OrderDetailsComponent },
+      { path: 'orderregister', component: OrderRegisterComponent },
+      { path: 'delivery', component: DeliveryComponent },
+      { path: 'delivery/new', component: DeliveryRegisterComponent },
+      { path: 'orderitem', component: OrderItemComponent },
+      { path: 'payment', component: PaymentComponent },
+      { path: 'reservation', component: ReservationComponent },
+      { path: 'role', component: RoleComponent },
+      { path: 'table', component: TableComponent },
+      { path: 'user', component: UserComponent }
     ]
   },
 
-  // Auth
+  // ========================
+  // 🔐 Autenticación
+  // ========================
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  // Fallback
-  { path: '**', redirectTo: 'home' }
- 
+  // ========================
+  // ❌ Fallback
+  // ========================
+  { path: '**', redirectTo: 'home' },
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

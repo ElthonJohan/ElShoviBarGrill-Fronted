@@ -17,12 +17,7 @@
 
       <!-- Usuario -->
 
-      <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
-        <div class="flex items-center space-x-2">
-          <mat-icon>person</mat-icon>
-          <span>{{ userName }}</span>
-        </div>
-      </button>
+      
 
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item routerLink="/perfil">
@@ -52,47 +47,47 @@
       </div>
 
       <nav class="menu">
-        <a routerLink="/pages/dashboard" routerLinkActive="active"
+        <a routerLink="/admin/dashboard" routerLinkActive="active"
           ><mat-icon>dashboard</mat-icon
           ><span *ngIf="!isCollapsed">Dashboard</span></a
         >
-        <a routerLink="/pages/category" routerLinkActive="active"
+        <a routerLink="/admin/category" routerLinkActive="active"
           ><mat-icon>category</mat-icon
           ><span *ngIf="!isCollapsed">Categorías</span></a
         >
-        <a routerLink="/pages/delivery" routerLinkActive="active"
+        <a routerLink="/admin/delivery" routerLinkActive="active"
           ><mat-icon>moped</mat-icon
           ><span *ngIf="!isCollapsed">Delivery</span></a
         >
-        <a routerLink="/pages/menuitem" routerLinkActive="active"
+        <a routerLink="/admin/menuitem" routerLinkActive="active"
           ><mat-icon>restaurant_menu</mat-icon
           ><span *ngIf="!isCollapsed">Menú</span></a
         >
-        <a routerLink="/pages/product" routerLinkActive="active"
+        <a routerLink="/admin/product" routerLinkActive="active"
           ><mat-icon>inventory_2</mat-icon
           ><span *ngIf="!isCollapsed">Inventario</span></a
         >
-        <a routerLink="/pages/orderregister" routerLinkActive="active"
+        <a routerLink="/admin/orderregister" routerLinkActive="active"
           ><mat-icon>shopping_cart</mat-icon
           ><span *ngIf="!isCollapsed">Pedidos</span></a
         >
-        <a routerLink="/pages/payment" routerLinkActive="active"
+        <a routerLink="/admin/payment" routerLinkActive="active"
           ><mat-icon>payment</mat-icon
           ><span *ngIf="!isCollapsed">Pagos</span></a
         >
-        <a routerLink="/pages/table" routerLinkActive="active"
+        <a routerLink="/admin/table" routerLinkActive="active"
           ><mat-icon>table_restaurant</mat-icon
           ><span *ngIf="!isCollapsed">Mesas</span></a
         >
-        <a routerLink="/pages/reservation" routerLinkActive="active"
+        <a routerLink="/admin/reservation" routerLinkActive="active"
           ><mat-icon>book_online</mat-icon
           ><span *ngIf="!isCollapsed">Reservas</span></a
         >
-        <a routerLink="/pages/user" routerLinkActive="active"
+        <a routerLink="/admin/user" routerLinkActive="active"
           ><mat-icon>group</mat-icon
           ><span *ngIf="!isCollapsed">Usuarios</span></a
         >
-        <a routerLink="/pages/role" routerLinkActive="active"
+        <a routerLink="/admin/role" routerLinkActive="active"
           ><mat-icon>admin_panel_settings</mat-icon
           ><span *ngIf="!isCollapsed">Roles</span></a
         >

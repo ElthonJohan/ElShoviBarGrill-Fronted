@@ -24,7 +24,7 @@ import { AuthService } from '../../services/auth-service';
     MatMenuModule,
     MatDividerModule,
     RouterModule, // se agregó
-    CartWidgetComponent // se agregó
+     // se agregó
   ],
   templateUrl: './layout-component.html',
   styleUrls: ['./layout-component.css']

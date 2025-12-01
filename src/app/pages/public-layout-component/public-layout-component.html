@@ -14,10 +14,27 @@
   </div>
   <app-cart-widget></app-cart-widget>
 
-  <div class="flex items-center space-x-2">
-    <mat-icon>person</mat-icon>
-    <span>{{ userName }}</span>
+  <div>
+     <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
+        <div class="flex items-center space-x-2">
+          <mat-icon>person</mat-icon>
+          <span>{{ userName }}</span>
+        </div>
+      </button>
+
+    <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/perfil">
+          <mat-icon>person</mat-icon> Perfil
+        </button>
+        <button mat-menu-item routerLink="/config">
+          <mat-icon>settings</mat-icon> Configuración
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon> Cerrar sesión
+        </button>
+      </mat-menu>
   </div>
+  
   <!-- Botón de login -->
   <div>
     <button mat-raised-button color="accent" routerLink="/login">

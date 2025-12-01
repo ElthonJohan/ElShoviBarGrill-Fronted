@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,8 @@ import { environment } from '../../../environments/environment';
 export class LoginComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient,    private auth: AuthService           // <-- INYECTAR TU SERVICIO
+) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -57,22 +59,39 @@ export class LoginComponent {
             res?.jwt ??
             res?.data?.accessToken;
 
-          // Guardar respuesta + token normalizado
+          if (!token) {
+            alert('No se recibió el token del servidor');
+            return;
+          }
+
+          // 🔹 Guardar en localStorage
           const userToStore = { ...res, token };
           localStorage.setItem('user', JSON.stringify(userToStore));
 
-          // Redirigir
-          this.router.navigate(['/home']);
+          // 🔹 Obtener roles desde el token usando tu AuthService
+          const roles = this.auth.getUserRoles();
+          console.log("Roles obtenidos del token:", roles);
+
+          // 🔹 Redirección según rol
+          if (roles.includes('administrador') || roles.includes('mesero')) {
+            this.router.navigate(['/admin/dashboard']);
+          }
+          else if (roles.includes('cliente')) {
+            this.router.navigate(['/home']);
+          }
+          else {
+            this.router.navigate(['/home']);
+          }
         },
 
-        error: () => {
+        error: (err) => {
+          console.error(err);
           alert('Usuario o contraseña incorrectos');
         }
       });
-
   }
 
   goToRegister(): void {
-    this.router.navigate(['register']);
+    this.router.navigate(['/register']);
   }
 }

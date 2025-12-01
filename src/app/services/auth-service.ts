@@ -31,15 +31,19 @@ export class AuthService {
     }
 
     // Normalizar: quitar prefijo "ROL_" o "role_" y pasar a minúsculas
-    return roles.map(r =>
-      r.replace(/^ROL_/i, '')
+     const result = roles.map(r =>
+      r.replace(/^ROLE_/i, '')
+       .replace(/^ROL_/i, '')
        .replace(/^role_/i, '')
-       .toLowerCase()
        .trim()
+       .toLowerCase()
     );
+
+    return result.length > 0 ? result : ['invitado'];
+
   } catch (e) {
     console.error('Error decoding token', e);
-    return ['INVITADO'];
+    return ['invitado'];
   }
   
   }
@@ -64,4 +68,10 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  hasRole(role: string): boolean {
+  const roles = this.getUserRoles();
+  return roles.includes(role.toLowerCase());
+}
+
 }

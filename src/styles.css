@@ -99,4 +99,9 @@ body {
   border-radius: 10px !important;
 }
 
+.mat-mdc-menu-panel {
+  background: #cbbc95 !important;
+  color: #cb77029d !important;
+  border-radius: 10px !important;
+}
 
