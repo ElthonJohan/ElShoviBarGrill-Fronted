@@ -8,7 +8,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { OrderService } from '../../services/order-service';
 import { TableService } from '../../services/table-service';
 import { UserService } from '../../services/user-service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '../../model/user';
 import { Table } from '../../model/table';
@@ -37,7 +37,8 @@ import { PaymentDialogComponent } from '../payment-component/payment-dialog-comp
     MatOption,
     CommonModule,
     FormsModule,
-    RouterLink
+    RouterLink,
+    MatDialogModule
 ],
   templateUrl: './order-register-component.html',
   styleUrl: './order-register-component.css',
@@ -92,32 +93,41 @@ constructor(
       );
   }
 
-  createTable(data: Order[]) {
+createTable(data: Order[]) {
 
-    this.orders = data;
+  // 🔥 FILTRAR PEDIDOS (NO MOSTRAR DELIVERY)
+  const filtered = data.filter(res =>
+    res.orderType === "EN_MESA" ||
+    res.orderType === "LLEVAR" 
+  );
 
+  this.orders = filtered;
+
+  // 🔥 Cargar datos adicionales (userName y tableNumber)
   this.orders.forEach(res => {
 
-    // 1. Cargar nombre del usuario
+    // Usuario
     this.userService.findById(res.idUser).subscribe(user => {
       res.userName = user.userName;
     });
 
-    // 2. Cargar número de mesa
+    // Mesa
     if (res.idTable) {
-  this.tableService.findById(res.idTable).subscribe(table => {
-    res.tableNumber = table.tableNumber;
+      this.tableService.findById(res.idTable).subscribe(table => {
+        res.tableNumber = table.tableNumber;
+      });
+    } else {
+      res.tableNumber = -1; // o "Delivery" si deseas mostrar texto
+    }
+
   });
-} else {
-  res.tableNumber = -1;  // o "Delivery"
+
+  // 🔥 Vincular a la tabla
+  this.dataSource = new MatTableDataSource(this.orders);
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort;
 }
 
-  });
-
-    this.dataSource = new MatTableDataSource(data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
 
    getDisplayedColumns() {
     return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
@@ -126,6 +136,11 @@ constructor(
   openEdit(order: Order) {
   this.router.navigate(['/admin/order', order.idOrder]);
 }
+
+openDetails(order: Order) {
+  this.router.navigate(['/admin/order-details', order.idOrder]);
+}
+
 
   
   loadOrders() {
@@ -173,6 +188,11 @@ constructor(
     alert("Esta orden ya fue completada y no requiere pago.");
     return;
   }
+
+  
+  // if (this._dialog.openDialogs.length > 0) {
+  //   return;   // 👈 evita abrir más de uno
+  // }
 
 
   const dialogRef = this._dialog.open(PaymentDialogComponent, {

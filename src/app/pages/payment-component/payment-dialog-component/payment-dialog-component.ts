@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Payment } from '../../../model/payment';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { PaymentService } from '../../../services/payment-service';
 import { finalize, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -16,13 +16,16 @@ import { OrderService } from '../../../services/order-service';
   selector: 'app-payment-dialog-component',
   imports: [
     CommonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatToolbarModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule
+  MatDialogModule,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatFormFieldModule,
+  MatToolbarModule,
+  MatSelectModule,
+  ReactiveFormsModule,
+  MatInputModule,
+  MatButtonModule
   ],
   templateUrl: './payment-dialog-component.html',
   styleUrl: './payment-dialog-component.css',
@@ -44,16 +47,12 @@ export class PaymentDialogComponent {
   }
 
   this.orderService.payOrder(this.data.idOrder, this.paymentMethod)
-    .pipe(
-      finalize(() => {
-        this.dialogRef.close(true);  // 👈 SIEMPRE CERRAR
-      })
-    )
     .subscribe({
       next: (res) => {
         alert("Pago registrado correctamente");
+        this.dialogRef.close(true);   // 👈 CERRAR SOLO AQUÍ
       },
-      error: err => {
+      error: (err) => {
         console.error(err);
         alert("Error al registrar el pago");
       }

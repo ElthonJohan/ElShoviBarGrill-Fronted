@@ -38,7 +38,7 @@ export class ProductDialogComponent {
 
   actives = [
     { value: true, label: 'Activo' },
-    { value: false, label: 'Pendiente' }
+    { value: false, label: 'Inactivo' }
   ];
 
   constructor(
