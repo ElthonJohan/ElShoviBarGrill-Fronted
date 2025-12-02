@@ -26,22 +26,24 @@ import { PublicLayoutComponent } from './pages/public-layout-component/public-la
 import { NgModule } from '@angular/core';
 import { TarjetaComponent } from './pages/tarjeta-component/tarjeta-component';
 import { AccessDenied } from './pages/access-denied/access-denied';
-
+import { Profile } from './pages/profile/profile';
 
 export const routes: Routes = [
-
-   
   // ========================
   // 🌐 Rutas Públicas
   // ========================
   {
     path: '',
-    component: ClienteLayoutComponent,
+    component: PublicLayoutComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'menu', component: MenuItemComponent },
-    ]
+      {
+        path: 'perfil',
+        component: Profile
+      },
+    ],
   },
 
   // ========================
@@ -54,9 +56,10 @@ export const routes: Routes = [
     data: { roles: ['cliente'] },
     children: [
       { path: 'carrito', component: carritoComponent },
-      { path: 'pages/tarjeta-component', component:TarjetaComponent },
+      { path: 'pages/tarjeta-component', component: TarjetaComponent },
       // aquí puedes agregar más rutas cliente
-    ]
+      
+    ],
   },
 
   // ========================
@@ -83,8 +86,8 @@ export const routes: Routes = [
       { path: 'reservation', component: ReservationComponent },
       { path: 'role', component: RoleComponent },
       { path: 'table', component: TableComponent },
-      { path: 'user', component: UserComponent }
-    ]
+      { path: 'user', component: UserComponent },
+    ],
   },
 
   // ========================
@@ -94,7 +97,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
 
   // Página de acceso denegado
-{ path: 'access-denied', component: AccessDenied },
+  { path: 'access-denied', component: AccessDenied },
 
   // ========================
   // ❌ Fallback
@@ -103,7 +106,9 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

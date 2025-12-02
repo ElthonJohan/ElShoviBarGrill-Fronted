@@ -8,7 +8,14 @@ import { MatMenu, MatMenuTrigger } from "@angular/material/menu";
 
 @Component({
   selector: 'app-cliente-layout-component',
-  imports: [RouterModule, MatIconModule, MatToolbarModule, CartWidgetComponent, MatMenu, MatMenuTrigger],
+  imports: [
+    RouterModule, 
+    MatIconModule,
+     MatToolbarModule,
+      CartWidgetComponent, 
+      MatMenu, 
+      MatMenuTrigger
+    ],
   templateUrl: './cliente-layout-component.html',
   styleUrl: './cliente-layout-component.css',
 })

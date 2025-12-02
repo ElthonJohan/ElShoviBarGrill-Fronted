@@ -30,8 +30,8 @@ export class RoleGuard implements CanActivate {
   this.router.navigate(['/access-denied']);
   return false;
 }
-    // Si no coincide rol → redirigir
-    this.router.navigate(['/home']);
-    return false;
+  return true;
+
+
   }
 }

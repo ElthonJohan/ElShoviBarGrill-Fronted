@@ -19,4 +19,8 @@ export class UserService extends GenericService<User> {
     return this.http.get<any>(`${this.uri}/roles`);
   }
 
+  updateProfile(id: number, dto: any) {
+  return this.http.put(`${this.uri}/profile/${id}`, dto);
+}
+
 }

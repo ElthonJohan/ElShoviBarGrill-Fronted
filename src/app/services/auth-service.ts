@@ -11,42 +11,37 @@ export class AuthService {
 
  getUserRoles(): string[] {
   const token = this.getToken();
-  if (!token) return ['INVITADO'];
+  if (!token) return ['invitado'];
 
   try {
     const decoded: any = jwtDecode(token);
 
     let roles: string[] = [];
 
-    // Caso 1: el backend devuelve un array
+    // si backend manda array
     if (Array.isArray(decoded.roles)) {
       roles = decoded.roles;
     }
-    // Caso 2: el backend devuelve un string con comas
-    else if (typeof decoded.role === 'string') {
-      roles = decoded.role.split(','); // separar por coma
-    }
-    else if (decoded.role) {
-      roles = [decoded.role];
+
+    // si backend manda string
+    if (typeof decoded.roles === 'string') {
+      roles = decoded.roles.split(',');
     }
 
-    // Normalizar: quitar prefijo "ROL_" o "role_" y pasar a minúsculas
-     const result = roles.map(r =>
-      r.replace(/^ROLE_/i, '')
-       .replace(/^ROL_/i, '')
-       .replace(/^role_/i, '')
-       .trim()
-       .toLowerCase()
+    // normalizar
+    roles = roles.map(r =>
+      r.toLowerCase()
+        .replace(/^role_/, '')            // ROLE_ADMIN → admin
+        .replace('administrador', 'admin') // tu backend → admin
+        .trim()
     );
 
-    return result.length > 0 ? result : ['invitado'];
-
+    return roles;
   } catch (e) {
-    console.error('Error decoding token', e);
     return ['invitado'];
   }
-  
-  }
+}
+
    getUserName(): string {
     const raw = localStorage.getItem('user');
     if (!raw) return 'INVITADO';
@@ -73,5 +68,19 @@ export class AuthService {
   const roles = this.getUserRoles();
   return roles.includes(role.toLowerCase());
 }
+
+getUserId(): number | null {
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    const decoded: any = jwtDecode(token);
+    return decoded.id || decoded.idUser || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+
 
 }

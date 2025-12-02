@@ -20,7 +20,9 @@
     <!-- Carrito -->
     <app-cart-widget class="cart-widget"></app-cart-widget>
 
-  <div>
+
+    <!-- Usuario -->
+     <div>
      <button mat-button [matMenuTriggerFor]="userMenu" class="avatar-btn">
         <div class="user-info flex items-center space-x-2">
           <mat-icon>person</mat-icon>
@@ -40,15 +42,18 @@
         </button>
       </mat-menu>
   </div>
-  
-  <!-- Botón de login -->
-  <div>
-    <button mat-raised-button color="accent" routerLink="/login">
-      <mat-icon>login</mat-icon>
-      Ingresar
-    </button>
+
+    <!-- Botón de login -->
+    <div class="login-btn-container">
+      <button mat-raised-button routerLink="/login" class="login-btn-custom">
+        <mat-icon>login</mat-icon>
+        Ingresar
+      </button>
+    </div>
+
   </div>
-<mat-toolbar>
+
+</mat-toolbar>
 
 <!-- Aquí se renderiza el contenido -->
 <router-outlet></router-outlet>

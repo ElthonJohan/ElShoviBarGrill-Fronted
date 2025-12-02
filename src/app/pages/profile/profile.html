@@ -1,0 +1,45 @@
+<div class="profile-container">
+
+  <div class="profile-card">
+
+    <h2>Mi Perfil</h2>
+
+    <form [formGroup]="form" (ngSubmit)="actualizar()">
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email">
+        <small *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+          Ingrese un correo válido.
+        </small>
+      </div>
+
+      <!-- Usuario -->
+      <div class="form-group">
+        <label>Nombre de usuario</label>
+        <input type="text" formControlName="userName">
+        <small *ngIf="form.controls['userName'].invalid && form.controls['userName'].touched">
+          Este campo es obligatorio.
+        </small>
+      </div>
+
+      <!-- Nombre completo -->
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" formControlName="fullName">
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label>Nueva contraseña (opcional)</label>
+        <input type="password" formControlName="password">
+      </div>
+
+      <button type="submit" class="btn-save">
+        Guardar cambios
+      </button>
+    </form>
+
+  </div>
+</div>
