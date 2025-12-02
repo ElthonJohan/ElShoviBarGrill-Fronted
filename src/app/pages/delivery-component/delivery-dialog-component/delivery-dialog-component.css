@@ -1,12 +1,111 @@
-.example-container {
-    display: flex;
-    flex-direction: column;
+.order-container {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.example-container>* {
-    width: 100%;
+.row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.example-spacer {
-    flex: 1 1 auto;
+.subtitle {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* === CARRUSEL === */
+.menu-carousel {
+  display: flex;
+  overflow-x: auto;
+  gap: 25px;
+  padding: 15px 0;
+}
+.menu-card {
+  width: 250px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #1e293b;
+  color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease-in-out;
+}
+
+.menu-card:hover {
+  transform: scale(1.03);
+}
+
+.menu-card img {
+  height: 150px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.menu-card-content {
+  padding: 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-card-content h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.menu-card-content p {
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.menu-card-content button {
+  margin-top: auto;
+  background-color: #ea580c;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.item-table th,
+.item-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.qty-input {
+  width: 60px;
+}
+
+.total-box {
+  text-align: right;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.save-btn {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.no-items {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: gray;
 }

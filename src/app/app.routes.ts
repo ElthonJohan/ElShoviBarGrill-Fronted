@@ -27,6 +27,7 @@ import { NgModule } from '@angular/core';
 import { TarjetaComponent } from './pages/tarjeta-component/tarjeta-component';
 import { AccessDenied } from './pages/access-denied/access-denied';
 import { Profile } from './pages/profile/profile';
+import { DeliveryDialogComponent } from './pages/delivery-component/delivery-dialog-component/delivery-dialog-component';
 
 export const routes: Routes = [
   // ========================
@@ -56,7 +57,7 @@ export const routes: Routes = [
     data: { roles: ['cliente'] },
     children: [
       { path: 'carrito', component: carritoComponent },
-      { path: 'pages/tarjeta-component', component: TarjetaComponent },
+      { path: 'tarjeta', component: TarjetaComponent },
       // aquí puedes agregar más rutas cliente
       
     ],
@@ -79,8 +80,12 @@ export const routes: Routes = [
       { path: 'order/:id', component: OrderComponent },
       { path: 'order-details/:id', component: OrderDetailsComponent },
       { path: 'orderregister', component: OrderRegisterComponent },
-      { path: 'delivery', component: DeliveryComponent },
+      { path: 'carrito', component: carritoComponent },
+      { path: 'tarjeta', component: TarjetaComponent },
+      { path: 'delivery', component: DeliveryComponent }, //order/delivery
       { path: 'delivery/new', component: DeliveryRegisterComponent },
+      { path: 'order/delivery', component: DeliveryDialogComponent },
+      
       { path: 'orderitem', component: OrderItemComponent },
       { path: 'payment', component: PaymentComponent },
       { path: 'reservation', component: ReservationComponent },

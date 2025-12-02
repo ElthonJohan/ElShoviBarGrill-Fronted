@@ -5,13 +5,13 @@
 
 <!-- Botón 'Seguir comprando' centrado encima de la orden -->
 <div class="follow-center">
-  <button mat-raised-button class="follow-btn" routerLink="/pages/menuitem">Seguir comprando</button>
+  <button mat-raised-button class="follow-btn" routerLink="/admin/menuitem">Seguir comprando</button>
 </div>
 
 <div *ngIf="checkoutTotal !== null" class="checkout-banner">
 
   <div class="confirm-top">
-    <button mat-raised-button color="accent" routerLink="/pages/tarjeta-component">Confirmar pedido</button>
+    <button mat-raised-button color="accent" routerLink="/tarjeta">Confirmar pedido</button>
   </div>
 
   <div *ngIf="checkoutItems?.length" class="checkout-items">
@@ -112,4 +112,4 @@
 
 </div>
 
- 
+  

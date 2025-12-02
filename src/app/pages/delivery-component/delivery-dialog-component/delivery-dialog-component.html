@@ -1,49 +1,179 @@
-<mat-dialog-content>
-    <mat-toolbar><span>Medic Info</span></mat-toolbar>
+<div class="order-container">
 
-<div class="example-container">
+  <h2>{{ editingId ? 'Editar Orden' : 'Registrar Orden' }}</h2>
 
-    <!-- <mat-form-field>
-        <mat-label>Specialty</mat-label>
-        <mat-select [(ngModel)]="delivery.order.idOrder">
-          @for (sp of orders; track sp) {
-            <mat-option [value]="sp.idOrder">{{sp.user}}</mat-option>
-          }
+  <form [formGroup]="form">
+
+    <!-- =====================
+         SECCIÓN DE DATOS BÁSICOS
+         ===================== -->
+    <div class="row">
+
+      <!-- Usuario -->
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <mat-select formControlName="idUser">
+          <mat-option *ngFor="let u of users" [value]="u.idUser">
+            {{ u.userName }}
+          </mat-option>
         </mat-select>
-      </mat-form-field> -->
+      </mat-form-field>
 
-    <mat-form-field>
-        <input matInput placeholder="Primary Name" [(ngModel)]="delivery.address">
+      <!-- Tipo de orden -->
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo de Orden</mat-label>
+        <mat-select formControlName="orderType">
+          <mat-option *ngFor="let t of types" [value]="t.value">
+             {{ t.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Tipo de orden
+      <mat-form-field appearance="fill">
+        <mat-label>Estado de Orden</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let t of statuss" [value]="t.value">
+             {{ t.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>  -->
+
+      <!-- Mesa (solo si no es delivery) -->
+      <mat-form-field appearance="fill" *ngIf="form.value.orderType !== 'LLEVAR' && form.value.orderType !== 'DELIVERY'">
+        <mat-label>Mesa</mat-label>
+        <mat-select formControlName="idTable">
+          <mat-option *ngFor="let t of tables" 
+                [value]="t.idTable"
+                [disabled]="t.ocupada">
+
+      Mesa {{ t.tableNumber }}
+      <span *ngIf="t.ocupada" style="color: red;">(Ocupada)</span>
+
+    </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+       <!-- NOTAS -->
+    <mat-form-field appearance="fill" class="notes-field">
+      <mat-label>Notas</mat-label>
+      <textarea matInput formControlName="notes"></textarea>
     </mat-form-field>
 
-    <mat-form-field>
-        <input matInput placeholder="Surname" [(ngModel)]="delivery.phone">
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput placeholder="CMP" [(ngModel)]="delivery.driverName">
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput placeholder="Photo" [(ngModel)]="delivery.vehiclePlate">
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput placeholder="Photo" [(ngModel)]="delivery.status">
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput placeholder="Photo" [(ngModel)]="delivery.deliveryTime">
-    </mat-form-field>
+    </div>
 
 
-    <!-- @if (delivery.photo) {
-        <img mat-card-image [src]="delivery.photo">
-    } -->
+  <!-- ====================== -->
+  <!--     CARRUSEL MENU      -->
+  <!-- ====================== -->
 
-    <button mat-button (click)="operate()">Done</button>
-    <button mat-button (click)="close()">Cancel</button>
+  <h3 class="subtitle">Productos</h3>
+
+  <div class="flex gap-6 overflow-x-auto py-4 px-2">
+
+  <mat-card
+    *ngFor="let p of menuItems"
+    class="min-w-[240px] max-w-[240px] h-[360px] flex flex-col justify-between bg-[#1e293b] text-white rounded-2xl shadow-xl overflow-hidden hover:scale-[1.03] transition-transform duration-200">
+
+    <img [src]="p.imageUrl"
+         alt="{{p.name}}" class="w-full h-[150px] object-cover"/>
+
+    <mat-card-content class="p-4 flex flex-col justify-between flex-grow">
+    <h3 class="text-lg font-semibold mb-2">{{ p.name }}</h3>
+    <p class="text-gray-300 mb-4">S/ {{ p.price }}</p>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addItem(p)"
+      class="bg-[#ea580c] hover:bg-[#f97316] text-white font-bold py-2 rounded-xl transition-all">
+      Agregar
+    </button>
+  </mat-card-content>
+  </mat-card>
 
 </div>
 
-</mat-dialog-content>
+
+
+    <!-- =====================
+         TABLA DE ITEMS
+         ===================== -->
+    <h3>Items seleccionados</h3>
+
+    <table class="min-w-full bg-[#0f172a] text-white rounded-xl overflow-hidden shadow-lg mt-6">
+  <thead>
+    <tr class="bg-[#1e293b] text-gray-300 uppercase text-sm tracking-wider">
+      <th class="px-4 py-3 text-left">Nombre</th>
+      <th class="px-4 py-3 text-center">Cantidad</th>
+      <th class="px-4 py-3 text-center">Precio</th>
+      <th class="px-4 py-3 text-center">Subtotal</th>
+      <th class="px-4 py-3 text-center">Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let item of items.controls; let i = index" class="border-b border-gray-700">
+      
+      <!-- Nombre -->
+      <td class="px-4 py-3">{{ item.value.name }}</td>
+
+      <!-- Cantidad -->
+      <td class="px-4 py-3 text-center">
+        <input
+          type="number"
+          min="1"
+          class="w-20 bg-[#1e293b] border border-gray-600 rounded-xl text-center p-1"
+          [formControl]="getQuantityControl(i)"> 
+      </td>
+
+      <!-- Precio -->
+      <td class="px-4 py-3 text-center">
+        S/ {{ item.value.unitPrice }}
+      </td>
+
+      <!-- Subtotal -->
+      <td class="px-4 py-3 text-center font-semibold text-green-400">
+        S/ {{ item.value.quantity * item.value.unitPrice }}
+      </td>
+
+      <!-- Acción eliminar -->
+      <td class="px-4 py-3 text-center">
+        <button mat-icon-button color="warn" (click)="removeItem(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+
+    <div *ngIf="items.controls.length === 0" class="no-items">
+      No hay items en la orden.
+    </div>
+
+
+    <!-- =====================
+         TOTAL
+         ===================== -->
+    <div class="flex justify-end mt-4">
+  <p class="text-2xl font-bold text-green-400">
+    TOTAL: S/ {{ total }}
+  </p>
+</div>
+
+
+
+    <!-- =====================
+         BOTÓN GUARDAR
+         ===================== -->
+    <button 
+     (click)="saveOrder()" 
+  class="mt-6 bg-[#ea580c] hover:bg-[#f97316] text-white px-8 py-3 rounded-2xl font-bold shadow-xl transition">
+      {{ editingId ? 'Actualizar Orden' : 'Guardar Orden' }}
+    </button>
+
+  </form>
+
+</div>

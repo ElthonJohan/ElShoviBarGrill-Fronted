@@ -124,7 +124,7 @@ constructor(
   }
 
   openEdit(order: Order) {
-  this.router.navigate(['/pages/order', order.idOrder]);
+  this.router.navigate(['/admin/order', order.idOrder]);
 }
 
   

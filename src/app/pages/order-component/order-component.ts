@@ -175,7 +175,7 @@ export class OrderComponent {
     // 👉 Si ya está completada, no permitir edición
     if (order.status === 'COMPLETADA') {
       alert("Esta orden ya fue completada. Mostrando detalle...");
-      this.router.navigate(['/pages/order-details', id]);  // <-- ruta al detalle
+      this.router.navigate(['/admin/order-details', id]);  // <-- ruta al detalle
       return;
     }
 
@@ -407,7 +407,7 @@ addItem(item: MenuItem) {
       this.orderService.update(this.editingId, dto).subscribe({
         next: () => {
           alert("Orden actualizada correctamente");
-          this.router.navigate(['/pages/orderregister']);
+          this.router.navigate(['/admin/orderregister']);
         },
         error: err => console.error(err)
       });
@@ -422,7 +422,7 @@ addItem(item: MenuItem) {
         // Si en algún momento permites DELIVERY aquí, mantiene esta lógica:
         if (saved.orderType === this.typeEnum.DELIVERY) {
           this.userService.findById(saved.idUser).subscribe(user => {
-            this.router.navigate(['/pages/delivery/new'], {
+            this.router.navigate(['/admin/delivery/new'], {
               queryParams: {
                 idOrder: saved.idOrder,
                 userName: user.userName
@@ -430,7 +430,7 @@ addItem(item: MenuItem) {
             });
           });
         }
-        this.router.navigate(['/pages/orderregister']);
+        this.router.navigate(['/admin/orderregister']);
 
         this.form.reset();
         this.items.clear();
