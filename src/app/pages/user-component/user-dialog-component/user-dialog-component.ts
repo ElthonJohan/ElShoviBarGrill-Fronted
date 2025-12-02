@@ -34,74 +34,86 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule
-],
+  ],
   templateUrl: './user-dialog-component.html',
   styleUrl: './user-dialog-component.css',
 })
 export class UserDialogComponent {
-  user: User;
+ 
   form!: FormGroup;
+  user!: User;
   roles: Role[] = [];
-  isEdit=false;
+  isEdit = false;
+
   statuses = [
     { value: true, label: 'Activo' },
     { value: false, label: 'Inactivo' },
   ];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: User,
-    private _dialogRef: MatDialogRef<UserDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: User | null,
+    private dialogRef: MatDialogRef<UserDialogComponent>,
     private userService: UserService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.isEdit=!!this.data;
-    
-    this.user = {
-      ...this.data,
-      roles: this.data?.roles ?? [], // ← inicializar si no existe
-    };
-    this.form = this.fb.group({
-      email: this.fb.control(this.user.email ?? '', {
-        validators: [Validators.required],
-        asyncValidators: [this.userEmailUniqueValidator()],
-        updateOn: 'blur',
-      }),
-      userName: this.fb.control(this.user.userName ?? '', [
-        Validators.required,
-      ]),
-      password: this.fb.control(this.user.password ?? '', [
-        Validators.required,
-      ]),
-      fullName: this.fb.control(this.user.fullName ?? ''),
-      createdAt: this.fb.control(this.user.createdAt ?? ''),
-      active: this.fb.control(this.user.active ?? '', [Validators.required]),
-      roles: this.fb.control(this.user.roles.map(r => r.idRole) ?? [], Validators.required)
-    }),
-    //this.medic = this.data;
-    /*this.medic = new Medic();
-    this.medic.idMedic = this.data.idMedic;
-    this.medic.idSpecialty = this.data.idSpecialty;
-    this.medic.primaryName = this.data.primaryName;
-    this.medic.surname = this.data.surname;
-    this.medic.photo = this.data.photo;*/
 
-    this.userService.getRoles().subscribe((roles) => (this.roles = roles));
+    // 👇 EDIT si viene un usuario con idUser > 0
+    this.isEdit = !!(this.data && this.data.idUser && this.data.idUser > 0);
+
+    // 👇 Usuario base (para crear o editar)
+    this.user = this.isEdit
+      ? this.data as User
+      : {
+          idUser: 0,
+          email: '',
+          userName: '',
+          password: '',
+          fullName: '',
+          active: true,
+          createdAt: new Date(),
+          roles: []
+        };
+
+    // 👇 Construcción del formulario
+    this.form = this.fb.group({
+      email: [
+        this.user.email,
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: [this.userEmailUniqueValidator()],
+          updateOn: 'blur'
+        }
+      ],
+      userName: [this.user.userName, Validators.required],
+      fullName: [this.user.fullName],
+      // contraseña requerida solo en CREAR
+      password: ['', this.isEdit ? [] : [Validators.required]],
+      active: [this.user.active, Validators.required],
+      roles: [
+        this.user.roles?.map(r => r.idRole) ?? [],
+        Validators.required
+      ]
+    });
+
+    // Cargar lista de roles desde backend
+    this.userService.getRoles().subscribe(roles => (this.roles = roles));
   }
 
-  /** Async validator: checks backend for existing email and ignores current user id */
+  /** Validador asíncrono para email único (ignora el usuario actual en edición) */
   userEmailUniqueValidator() {
     return (control: AbstractControl) => {
       const value = control.value;
-      if (value == null || value === '') {
+      if (!value) {
         return of(null);
       }
+
       return this.userService.findAll().pipe(
         map((users: User[]) => {
           const exists = users.some(
-            (t) => t.email == value && t.idUser !== this.user?.idUser
+            u => u.email === value && u.idUser !== this.user?.idUser
           );
           return exists ? { userEmailExists: true } : null;
         }),
@@ -110,70 +122,56 @@ export class UserDialogComponent {
     };
   }
 
-  close() {
-    this._dialogRef.close();
+  close(): void {
+    this.dialogRef.close();
   }
-    handleError(err: any) {
-  const message = err?.error || 'Error inesperado';
 
-  this.snackBar.open(
-    message,
-    'Cerrar',
-    {
+  handleError(err: any) {
+    const message = err?.error || 'Error inesperado';
+    this.snackBar.open(message, 'Cerrar', {
       duration: 4000,
       panelClass: ['snackbar-error']
-    }
-  );
-}
+    });
+  }
 
-  operate() {
-    
+  operate(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    // merge form values into user object
-    const formVal = this.form.value;
+    const formVal = this.form.getRawValue();
+
     const payload: User = {
-      ...this.user,
+      ...this.data,
+      
       email: formVal.email,
       userName: formVal.userName,
-      active: formVal.active,
-      password: formVal.password,
       fullName: formVal.fullName,
-      roles: formVal.roles.map((id: number) => ({ idRole: id })), // 👈 IMPORTANTE
-
+      active: formVal.active,
+      // nunca enviamos contraseña encriptada desde frontend
+      password: formVal.password,
+      createdAt: this.user.createdAt,
+      roles: formVal.roles.map((id: number) => ({ idRole: id }))
     };
-    console.log("Payload que se envía al backend:", payload);
 
-    if (payload != null && payload.idUser > 0) {
-      // UPDATE
-      this.userService
-        .update(payload.idUser, payload)
-        .pipe(switchMap(() => this.userService.findAll()))
-        .subscribe({
-      next: (data) => {
-        this.userService.setModelChange(data);
-        this.userService.setMessageChange('USUARIO ACTUALIZADO');
-        this._dialogRef.close(payload);
-      },
-      error: (err) => this.handleError(err)
-    });
-    } else {
-      // INSERT
-      this.userService
-        .save(payload)
-        .pipe(switchMap(() => this.userService.findAll()))
-        .subscribe({
-      next: (data) => {
-        this.userService.setModelChange(data);
-        this.userService.setMessageChange('USUARIO CREADO');
-        this._dialogRef.close(payload);
-      },
-      error: (err) => this.handleError(err)
-    });
-    }
+    console.log('Payload enviado:', payload);
 
+    const request$ = this.isEdit
+      ? this.userService.update(payload.idUser, payload)
+      : this.userService.save(payload);
+
+    request$
+      .pipe(switchMap(() => this.userService.findAll()))
+      .subscribe({
+        next: (data) => {
+          this.userService.setModelChange(data);
+          this.userService.setMessageChange(
+            this.isEdit ? 'USUARIO ACTUALIZADO' : 'USUARIO CREADO'
+          );
+          this.dialogRef.close(payload);
+        },
+        error: (err) => this.handleError(err)
+      });
   }
 }

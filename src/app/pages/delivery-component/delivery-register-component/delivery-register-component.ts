@@ -117,7 +117,7 @@ export class DeliveryRegisterComponent {
         this.form.reset({
           status: 'PENDIENTE'
         });
-        this.router.navigate(['/pages/delivery']);
+        this.router.navigate(['/admin/delivery']);
 
       },
       error: err => {

@@ -19,15 +19,7 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- Tipo de orden -->
-      <mat-form-field appearance="fill">
-        <mat-label>Tipo de Orden</mat-label>
-        <mat-select formControlName="orderType">
-          <mat-option *ngFor="let t of types" [value]="t.value">
-             {{ t.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+
 
       <!-- Tipo de orden
       <mat-form-field appearance="fill">
@@ -40,7 +32,7 @@
       </mat-form-field>  -->
 
       <!-- Mesa (solo si no es delivery) -->
-      <mat-form-field appearance="fill" *ngIf="form.value.orderType !== 'LLEVAR' && form.value.orderType !== 'DELIVERY'">
+      <mat-form-field appearance="fill" *ngIf="showMesa">
         <mat-label>Mesa</mat-label>
         <mat-select formControlName="idTable">
           <mat-option *ngFor="let t of tables" 

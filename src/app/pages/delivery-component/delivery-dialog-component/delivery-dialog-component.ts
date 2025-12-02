@@ -1,14 +1,26 @@
 import { Component, Inject } from '@angular/core';
 import { Delivery } from '../../../model/delivery';
 import { Order } from '../../../model/order';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { OrderService } from '../../../services/order-service';
 import { DeliveryService } from '../../../services/delivery-service';
 import { switchMap } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MenuItem } from '../../../model/menuitem';
@@ -38,14 +50,12 @@ import { MatCard, MatCardContent } from '@angular/material/card';
     MatButtonModule,
     MatIconModule,
     MatCardContent,
-    MatCard
+    MatCard,
   ],
   templateUrl: './delivery-dialog-component.html',
   styleUrl: './delivery-dialog-component.css',
 })
 export class DeliveryDialogComponent {
-  
-  
   // --- FORM & ESTADO ---
   form!: FormGroup;
   editingId?: number;
@@ -55,11 +65,10 @@ export class DeliveryDialogComponent {
   users: User[] = [];
   tables: Table[] = [];
 
- types = orderTypes.filter(t => t.value === 'DELIVERY');
-// sólo EN_MESA y PARA_LLEVAR
+  types = orderTypes;
+  // sólo EN_MESA y PARA_LLEVAR
   statuss = orderStatus;
   typeEnum = OrderType;
-
 
   showMesa: boolean = true;
   isPaid: boolean = false;
@@ -79,18 +88,7 @@ export class DeliveryDialogComponent {
   // =========================================================
 
   ngOnInit(): void {
-
-
-
-
-    this.route.paramMap.subscribe(params => {    
-    const id = params.get('id');
-
-    if (id) {
-      this.editingId = Number(id);
-      this.loadOrder(this.editingId);
-    }
-  });
+    
     this.initForm();
     this.detectEditingMode();
     this.loadMenuItems();
@@ -99,24 +97,18 @@ export class DeliveryDialogComponent {
     this.setupTableValidation();
     this.setupOrderTypeBehaviour();
 
-    this.form.get('orderType')?.valueChanges.subscribe(type => {
+    this.form.get('orderType')?.valueChanges.subscribe((type) => {
+      // Mostrar mesa SOLO si es EN_MESA
+      this.showMesa = type === 'EN_MESA';
 
-  // Mostrar mesa SOLO si es EN_MESA
-  this.showMesa = (type === 'EN_MESA');
-
-  if (!this.showMesa) {
-    this.form.get('idTable')?.setValue(null);
-    this.form.get('idTable')?.disable();
-  } else {
-    this.form.get('idTable')?.enable();
+      if (!this.showMesa) {
+        this.form.get('idTable')?.setValue(null);
+        this.form.get('idTable')?.disable();
+      } else {
+        this.form.get('idTable')?.enable();
+      }
+    });
   }
-});
-
-
-  }
-
-
-
 
   // =========================================================
   // INICIALIZACIÓN
@@ -127,17 +119,17 @@ export class DeliveryDialogComponent {
       idUser: ['', Validators.required],
       idTable: [''],
       idPayment: [''],
-      orderType: ['DELIVERY', Validators.required],
+      orderType: [{ value: 'DELIVERY', disabled: true }, Validators.required],
       status: ['PENDIENTE', Validators.required],
       notes: [''],
-      items: this.fb.array([], Validators.required)
+      items: this.fb.array([], Validators.required),
     });
   }
 
   private detectEditingMode() {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      if (id) {
+      if (id && !isNaN(Number(id))) {
         this.editingId = Number(id);
         this.loadOrder(this.editingId);
       }
@@ -149,19 +141,18 @@ export class DeliveryDialogComponent {
   // =========================================================
 
   private loadMenuItems() {
-    this.menuItemService.findAll().subscribe(menu => this.menuItems = menu);
+    this.menuItemService.findAll().subscribe((menu) => (this.menuItems = menu));
   }
 
   private loadUsers() {
-    this.userService.findAll().subscribe(u => this.users = u);
+    this.userService.findAll().subscribe((u) => (this.users = u));
   }
 
   private loadTables() {
-    this.tableService.findAll().subscribe(tablas => {
-
+    this.tableService.findAll().subscribe((tablas) => {
       // Marcamos cuáles mesas están ocupadas (para UI si quieres)
-      tablas.forEach(t => {
-        this.orderService.mesaOcupada(t.idTable).subscribe(ocupada => {
+      tablas.forEach((t) => {
+        this.orderService.mesaOcupada(t.idTable).subscribe((ocupada) => {
           t.ocupada = ocupada;
         });
       });
@@ -171,15 +162,13 @@ export class DeliveryDialogComponent {
   }
 
   private loadOrder(id: number) {
-    this.orderService.findById(id).subscribe(order => {
-
-      
-    // 👉 Si ya está completada, no permitir edición
-    if (order.status === 'COMPLETADA') {
-      alert("Esta orden ya fue completada. Mostrando detalle...");
-      this.router.navigate(['/admin/order-details', id]);  // <-- ruta al detalle
-      return;
-    }
+    this.orderService.findById(id).subscribe((order) => {
+      // 👉 Si ya está completada, no permitir edición
+      if (order.status === 'COMPLETADA') {
+        alert('Esta orden ya fue completada. Mostrando detalle...');
+        this.router.navigate(['/admin/order-details', id]); // <-- ruta al detalle
+        return;
+      }
 
       // Rellenar form
       this.form.patchValue({
@@ -188,55 +177,56 @@ export class DeliveryDialogComponent {
         idPayment: order.idPayment,
         orderType: order.orderType,
         status: order.status,
-        notes: order.notes
+        notes: order.notes,
       });
 
       this.isPaid = !!order.idPayment;
 
-if (this.isPaid) {
-  this.form.get('idTable')?.disable();
-  this.form.get('status')?.disable();
-}
-
-
-      // ============================================
-    // 🔒 DESHABILITAR MESA SI ES DELIVERY O LLEVAR
-    // ============================================
-    if (order.orderType === 'DELIVERY' || order.orderType === 'LLEVAR') {
-      this.form.get('idTable')?.disable();
-      this.form.get('idTable')?.setValue(null);  // asegurar que no tenga mesa
-    } else {
-      this.form.get('idTable')?.enable();
-    }
-
-    if (order.orderType === 'EN_MESA') {
-  this.showMesa = true;
-  this.form.get('idTable')?.enable();
-} else {
-  this.showMesa = false;
-  this.form.get('idTable')?.disable();
-  this.form.get('idTable')?.setValue(null);
-}
-
+      if (this.isPaid) {
+        this.form.get('idTable')?.disable();
+        this.form.get('status')?.disable();
+      }
 
       // ============================================
-    // 💥 Limpiar items actuales antes de agregar
-    // ============================================
+      // 🔒 DESHABILITAR MESA SI ES DELIVERY O LLEVAR
+      // ============================================
+      if (order.orderType === 'DELIVERY' || order.orderType === 'LLEVAR') {
+        this.form.get('idTable')?.disable();
+        this.form.get('idTable')?.setValue(null); // asegurar que no tenga mesa
+      } else {
+        this.form.get('idTable')?.enable();
+      }
+
+      if (order.orderType === 'EN_MESA') {
+        this.showMesa = true;
+        this.form.get('idTable')?.enable();
+      } else {
+        this.showMesa = false;
+        this.form.get('idTable')?.disable();
+        this.form.get('idTable')?.setValue(null);
+      }
+
+      // ============================================
+      // 💥 Limpiar items actuales antes de agregar
+      // ============================================
       this.items.clear();
 
       // ============================================
-    // 🔄 Agregar items con información real del menú
-    // ============================================
-      order.items.forEach(item => {
-        this.menuItemService.findById(item.idMenuItem).subscribe(menu => {
+      // 🔄 Agregar items con información real del menú
+      // ============================================
+      order.items.forEach((item) => {
+        this.menuItemService.findById(item.idMenuItem).subscribe((menu) => {
           this.items.push(
             this.fb.group({
               idOrderItem: [item.idOrderItem],
               idMenuItem: [item.idMenuItem, Validators.required],
-              quantity: [item.quantity, [Validators.required, Validators.min(1)]],
+              quantity: [
+                item.quantity,
+                [Validators.required, Validators.min(1)],
+              ],
               unitPrice: [item.unitPrice, Validators.required],
               name: [menu.name],
-              imageUrl: [menu.imageUrl]
+              imageUrl: [menu.imageUrl],
             })
           );
         });
@@ -250,26 +240,30 @@ if (this.isPaid) {
 
   // Validar mesa ocupada al cambiar la mesa
   private setupTableValidation() {
-    this.form.get('idTable')?.valueChanges.subscribe(idMesa => {
+    this.form.get('idTable')?.valueChanges.subscribe((idMesa) => {
       // ❌ NO validar mesa si la orden ya está pagada
-  if (this.isPaid) return;
+      if (this.isPaid) return;
 
       if (!idMesa) return;
 
       const excluir = this.editingId ?? null;
 
-      this.orderService.checkMesaDisponible(idMesa, excluir).subscribe(disponible => {
-        if (!disponible) {
-          alert("⚠️ Esta mesa ya tiene una orden activa. Marca la orden anterior como COMPLETADA antes de usarla.");
-          this.form.get('idTable')?.setValue(null);
-        }
-      });
+      this.orderService
+        .checkMesaDisponible(idMesa, excluir)
+        .subscribe((disponible) => {
+          if (!disponible) {
+            alert(
+              '⚠️ Esta mesa ya tiene una orden activa. Marca la orden anterior como COMPLETADA antes de usarla.'
+            );
+            this.form.get('idTable')?.setValue(null);
+          }
+        });
     });
   }
 
   // Comportamiento cuando cambia el tipo de orden
   private setupOrderTypeBehaviour() {
-    this.form.get('orderType')?.valueChanges.subscribe(type => {
+    this.form.get('orderType')?.valueChanges.subscribe((type) => {
       if (type === 'DELIVERY' || type === this.typeEnum.LLEVAR) {
         // Por si algún día reusas el componente con DELIVERY
         this.form.get('idTable')?.setValue(null);
@@ -284,10 +278,9 @@ if (this.isPaid) {
   // GETTERS
   // =========================================================
 
-getQuantityControl(index: number): FormControl {
-  return (this.items.at(index) as FormGroup).get('quantity') as FormControl;
-}
-
+  getQuantityControl(index: number): FormControl {
+    return (this.items.at(index) as FormGroup).get('quantity') as FormControl;
+  }
 
   get items(): FormArray {
     return this.form.get('items') as FormArray;
@@ -298,42 +291,42 @@ getQuantityControl(index: number): FormControl {
   }
 
   get total(): number {
-    return this.items.value
-      .reduce((acc: number, it: any) => acc + it.quantity * it.unitPrice, 0);
+    return this.items.value.reduce(
+      (acc: number, it: any) => acc + it.quantity * it.unitPrice,
+      0
+    );
   }
 
   // =========================================================
   // MANEJO DE ITEMS
   // =========================================================
 
-addItem(item: MenuItem) {
+  addItem(item: MenuItem) {
+    // 1. Buscar si el ítem ya existe en la lista
+    const index = this.items.value.findIndex(
+      (i: any) => i.idMenuItem === item.idMenuItem
+    );
 
-  // 1. Buscar si el ítem ya existe en la lista
-  const index = this.items.value.findIndex(
-    (i: any) => i.idMenuItem === item.idMenuItem
-  );
+    // 2. Si ya existe → aumentar cantidad
+    if (index !== -1) {
+      const fg = this.items.at(index) as FormGroup;
+      const currentQty = fg.get('quantity')?.value || 1;
+      fg.get('quantity')?.setValue(currentQty + 1);
+      return;
+    }
 
-  // 2. Si ya existe → aumentar cantidad
-  if (index !== -1) {
-    const fg = this.items.at(index) as FormGroup;
-    const currentQty = fg.get('quantity')?.value || 1;
-    fg.get('quantity')?.setValue(currentQty + 1);
-    return;
+    // 3. Si NO existe → agregar nuevo
+    this.items.push(
+      this.fb.group({
+        idOrderItem: [null],
+        idMenuItem: [item.idMenuItem, Validators.required],
+        quantity: [1, [Validators.required, Validators.min(1)]],
+        unitPrice: [item.price, Validators.required],
+        name: [item.name],
+        imageUrl: [item.imageUrl], // si lo usas
+      })
+    );
   }
-
-  // 3. Si NO existe → agregar nuevo
-  this.items.push(
-    this.fb.group({
-      idOrderItem: [null],
-      idMenuItem: [item.idMenuItem, Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]],
-      unitPrice: [item.price, Validators.required],
-      name: [item.name],
-      imageUrl: [item.imageUrl]  // si lo usas
-    })
-  );
-}
-
 
   removeItem(i: number) {
     this.items.removeAt(i);
@@ -343,7 +336,7 @@ addItem(item: MenuItem) {
     return this.items.value.map((item: any) => ({
       idMenuItem: item.idMenuItem,
       quantity: item.quantity,
-      unitPrice: item.unitPrice
+      unitPrice: item.unitPrice,
     }));
   }
 
@@ -352,42 +345,45 @@ addItem(item: MenuItem) {
   // =========================================================
 
   saveOrder() {
-    console.log("Formulario a guardar:", this.form.value);
-    console.log("Items del formulario:", this.items.value);
-    console.log("Total calculado:", this.total);
+    console.log('Formulario a guardar:', this.form.value);
+    console.log('Items del formulario:', this.items.value);
+    console.log('Total calculado:', this.total);
     if (this.form.invalid || this.items.length === 0) {
       this.form.markAllAsTouched();
       return;
     }
 
+    const raw = this.form.getRawValue();
     const dto: Order = {
-      idOrder: this.editingId ?? null,
-      idUser: this.form.value.idUser,
-      idTable: this.form.value.orderType === 'DELIVERY' ? null : this.form.value.idTable,
-      idPayment: this.form.value.idPayment || null,
-      orderType: this.form.value.orderType,
-      status: this.form.value.status,
-      notes: this.form.value.notes,
-      items: this.mapFormItemsToOrderItems(),
-      totalAmount: this.total
-    };
+  idOrder: this.editingId ?? null,
+  idUser: raw.idUser,
+  idTable: raw.orderType === 'DELIVERY' ? null : raw.idTable,
+  idPayment: raw.idPayment || null,
+  orderType: raw.orderType,
+  status: raw.status,
+  notes: raw.notes,
+  items: this.mapFormItemsToOrderItems(),
+  totalAmount: this.total
+};
 
-    console.log("DTO a guardar:", dto);
+    console.log('DTO a guardar:', dto);
 
     // 🟡 Si NO es DELIVERY → validar mesa en backend antes de guardar
-    if (this.form.value.orderType !== 'DELIVERY' && this.form.value.orderType !== this.typeEnum.LLEVAR && this.form.value.idTable) {
-
+    if (
+      this.form.value.orderType !== 'DELIVERY' &&
+      this.form.value.orderType !== this.typeEnum.LLEVAR &&
+      this.form.value.idTable
+    ) {
       if (!this.form.value.idTable) {
-        alert("Seleccione una mesa");
+        alert('Seleccione una mesa');
         return;
       }
 
       this.orderService
         .checkMesaDisponible(this.form.value.idTable, this.editingId ?? null)
-        .subscribe(disponible => {
-
+        .subscribe((disponible) => {
           if (!disponible) {
-            alert("❌ Esta mesa está ocupada por otra orden activa.");
+            alert('❌ Esta mesa está ocupada por otra orden activa.');
             return;
           }
 
@@ -403,41 +399,41 @@ addItem(item: MenuItem) {
   }
 
   private procesarGuardado(dto: Order) {
-
     // MODO EDICIÓN
     if (this.editingId) {
       this.orderService.update(this.editingId, dto).subscribe({
         next: () => {
-          alert("Orden actualizada correctamente");
+          alert('Orden actualizada correctamente');
           this.router.navigate(['/admin/orderregister']);
         },
-        error: err => console.error(err)
+        error: (err) => console.error(err),
       });
       return;
     }
 
     // MODO CREACIÓN
     this.orderService.save(dto).subscribe({
-      next: saved => {
-        alert("Orden creada correctamente");
+      next: (saved) => {
+        alert('Orden creada correctamente');
 
         // Si en algún momento permites DELIVERY aquí, mantiene esta lógica:
         if (saved.orderType === this.typeEnum.DELIVERY) {
-          this.userService.findById(saved.idUser).subscribe(user => {
+          this.userService.findById(saved.idUser).subscribe((user) => {
             this.router.navigate(['/admin/delivery/new'], {
               queryParams: {
                 idOrder: saved.idOrder,
-                userName: user.userName
-              }
+                userName: user.userName,
+              },
             });
           });
         }
+        else {
         this.router.navigate(['/admin/orderregister']);
-
+      }
         this.form.reset();
         this.items.clear();
       },
-      error: err => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 }

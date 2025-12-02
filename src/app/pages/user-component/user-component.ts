@@ -72,14 +72,28 @@ export class UserComponent {
   }
 
   openDialog(user?: User) {
+    if (user?.idUser) {
+    // Editar
+    this.userService.findById(user.idUser).subscribe(fullUser => {
+      this._dialog.open(UserDialogComponent, {
+        width: '707px',
+        maxWidth: '95vw',
+        autoFocus: false,
+        disableClose: true,
+        data: fullUser
+      });
+    });
+  } else {
+    // Crear
     this._dialog.open(UserDialogComponent, {
       width: '707px',
-    maxWidth: '95vw',
-    autoFocus: false,
-    disableClose: true,
-      data: user
+      maxWidth: '95vw',
+      autoFocus: false,
+      disableClose: true,
+      data: null   // 👈 IMPORTANTE: null, no {}
     });
   }
+}
 
   applyFilter(e: any) {
     if (!this.dataSource) return;

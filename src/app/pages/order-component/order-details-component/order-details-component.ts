@@ -46,7 +46,7 @@ export class OrderDetailsComponent {
   }
 
   volver() {
-    this.router.navigate(['/pages/orderregister']);
+    this.router.navigate(['/admin/orderregister']);
   }
 
 }
